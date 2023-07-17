@@ -1,0 +1,61 @@
+---
+title: CannonReactHook useDebounce 示例
+description: useDebounce 示例文档。
+---
+
+import UseDebounce from "@hook/debounce/demo";
+
+# useDebounce
+
+一个在 React 中进行防抖处理的自定义 Hook。
+
+## 示例
+
+<div style="margin-top: 3%;">
+  <UseDebounce client:visible />
+</div>
+
+## 参数
+
+| 参数               | 类型                     | 描述                                 |
+| ------------------ | ------------------------ | ------------------------------------ |
+| `value`            | `any`                    | 需要进行防抖处理的值。               |
+| `delay`            | `number`                 | 在更新防抖值之前的延迟时间（毫秒）。 |
+| `options`          | `object，可选`           | 控制防抖行为的额外选项。             |
+| `options.heading`  | `boolean，默认值：false` | 确定是否使用初始的头部值。           |
+| `options.trailing` | `boolean，默认值：true`  | 确定是否在延迟后使用尾部值。         |
+
+## 返回值
+
+- `valueToDebounce`（任意类型）：防抖后的值。
+
+## 示例
+
+```jsx
+import { useState } from "react";
+import { useDebounce } from "@cannonui/reacthooks";
+
+const TestUseDebounce = () => {
+  const [inputValue, setInputValue] = useState("");
+  const debouncedValue = useDebounce(inputValue, 1000);
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  return (
+    <div>
+      <input type="text" value={inputValue} onChange={handleChange} />
+      <p>防抖后的值：{debouncedValue}</p>
+    </div>
+  );
+};
+
+export default TestUseDebounce;
+```
+
+在上面的示例中，我们使用了 `useDebounce` 钩子来对 `inputValue` 状态进行防抖处理。它接受三个参数：`value`、`delay` 和 `options`。`value` 参数表示需要进行防抖处理的值，`delay` 参数指定在更新防抖值之前的延迟时间（以毫秒为单位），`options` 参数允许您通过 `heading` 和 `trailing` 选项自定义防抖行为。
+
+该钩子返回防抖后的 `valueToDebounce` 值。
+
+要使用 `useDebounce` 钩子，请从 `@cannonui/reacthooks` 中导入，并传递所需的参数。在示例组件 `TestUseDebounce` 中，我们渲染了一个输入框，并在 `handleChange` 函数中更新 `inputValue` 状态。防抖后的值将显示在输入框下方。

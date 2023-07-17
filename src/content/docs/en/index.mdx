@@ -1,0 +1,47 @@
+---
+title: Welcome to CannonHttpJS
+description: CannonHttpJS
+template: splash
+hero:
+  tagline: fetch-based HTTP Client for node.js and the browser. It is isomorphic (= it can run in the browser and nodejs with the same codebase).
+  image:
+    file: ../../../assets/houston.webp
+  actions:
+    - text: Example Guide
+      link: state_managment/debounce/
+      icon: right-arrow
+      variant: primary
+    - text: Play
+      link: https://github.com/cannonmaster/CannonHttpJS
+      icon: external
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+## Features
+
+<CardGrid stagger>
+  <Card title="Cache" icon="pencil">
+    Cache responses to improve performance and reduce redundant requests.
+  </Card>
+  <Card title="Timeout" icon="add-document">
+    Set timeouts for requests to ensure they don't take too long.
+  </Card>
+  <Card title="Retry mechnisam" icon="setting">
+    Retry failed requests with configurable retry count and delay.
+  </Card>
+  <Card title="98% Test Coverage" icon="approve-check">
+    98+% test coverage,ake the program robust。
+  </Card>
+  <Card title="Much more..." icon="open-book">
+    For more featured functionalities, please refer to the documentation. More
+    functionalities will be added continuously. [the CannonHttpJS
+    Docs](basic/get/).
+  </Card>
+</CardGrid>
+
+## Installation
+
+```bash
+npm install @cannonui/httpjs@latest
+```

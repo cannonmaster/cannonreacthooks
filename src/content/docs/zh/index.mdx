@@ -1,0 +1,45 @@
+---
+title: 欢迎使用 CannonHttpJS
+description: CannonHttpJS
+template: splash
+hero:
+  tagline: CannonHttpJS是一个基于Fetch的HTTP客户端，可在 Node.js 和浏览器中运行。它具有同构性（即可以在浏览器和 Node.js 中使用相同的代码库）。
+  image:
+    file: ../../../assets/houston.webp
+  actions:
+    - text: 示例指南
+      link: state_managment/debounce/
+      icon: right-arrow
+      variant: primary
+    - text: 开始
+      link: https://github.com/cannonmaster/CannonHttpJS
+      icon: external
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+## 特性
+
+<CardGrid stagger>
+  <Card title="缓存" icon="pencil">
+    缓存响应以提高性能并减少冗余请求。
+  </Card>
+  <Card title="超时设置" icon="add-document">
+    设置请求超时时间，确保请求不会耗时过长。
+  </Card>
+  <Card title="重试机制" icon="setting">
+    配置重试次数和延迟，对失败的请求进行重试。
+  </Card>
+  <Card title="健壮" icon="approve-check">
+    98+% 测试覆盖率，让程序更加健壮。
+  </Card>
+  <Card title="更多功能..." icon="open-book">
+    如需更多功能，请参阅文档。我们将持续添加更多功能。[CannonHttpJS
+    文档](basic/get/).
+  </Card>
+</CardGrid>
+## 安装
+
+```bash
+npm install @cannonui/httpjs@latest
+```

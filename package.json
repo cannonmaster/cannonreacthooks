@@ -1,0 +1,44 @@
+{
+  "name": "@cannonui/reacthooks",
+  "type": "module",
+  "version": "0.1.2",
+  "files": [
+    "cannonHookReact"
+  ],
+  "main": "./cannonHookReact/cannon-hook-react.umd.cjs",
+  "module": "./cannonHookReact/cannon-hook-react.esm.js",
+  "types": "./cannonHookReact/hook_store/main.d.ts",
+  "exports": {
+    ".": {
+      "import": "./cannonHookReact/cannon-hook-react.esm.js",
+      "require": "./cannonHookReact/cannon-hook-react.umd.cjs"
+    }
+  },
+  "scripts": {
+    "hookbuild": "vite build --config vite.react.hook.config.js",
+    "p:dr": "npm publish --dry-run",
+    "p": "npm publish --access public",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^2.2.1",
+    "@astrojs/starlight": "^0.4.2",
+    "@cannonui/reacthooks": "^0.1.2",
+    "astro": "2.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sharp": "^0.32.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "rollup-plugin-visualizer": "^5.9.2",
+    "vite": "^4.4.4",
+    "vite-plugin-dts": "^3.3.1"
+  }
+}
