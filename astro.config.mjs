@@ -5,13 +5,17 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  base: "/doc-cannonreacthooks",
+  base: "/cannonreacthooks",
   integrations: [
     starlight({
-      title: "CannonHooksReact",
+      title: "CannonReactHooks",
       social: {
-        github: "https://github.com/cannonmaster/CannonHttpJS",
+        github: "https://github.com/cannonmaster/cannonreacthooks",
       },
+      customCss: [
+        // Relative path to your custom CSS file
+        "/src/styles/custom.css",
+      ],
       sidebar: [
         {
           label: "State Managment",
