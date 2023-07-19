@@ -1,7 +1,7 @@
 {
   "name": "@cannonui/reacthooks",
   "type": "module",
-  "version": "0.1.2",
+  "version": "0.6.0",
   "files": [
     "cannonHookReact"
   ],
@@ -36,6 +36,7 @@
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@uidotdev/usehooks": "^2.0.1",
     "@vitejs/plugin-react": "^4.0.3",
     "rollup-plugin-visualizer": "^5.9.2",
     "vite": "^4.4.4",

@@ -1,0 +1,71 @@
+---
+title: useCopyToClipboard Hook
+description: 一个用于轻松复制文本到剪贴板的自定义 React Hook。
+---
+
+import UseCopyToClipboard from "@hook/copyToClipboard/demo";
+
+## 简介
+
+`useCopyToClipboard`是一个自定义的 React Hook，提供了一种简单的方式来复制文本到剪贴板。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <UseCopyToClipboard client:visible />
+</div>
+
+## 使用方法
+
+1. 在你的组件中引入`useCopyToClipboard` Hook：
+
+```jsx
+import { useState } from "react";
+import useCopyToClipboard from "./useCopyToClipboard";
+```
+
+2. 在你的组件中初始化 Hook，并使用返回的`copiedText`和`copyToClipboard`变量：
+
+```jsx
+const TestUseCopyToClipboard = () => {
+  const [textToCopy, setTextCopy] = useState("");
+  const [copiedText, copyToClipboard] = useCopyToClipboard();
+
+  const handleChange = (e: any) => {
+    setTextCopy(e.target.value);
+  };
+
+  const handleCopyToClipboard = (e: any) => {
+    copyToClipboard(textToCopy);
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={textToCopy}
+        onChange={handleChange}
+        placeholder="请输入文本"
+      />
+      <button onClick={(e) => handleCopyToClipboard(e)}>复制到剪贴板</button>
+      {copiedText && <p>已复制：{copiedText}</p>}
+    </div>
+  );
+};
+```
+
+## 特点
+
+`useCopyToClipboard` Hook 提供了以下功能：
+
+1. 简单的文本复制：通过一个函数调用轻松复制文本到剪贴板。
+2. 错误处理：如果`navigator.clipboard.writeText`方法不可用，Hook 会记录错误消息。
+3. 复制成功指示：`copiedText`状态变量会更新为已复制的文本，可以用于向用户显示成功消息。
+
+## 示例
+
+在上面的示例中，我们创建了一个简单的组件`TestUseCopyToClipboard`，使用了`useCopyToClipboard` Hook。它提供了一个输入框用于输入文本，一个按钮用于复制文本到剪贴板。复制的文本将在按钮下方显示为成功消息。
+
+这个自定义 Hook 使得复制文本到剪贴板变得轻松，并为用户提供了流畅的体验。
+
+请注意，`navigator.clipboard.writeText`方法仅在现代浏览器中可用。如果用户的浏览器不支持该方法，Hook 会记录错误消息，但文本复制功能将无法正常工作。

@@ -1,0 +1,59 @@
+---
+title: useIntersectionObserver 钩子
+description: 一个自定义的 React 钩子，利用 Intersection Observer API 跟踪和管理在视口中的 DOM 元素的可见性。
+---
+
+import UseIntersectionObserver from "@hook/intersectionObserver/demo";
+
+## 简介
+
+`useIntersectionObserver` 钩子是一个自定义的 React 钩子，利用 Intersection Observer API 来跟踪和管理在视口中的 DOM 元素的可见性。它提供了一种简单的方法来优化性能并高效地更新元素的可见性，适用于实现懒加载、无限滚动和其他依赖可见性的交互特性。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <UseIntersectionObserver client:only />
+</div>
+
+## 使用方法
+
+1. 在组件中引入 `useIntersectionObserver` 钩子：
+
+```jsx
+import { useIntersectionObserver } from "@cannonui/reacthooks";
+```
+
+2. 在组件中初始化该钩子：
+
+```jsx
+import useIntersectionObserver from "./intersectionObserver";
+
+type useIntersectionObserverType = [React.RefObject<HTMLDivElement>,  IntersectionObserverEntry
+]
+const TestUseIntersectionObserver = ()=>{
+  const [ref, entry]: useIntersectionObserverType = useIntersectionObserver() as useIntersectionObserverType;
+
+  return (
+    <>
+      <div ref={ref} style={{width: '300px', height: '100px', backgroundColor: 'cyan'}}>Element to observe</div>
+      <div>{entry?.isIntersecting ? 'element is visible' : 'element is not visible'}</div>
+    </>
+  )
+}
+
+export default TestUseIntersectionObserver;
+```
+
+## 工作原理
+
+`useIntersectionObserver` 钩子有三个可选参数：`threshold`、`root` 和 `rootMargin`，它们允许根据元素在视口中的可见性精确地控制观察器何时触发。它返回一个 ref 对象 (`ref`)，您应该将其附加到要观察的 DOM 元素上，还返回一个 `entry` 对象，其中包含有关元素与视口的交集的信息。
+
+该钩子会使用指定的选项设置 Intersection Observer 并将其附加到目标元素上。当元素根据提供的阈值和边界与视口相交时，观察器的回调将被执行，并更新 `entry` 对象中与交集相关的信息。
+
+## 示例
+
+在上面的示例中，我们创建了一个简单的组件 `TestUseIntersectionObserver`，它使用 `useIntersectionObserver` 钩子来观察 `<div>` 元素在视口中的可见性。该组件会根据 `entry` 对象中的 `isIntersecting` 属性显示一个消息，指示元素当前是否可见。
+
+当您需要根据元素的可见性状态执行操作时，例如当元素进入视口时加载内容或当元素变得可见时触发动画，这个自定义钩子会非常有用。
+
+请注意，该钩子专为客户端使用而设计，因为它依赖于浏览器的 Intersection Observer API。

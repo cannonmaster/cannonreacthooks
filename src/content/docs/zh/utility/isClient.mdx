@@ -1,0 +1,47 @@
+---
+title: useIsClient Hook
+description: 一个自定义的React Hook，用于确定代码是在客户端还是服务器端运行。
+---
+
+import UseIsClient from "@hook/isClient/demo";
+
+## 简介
+
+`useIsClient` Hook 是一个自定义的 React Hook，帮助您确定代码是在客户端还是服务器端运行。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  是否在客户端？
+  <UseIsClient client:only />
+</div>
+
+## 使用方法
+
+1. 在您的组件中引入 `useIsClient` Hook：
+
+```jsx
+import { useIsClient } from "@cannonui/reacthooks";
+```
+
+2. 在您的组件中初始化该 Hook：
+
+```jsx
+const TestUseIsClient = () => {
+  const isClient = useIsClient();
+
+  return <div>{isClient ? "在客户端" : "不在客户端"}</div>;
+};
+```
+
+## 工作原理
+
+`useIsClient` Hook 使用 React 中的`useState`和`useEffect` Hook 来将初始状态设置为`false`。在组件在客户端进行初始渲染时，`useEffect` Hook 被调用，并将状态更新为`true`。因此，当组件在客户端运行时，`isClient`变量将为`true`，而在服务器端运行时，`isClient`变量将为`false`。
+
+## 示例
+
+在上面的示例中，我们创建了一个简单的组件`TestUseIsClient`，它使用`useIsClient` Hook 来显示代码是在客户端还是服务器端运行。当组件在客户端渲染时，将显示消息"在客户端"，表示它正在浏览器中运行。另一方面，如果组件在服务器端渲染（在服务器端进行渲染），将显示消息"不在客户端"。
+
+这个自定义的 Hook 在您需要根据代码是在浏览器中还是在服务器上执行条件代码时非常有用。例如，您可以使用它来有条件地从 API 获取数据或执行仅在客户端的操作。
+
+请注意，该 Hook 依赖于客户端渲染的生命周期，因此其值在客户端渲染期间是准确的，但在服务器端渲染期间是不准确的。

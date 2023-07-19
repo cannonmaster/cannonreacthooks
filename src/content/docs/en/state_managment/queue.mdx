@@ -1,0 +1,103 @@
+---
+title: useQueue Hook
+description: A custom React hook to manage a queue of elements with ease.
+---
+
+import UseQueue from "@hook/queue/demo";
+
+## Introduction
+
+The `useQueue` hook is a handy custom React hook that facilitates managing a queue of elements within a functional component. It offers straightforward functions for adding, removing, and clearing elements from the queue, while also maintaining the necessary state updates. The hook returns an object containing various properties and methods that provide access to the queue's state and functionality.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseQueue client:only />
+</div>
+
+## Usage
+
+1. Import the `useQueue` hook into your component:
+
+```jsx
+import useQueue from "@cannonui/reacthooks";
+```
+
+2. Initialize the hook in your component:
+
+```jsx
+import useQueue from "./queue";
+import { useRef } from "react";
+const TestUseQueue = () => {
+  const init = [1, 2, 3, 4, 5, 6];
+  const { add, clear, remove, queue, size, last, first } = useQueue(init);
+  const count = useRef(queue.length);
+
+  const handleAdd = () => {
+    ++count.current;
+    add(count.current);
+  };
+  const handleRemove = () => {
+    remove();
+    console.log(queue.length);
+
+    if (size === 1) {
+      count.current = 0;
+    }
+  };
+  const handleClear = () => {
+    clear();
+  };
+
+  return (
+    <>
+      <div style={{ display: "flex", gap: "1em" }}>
+        {queue &&
+          queue.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "200px",
+                height: "100px",
+                backgroundColor: "cyan",
+                marginTop: "1rem",
+              }}
+            >
+              {item}
+            </div>
+          ))}
+      </div>
+
+      <div>First ele in queue: {first}</div>
+      <div>Last ele in queue: {last}</div>
+      <div>Queue size: {size}</div>
+      <div style={{ display: "flex", gap: "1em" }}>
+        <button onClick={handleAdd} style={{ marginTop: "1.5rem" }}>
+          add
+        </button>
+        <button onClick={handleRemove}>remove</button>
+        <button onClick={handleClear}>clear</button>
+      </div>
+    </>
+  );
+};
+
+export default TestUseQueue;
+```
+
+## How it Works
+
+The `useQueue` hook takes an optional `init` parameter, which is an array representing the initial elements of the queue. It also supports an optional `maxSize` parameter, allowing you to set a maximum size for the queue. When adding elements to the queue, it ensures that the maximum size is respected by automatically removing the oldest elements if the queue exceeds the specified limit.
+
+The hook returns an object with various properties and methods, including `add`, `remove`, `clear`, `peek`, `isFull`, `queue`, `size`, `last`, and `first`. These properties and methods offer convenient ways to interact with and observe the state of the queue.
+
+## Example
+
+In the example above, we have created a simple component `TestUseQueue` that uses the `useQueue` hook to manage a queue of numbers. It displays the elements of the queue, the first and last elements, and the size of the queue. Buttons are provided to add, remove, and clear elements from the queue.
+
+This custom hook is helpful when you need to implement a queue data structure and manage its elements dynamically within a React component.
+
+Please note that this hook is designed for client-side use and should be used with React components.

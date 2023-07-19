@@ -1,0 +1,81 @@
+---
+title: useMouse Hook
+description: A custom React hook to track the mouse position and the mouse position relative to an element.
+---
+
+import TestUseMouse from "@hook/mouse/demo";
+
+## Introduction
+
+The `useMouse` hook is a custom React hook that allows you to track the mouse position and the mouse position relative to an element.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <TestUseMouse client:only />
+</div>
+
+## Usage
+
+1. Import the `useMouse` hook into your component:
+
+```jsx
+import { useMouse } from "@cannonui/reacthooks";
+```
+
+2. Initialize the hook in your component:
+
+```jsx
+import React, { useState, useEffect } from "react";
+import useMouse from "./useMouse";
+
+const TestUseMouse = () => {
+  const [state, refMouse] = useMouse();
+  const [bgColor, setBgColor] = useState("cyan");
+
+  useEffect(() => {
+    if (
+      state.elementY >= 0 &&
+      state.elementY <= 200 &&
+      state.elementX >= 0 &&
+      state.elementX <= 300
+    ) {
+      setBgColor("pink");
+    } else {
+      setBgColor("cyan");
+    }
+  }, [state.elementX, state.elementY]);
+
+  return (
+    <>
+      <pre>current state: {JSON.stringify(state, null, 2)}</pre>
+
+      <div
+        ref={refMouse}
+        style={{
+          width: "300px",
+          height: "200px",
+          border: "1px solid cyan",
+          backgroundColor: bgColor,
+        }}
+      ></div>
+    </>
+  );
+};
+
+export default TestUseMouse;
+```
+
+## How it Works
+
+The `useMouse` hook utilizes the `useState`, `useEffect`, and `useRef` hooks from React to track the mouse position and the mouse position relative to an element. It returns an object containing `x` and `y` properties for the mouse position on the screen, and `elementX` and `elementY` properties for the mouse position relative to the specified element. It also provides `elementPositionX` and `elementPositionY` properties to get the element's position on the screen.
+
+The hook sets up a `mousemove` event listener on the document to track the mouse position, and it calculates the relative position by subtracting the element's bounding rectangle from the mouse position.
+
+## Example
+
+In the example above, we have created a simple component `TestUseMouse` that uses the `useMouse` hook to track the mouse position and the mouse position relative to a `<div>` element. The component displays the current mouse state in a `<pre>` tag and changes the background color of the element based on the mouse's position relative to the element.
+
+This custom hook can be useful when you need to implement mouse-related interactions or visual feedback based on the mouse's position relative to specific elements.
+
+Please note that this hook tracks the mouse position and relative position only on the client-side and may not be accurate during server-side rendering or when running on the server.

@@ -1,0 +1,59 @@
+---
+title: useIntersectionObserver Hook
+description: A custom React hook to track and manage the visibility of DOM elements within the viewport using Intersection Observer API.
+---
+
+import UseIntersectionObserver from "@hook/intersectionObserver/demo";
+
+## Introduction
+
+The `useIntersectionObserver` hook is a custom React hook that leverages the Intersection Observer API to track and manage the visibility of DOM elements within the viewport. It provides a straightforward method for optimizing performance and efficiently updating elements' visibility, making it ideal for implementing features like lazy-loading, infinite scrolling, and other visibility-dependent interactions.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseIntersectionObserver client:only />
+</div>
+
+## Usage
+
+1. Import the `useIntersectionObserver` hook into your component:
+
+```jsx
+import { useIntersectionObserver } from "@cannonui/reacthooks";
+```
+
+2. Initialize the hook in your component:
+
+```jsx
+import useIntersectionObserver from "./intersectionObserver";
+
+type useIntersectionObserverType = [React.RefObject<HTMLDivElement>,  IntersectionObserverEntry
+]
+const TestUseIntersectionObserver = ()=>{
+  const [ref, entry]: useIntersectionObserverType = useIntersectionObserver() as useIntersectionObserverType;
+
+  return (
+    <>
+      <div ref={ref} style={{width: '300px', height: '100px', backgroundColor: 'cyan'}}>Element to observe</div>
+      <div>{entry?.isIntersecting ? 'element is visible' : 'element is not visible'}</div>
+    </>
+  )
+}
+
+export default TestUseIntersectionObserver;
+```
+
+## How it Works
+
+The `useIntersectionObserver` hook takes three optional parameters: `threshold`, `root`, and `rootMargin`, which allow fine-grained control over when the observer triggers based on the element's visibility within the viewport. It returns a ref object (`ref`) that you should attach to the DOM element you want to observe and an `entry` object that contains information about the element's intersection with the viewport.
+
+The hook sets up an Intersection Observer with the specified options and attaches it to the target element. When the element intersects with the viewport according to the provided thresholds and margins, the observer's callback is executed, and the `entry` object is updated with relevant intersection information.
+
+## Example
+
+In the example above, we have created a simple component `TestUseIntersectionObserver` that uses the `useIntersectionObserver` hook to observe a `<div>` element's visibility within the viewport. The component displays a message indicating whether the element is currently visible or not based on the `isIntersecting` property in the `entry` object.
+
+This custom hook is beneficial when you need to perform actions based on an element's visibility status, such as loading content when an element enters the viewport or triggering animations when an element becomes visible.
+
+Please note that this hook is specifically designed for client-side use, as it relies on the browser's Intersection Observer API.

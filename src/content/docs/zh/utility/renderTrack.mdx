@@ -1,0 +1,64 @@
+---
+title: useRenderTrack Hook
+description: 一个自定义的 React Hook，用于跟踪组件渲染的次数。
+---
+
+import TestUserRenderTrack from "@hook/renderTrack/demo";
+
+## 介绍
+
+`useRenderTrack` Hook 是一个自定义的 React Hook，允许您跟踪组件被渲染的次数。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <TestUserRenderTrack client:only />
+</div>
+
+## 使用方法
+
+1. 在您的组件中导入 `useRenderTrack` Hook：
+
+```jsx
+import { useRenderTrack } from "@cannonui/reacthooks";
+```
+
+2. 在组件中初始化这个 Hook：
+
+```jsx
+import { useState, StrictMode } from "react";
+import useRenderTrack from "./useRenderTrack";
+
+const TestUserRenderTrack = () => {
+  const [value, setValue] = useState(0);
+  const renderTrack = useRenderTrack();
+
+  const handleIncrement = () => {
+    setValue((value) => value + 1);
+  };
+
+  return (
+    <StrictMode>
+      <button onClick={handleIncrement}>增加</button>
+      <div>增加次数：{value}</div>
+      <div>实际渲染次数：{renderTrack} 次</div>
+    </StrictMode>
+  );
+};
+
+export default TestUserRenderTrack;
+```
+
+## 工作原理
+
+`useRenderTrack` Hook 使用 React 的 `useRef` Hook 来跟踪组件被渲染的次数。它创建了一个名为 `renderTrack` 的 ref，每次组件渲染时都会将其值增加。
+
+## 示例
+
+在上面的示例中，我们创建了一个简单的组件 `TestUserRenderTrack`，它使用 `useRenderTrack` Hook 来跟踪组件被渲染的次数。该组件还提供了一个按钮，当点击时会增加一个计数器（`value`）的值。
+
+该 Hook 确保准确地跟踪渲染次数（`renderTrack`），即使组件的状态因用户交互或其他更新而改变。
+
+这个自定义的 Hook 在您需要监视组件渲染频率进行性能优化或调试时非常有用。
+
+请注意，此 Hook 仅在客户端跟踪渲染次数，并且在服务器端渲染时或在服务器上运行时可能不准确。

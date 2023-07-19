@@ -26,6 +26,24 @@ export default defineConfig({
             directory: "state_managment",
           },
         },
+        {
+          label: "Utils",
+          translations: {
+            "zh-CN": "助手",
+          },
+          autogenerate: {
+            directory: "utility",
+          },
+        },
+        {
+          label: "Dom",
+          translations: {
+            "zh-CN": "Dom",
+          },
+          autogenerate: {
+            directory: "dom",
+          },
+        },
       ],
       defaultLocale: "en",
       locales: {

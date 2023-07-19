@@ -1,0 +1,55 @@
+---
+title: useNetwork Hook
+description: A custom React hook to get the network status on the client-side.
+---
+
+import TestUseNetwork from "@hook/network/demo";
+
+## Introduction
+
+The `useNetwork` hook is a custom React hook that provides network status information on the client-side.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <TestUseNetwork client:only />
+</div>
+
+## Usage
+
+1. Import the `useNetwork` hook into your component:
+
+```jsx
+import { useNetwork } from "@cannonui/reacthooks";
+```
+
+2. Initialize the hook in your component:
+
+```jsx
+const TestUseNetwork = () => {
+  const networkState = useNetwork();
+
+  return (
+    <div>
+      <h5>Network Status (client side only)</h5>
+      <pre>{JSON.stringify(networkState, null, 2)}</pre>
+    </div>
+  );
+};
+```
+
+## How it Works
+
+The `useNetwork` hook utilizes the `useState` and `useEffect` hooks from React to monitor the network status on the client-side. It returns an object containing various network-related properties such as `online`, `rtt`, `type`, `downlink`, `saveData`, `downlinkMax`, and `effectiveType`.
+
+The hook sets up event listeners to track changes in the network status and updates the state accordingly.
+
+## Example
+
+In the example above, we have created a simple component `TestUseNetwork` that uses the `useNetwork` hook to display the network status on the client-side. The `networkState` object contains information about the current network status, including the online status, round trip time (`rtt`), connection type (`type`), downlink speed (`downlink`), whether data saving is enabled (`saveData`), maximum downlink speed (`downlinkMax`), and effective connection type (`effectiveType`).
+
+The hook automatically updates the network status whenever there is a change, such as a switch from online to offline or a change in the network type.
+
+This custom hook can be useful when you need to adapt your application's behavior based on the user's network conditions or when you want to display network-related information to the user.
+
+Please note that this hook works only on the client-side, and its values may not be accurate during server-side rendering or when running on the server.

@@ -1,0 +1,63 @@
+---
+title: useQueue Hook
+description: 一个自定义的 React Hook，用于轻松管理元素队列。
+---
+
+import UseQueue from "@hook/queue/demo";
+
+## 简介
+
+`useQueue` Hook 是一个方便的自定义 React Hook，它能够帮助你在函数组件中管理一个元素队列。它提供了简单的函数，用于向队列中添加、移除和清空元素，并同时保持必要的状态更新。该 Hook 返回一个包含各种属性和方法的对象，这些属性和方法提供了访问队列状态和功能的便捷方式。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <UseQueue client:only />
+</div>
+
+## 使用方法
+
+1. 在你的组件中导入 `useQueue` Hook：
+
+```jsx
+import useQueue from "@cannonui/reacthooks";
+```
+
+2. 在组件中初始化 `useQueue` Hook：
+
+```jsx
+import useQueue from "@cannonui/reacthooks";
+const TestUseQueue = () => {
+  const init = [1, 2, 3, 4, 5, 6];
+  const { add, clear, remove, queue, size, last, first } = useQueue(init);
+
+  // 处理队列操作的函数...
+
+  return (
+    <>
+      {/* 显示队列元素... */}
+
+      <div>队列中的第一个元素：{first}</div>
+      <div>队列中的最后一个元素：{last}</div>
+      <div>队列大小：{size}</div>
+      {/* 按钮用于与队列交互... */}
+    </>
+  );
+};
+
+export default TestUseQueue;
+```
+
+## 工作原理
+
+`useQueue` Hook 接受一个可选的 `init` 参数，它是一个数组，表示队列的初始元素。它还支持一个可选的 `maxSize` 参数，允许你设置队列的最大大小。当向队列中添加元素时，如果队列超过了指定的限制，它会自动删除最旧的元素以确保队列大小不超过最大值。
+
+该 Hook 返回一个对象，其中包含 `add`、`remove`、`clear`、`peek`、`isFull`、`queue`、`size`、`last` 和 `first` 等各种属性和方法。这些属性和方法提供了与队列交互和观察队列状态的便捷方式。
+
+## 示例
+
+在上面的示例中，我们创建了一个简单的组件 `TestUseQueue`，它使用 `useQueue` Hook 来管理一个数字队列。它显示队列的元素、第一个和最后一个元素以及队列的大小。按钮提供了向队列中添加、移除和清空元素的功能。
+
+这个自定义 Hook 在你需要实现队列数据结构并在 React 组件中动态管理元素时非常有用。
+
+请注意，此 Hook 专为客户端使用而设计，应与 React 组件一起使用。

@@ -1,0 +1,55 @@
+---
+title: useNetwork Hook
+description: 一个自定义的 React Hook，用于获取客户端的网络状态信息。
+---
+
+import TestUseNetwork from "@hook/network/demo";
+
+## 简介
+
+`useNetwork` Hook 是一个自定义的 React Hook，用于提供客户端的网络状态信息。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <TestUseNetwork client:only />
+</div>
+
+## 使用方法
+
+1. 在你的组件中导入 `useNetwork` Hook：
+
+```jsx
+import { useNetwork } from "@cannonui/reacthooks";
+```
+
+2. 在组件中初始化 Hook：
+
+```jsx
+const TestUseNetwork = () => {
+  const networkState = useNetwork();
+
+  return (
+    <div>
+      <h5>网络状态（仅客户端）</h5>
+      <pre>{JSON.stringify(networkState, null, 2)}</pre>
+    </div>
+  );
+};
+```
+
+## 工作原理
+
+`useNetwork` Hook 使用 React 中的 `useState` 和 `useEffect` Hook 来监测客户端的网络状态。它返回一个包含多种网络相关属性的对象，例如 `online`、`rtt`、`type`、`downlink`、`saveData`、`downlinkMax` 和 `effectiveType`。
+
+该 Hook 设置事件监听器来跟踪网络状态的变化，并相应地更新状态。
+
+## 示例
+
+在上面的示例中，我们创建了一个简单的组件 `TestUseNetwork`，它使用 `useNetwork` Hook 来显示客户端的网络状态。`networkState` 对象包含了当前的网络状态信息，包括在线状态、往返时间（`rtt`）、连接类型（`type`）、下载速度（`downlink`）、数据节省状态（`saveData`）、最大下载速度（`downlinkMax`）和有效连接类型（`effectiveType`）。
+
+该 Hook 会自动在网络状态发生变化时进行更新，比如从在线切换到离线或网络类型发生变化时。
+
+这个自定义 Hook 在需要根据用户的网络条件来调整应用行为或显示网络相关信息时非常有用。
+
+请注意，该 Hook 仅在客户端工作，在服务器端渲染时或在服务器上运行时，其值可能不准确。

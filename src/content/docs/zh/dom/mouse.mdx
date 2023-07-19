@@ -1,0 +1,81 @@
+---
+title: useMouse Hook
+description: 自定义的 React Hook，用于跟踪鼠标位置及其相对于元素的位置。
+---
+
+import TestUseMouse from "@hook/mouse/demo";
+
+## 介绍
+
+`useMouse` Hook 是一个自定义的 React Hook，它允许您跟踪鼠标位置及其相对于元素的位置。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <TestUseMouse client:only />
+</div>
+
+## 使用方法
+
+1. 在组件中导入 `useMouse` Hook：
+
+```jsx
+import { useMouse } from "@cannonui/reacthooks";
+```
+
+2. 在组件中初始化 Hook：
+
+```jsx
+import React, { useState, useEffect } from "react";
+import useMouse from "./useMouse";
+
+const TestUseMouse = () => {
+  const [state, refMouse] = useMouse();
+  const [bgColor, setBgColor] = useState("cyan");
+
+  useEffect(() => {
+    if (
+      state.elementY >= 0 &&
+      state.elementY <= 200 &&
+      state.elementX >= 0 &&
+      state.elementX <= 300
+    ) {
+      setBgColor("pink");
+    } else {
+      setBgColor("cyan");
+    }
+  }, [state.elementX, state.elementY]);
+
+  return (
+    <>
+      <pre>当前状态: {JSON.stringify(state, null, 2)}</pre>
+
+      <div
+        ref={refMouse}
+        style={{
+          width: "300px",
+          height: "200px",
+          border: "1px solid cyan",
+          backgroundColor: bgColor,
+        }}
+      ></div>
+    </>
+  );
+};
+
+export default TestUseMouse;
+```
+
+## 工作原理
+
+`useMouse` Hook 使用了 React 中的 `useState`、`useEffect` 和 `useRef` Hook 来跟踪鼠标位置以及鼠标相对于指定元素的位置。它返回一个包含以下属性的对象：`x` 和 `y` 表示鼠标在屏幕上的位置，`elementX` 和 `elementY` 表示鼠标相对于指定元素的位置。此外，还提供了 `elementPositionX` 和 `elementPositionY` 属性来获取元素在屏幕上的位置。
+
+该 Hook 在文档上设置了 `mousemove` 事件监听器来跟踪鼠标位置，并通过从鼠标位置中减去元素的边界矩形来计算相对位置。
+
+## 示例
+
+在上面的示例中，我们创建了一个名为 `TestUseMouse` 的简单组件，它使用 `useMouse` Hook 来跟踪鼠标位置以及鼠标相对于 `<div>` 元素的位置。组件将当前的鼠标状态显示在 `<pre>` 标签中，并根据鼠标相对于元素的位置改变元素的背景颜色。
+
+这个自定义 Hook 在需要根据鼠标位置来实现交互或视觉反馈时非常有用，特别是当您需要根据鼠标相对于特定元素的位置来调整应用程序的行为时。
+
+请注意，此 Hook 仅在客户端跟踪鼠标位置和相对位置，在服务器端渲染时或在服务器上运行时可能不准确。

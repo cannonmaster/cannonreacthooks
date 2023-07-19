@@ -1,0 +1,68 @@
+---
+title: useClickAway 钩子
+description: 一个自定义的 React 钩子，用于检测特定组件外部的点击事件。
+---
+
+import UseClickAway from "@hook/clickAway/demo";
+
+## 简介
+
+`useClickAway` 钩子是一个有用的自定义 React 钩子，允许您跟踪特定组件外部的点击事件。它提供了一种传递回调函数的方式，当点击事件发生在组件区域外部时，将会触发该回调函数。这个钩子在实现下拉菜单、模态框或其他需要在用户点击它们之外关闭的 UI 元素时特别有帮助。通过将事件监听器附加到文档上，钩子会检查点击目标是否在组件的参考范围内，如果不是，则调用提供的回调函数。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <UseClickAway client:only />
+</div>
+
+## 使用方法
+
+1. 在组件中引入 `useClickAway` 钩子：
+
+```jsx
+import useClickAway from "@cannonui/reacthooks";
+```
+
+2. 在组件中初始化该钩子：
+
+```jsx
+import { useState } from "react";
+import useClickAway from "./useClickAway";
+
+const TestUseClickedAway = () => {
+  const isClickedOutside = (e: any) => {
+    setClickStatus(true);
+  };
+
+  const ref = useClickAway(isClickedOutside);
+  const [clickStatus, setClickStatus] = useState(false);
+
+  return (
+    <>
+      <div
+        ref={ref}
+        style={{ width: "300px", height: "200px", backgroundColor: "cyan" }}
+      >
+        Click to see if clicked outside
+      </div>
+      <div>{clickStatus ? "Clicked away" : ""}</div>
+    </>
+  );
+};
+
+export default TestUseClickedAway;
+```
+
+## 工作原理
+
+`useClickAway` 钩子利用 React 的 `useRef` 和 `useEffect` 钩子来处理指定组件外部的点击事件。它返回一个 ref 对象，该对象应该附加到一个 React 元素上以监视点击事件。该 ref 提供了一种访问所附加元素属性的方式。
+
+该钩子在文档上设置一个 `click` 事件监听器，并检查点击目标是否在组件的参考范围内。如果点击事件发生在组件外部，则调用提供的回调函数。
+
+## 示例
+
+在上面的示例中，我们创建了一个简单的组件 `TestUseClickedAway`，它使用 `useClickAway` 钩子来跟踪点击是否发生在带有青色背景的 `<div>` 元素外部。如果点击事件发生在 `<div>` 外部，则将 `clickStatus` 状态设置为 `true`，表示用户已经点击了外部。
+
+当您需要在用户与 UI 元素外部交互时关闭它们时，这个自定义钩子会非常有用。
+
+请注意，该钩子仅在客户端上跟踪点击事件，并且在服务器端渲染或在服务器上运行时可能不太准确。
