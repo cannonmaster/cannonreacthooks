@@ -1,0 +1,127 @@
+---
+title: useMap 钩子
+description: 一个自定义的 React 钩子，用于管理带有键值对的 Map。
+---
+
+import UseMap from "@hook/map/demo";
+
+## 简介
+
+`useMap` 钩子是一个自定义的 React 钩子，为你的 React 应用程序提供了一种简单高效的方式来管理带有键值对的 Map。
+
+## 使用示例
+
+<UseMap client:visible />
+
+## 使用方法
+
+1. 在组件中导入 `useMap` 钩子：
+
+```jsx
+import useMap from "@cannonui/reacthooks";
+```
+
+2. 在组件中初始化钩子：
+
+```jsx
+import useMap from "./map";
+import { useState } from "react";
+const TestUseMap = () => {
+  const [fakeKey, setFakeKey] = useState(4);
+  const initialEntries: [string, string][] = [
+    ["key1", "value1"],
+    ["key2", "value2"],
+    ["key3", "value3"],
+  ];
+
+  const {
+    map,
+    addItem,
+    removeItem,
+    keys,
+    values,
+    clear,
+    hasKey,
+    getValue,
+    size,
+    toArray,
+  } = useMap(initialEntries);
+
+  const handleAdd = () => {
+    addItem("key" + fakeKey, "value" + fakeKey.toString());
+    setFakeKey((key) => key + 1);
+  };
+
+  const handleRemove = () => {
+    if (fakeKey <= 0) return;
+    removeItem("key" + (fakeKey - 1));
+    setFakeKey((key) => key - 1);
+  };
+
+  const handleClear = () => {
+    setFakeKey(0);
+    clear();
+  };
+
+  return (
+    <>
+      <div style={{ display: "flex", gap: "2rem" }}>
+        <div style={{ marginTop: "1.5rem" }}>
+          <h5>Key - Val</h5>
+          {Array.from(map.entries()).map(([key, value]) => (
+            <div key={key}>
+              [{key}, {value}]
+            </div>
+          ))}
+        </div>
+        <div>
+          <h5>Keys</h5>
+          {Array.from(keys()).map((key) => (
+            <div key={key}>{key}</div>
+          ))}
+        </div>
+        <div>
+          <h5>Values</h5>
+          {Array.from(values()).map((val, index) => (
+            <div key={index}>{val}</div>
+          ))}
+        </div>
+      </div>
+      <h5>map sise: {size}</h5>
+      <button onClick={handleAdd}>add</button>
+      <button style={{ margin: "0 1rem" }} onClick={handleRemove}>
+        remove
+      </button>
+      <button onClick={handleClear}>clear</button>
+    </>
+  );
+};
+
+export default TestUseMap;
+```
+
+## 属性列表
+
+| 属性       | 描述                              |
+| ---------- | --------------------------------- |
+| map        | 包含键值对的 Map 实例。           |
+| addItem    | 向 Map 中添加项的函数。           |
+| removeItem | 从 Map 中移除项的函数。           |
+| clear      | 清空 Map 的函数。                 |
+| hasKey     | 检查键是否存在于 Map 中的函数。   |
+| keys       | 获取 Map 中所有键的迭代器的函数。 |
+| values     | 获取 Map 中所有值的迭代器的函数。 |
+| toArray    | 将 Map 转换为条目数组的函数。     |
+| size       | Map 中键值对的数量。              |
+| getValue   | 获取与指定键关联的值的函数。      |
+
+## 工作原理
+
+`useMap` 钩子使用 React 中的 `useState` 钩子来管理 Map 的状态。它提供了诸如 `addItem`、`removeItem` 和 `clear` 等函数来与 Map 进行交互。此外，它还提供了诸如 `keys`、`values` 和 `toArray` 等函数来访问 Map 的键、值和条目。钩子的状态 `map` 表示带有键值对的 Map。
+
+## 示例
+
+在上面的示例中，我们创建了一个简单的组件 `TestUseMap`，它使用 `useMap` 钩子来管理带有初始键值对的 Map。该组件利用提供的函数来向 Map 中添加、移除和清空项，并演示如何访问 Map 的键、值和大小。
+
+这个自定义钩子在需要在 React 组件中维护键值数据并对其执行各种操作时非常有用。
+请注意，此钩子设计用于客户端使用，并且应该与 React 组件一起使用。

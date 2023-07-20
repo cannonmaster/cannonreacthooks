@@ -1,0 +1,127 @@
+---
+title: useMap Hook
+description: A custom React hook for managing a Map with key-value pairs.
+---
+
+import UseMap from "@hook/map/demo";
+
+## Introduction
+
+The `useMap` hook is a custom React hook that provides a simple and efficient way to manage a Map with key-value pairs in your React applications.
+
+## Play
+
+<UseMap client:visible />
+
+## Usage
+
+1. Import the `useMap` hook into your component:
+
+```jsx
+import useMap from "@cannonui/reacthooks";
+```
+
+2. Initialize the hook in your component:
+
+```jsx
+import useMap from "./map";
+import { useState } from "react";
+const TestUseMap = () => {
+  const [fakeKey, setFakeKey] = useState(4);
+  const initialEntries: [string, string][] = [
+    ["key1", "value1"],
+    ["key2", "value2"],
+    ["key3", "value3"],
+  ];
+
+  const {
+    map,
+    addItem,
+    removeItem,
+    keys,
+    values,
+    clear,
+    hasKey,
+    getValue,
+    size,
+    toArray,
+  } = useMap(initialEntries);
+
+  const handleAdd = () => {
+    addItem("key" + fakeKey, "value" + fakeKey.toString());
+    setFakeKey((key) => key + 1);
+  };
+
+  const handleRemove = () => {
+    if (fakeKey <= 0) return;
+    removeItem("key" + (fakeKey - 1));
+    setFakeKey((key) => key - 1);
+  };
+
+  const handleClear = () => {
+    setFakeKey(0);
+    clear();
+  };
+
+  return (
+    <>
+      <div style={{ display: "flex", gap: "2rem" }}>
+        <div style={{ marginTop: "1.5rem" }}>
+          <h5>Key - Val</h5>
+          {Array.from(map.entries()).map(([key, value]) => (
+            <div key={key}>
+              [{key}, {value}]
+            </div>
+          ))}
+        </div>
+        <div>
+          <h5>Keys</h5>
+          {Array.from(keys()).map((key) => (
+            <div key={key}>{key}</div>
+          ))}
+        </div>
+        <div>
+          <h5>Values</h5>
+          {Array.from(values()).map((val, index) => (
+            <div key={index}>{val}</div>
+          ))}
+        </div>
+      </div>
+      <h5>map sise: {size}</h5>
+      <button onClick={handleAdd}>add</button>
+      <button style={{ margin: "0 1rem" }} onClick={handleRemove}>
+        remove
+      </button>
+      <button onClick={handleClear}>clear</button>
+    </>
+  );
+};
+
+export default TestUseMap;
+```
+
+## Props
+
+| Prop       | Description                                           |
+| ---------- | ----------------------------------------------------- |
+| map        | The Map instance containing key-value pairs.          |
+| addItem    | Function to add an item to the Map.                   |
+| removeItem | Function to remove an item from the Map.              |
+| clear      | Function to clear the Map.                            |
+| hasKey     | Function to check if a key exists in the Map.         |
+| keys       | Function to get an iterator of keys from the Map.     |
+| values     | Function to get an iterator of values from the Map.   |
+| toArray    | Function to convert the Map into an array of entries. |
+| size       | The number of key-value pairs in the Map.             |
+| getValue   | Function to get the value associated with a key.      |
+
+## How it Works
+
+The `useMap` hook uses the `useState` hook from React to manage the state of the Map. It provides functions like `addItem`, `removeItem`, and `clear` to interact with the Map. Additionally, it offers functions like `keys`, `values`, and `toArray` to access the keys, values, and entries of the Map. The hook's state, `map`, represents the Map with key-value pairs.
+
+## Example
+
+In the example above, we have created a simple component `TestUseMap` that uses the `useMap` hook to manage a Map with initial key-value pairs. The component utilizes the provided functions to add, remove, and clear items from the Map. It also demonstrates how to access the keys, values, and size of the Map.
+
+This custom hook is helpful when you need to maintain key-value data and perform various operations on it within a React component.
+Please note that this hook is designed for client-side use and should be used with React components.

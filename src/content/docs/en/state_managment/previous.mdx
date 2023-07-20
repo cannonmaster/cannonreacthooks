@@ -1,0 +1,70 @@
+---
+title: usePrevious Hook
+description: A custom React hook that allows you to track the previous value of a variable in a functional component
+---
+
+import UseMap from "@hook/previous/demo";
+
+## Introduction
+
+The `usePrevious` hook is a custom React hook that allows you to track the previous value of a variable in a functional component. It is particularly useful when you need to compare the current value with the previous one, for instance, to trigger actions or rendering based on changes.
+
+## Play
+
+<UseMap client:visible />
+
+### Parameters
+
+| Name    | Type | Description                                    |
+| ------- | ---- | ---------------------------------------------- |
+| `value` | any  | The value to track and return the previous of. |
+
+### Return Value
+
+| Name            | Type | Description                                 |
+| --------------- | ---- | ------------------------------------------- |
+| `previousValue` | any  | The previous value of the provided `value`. |
+
+### Usage
+
+1. Import the `usePrevious` hook into your component:
+
+```jsx
+import usePrevious from "./previous";
+```
+
+2. Initialize the hook in your component:
+
+```jsx
+import usePrevious from "./previous";
+import { useState } from "react";
+
+const TestUsePrevious = () => {
+  const [value, setValue] = useState < number > 0;
+  const previous = usePrevious(value);
+
+  const handleUpdate = () => {
+    setValue((prevValue) => prevValue + 1);
+  };
+
+  return (
+    <>
+      <div>Previous Value: {previous}</div>
+      <div>Current Value: {value}</div>
+      <button onClick={handleUpdate}>Update</button>
+    </>
+  );
+};
+
+export default TestUsePrevious;
+```
+
+### How it Works
+
+The `usePrevious` hook uses the `useRef` and `useEffect` hooks from React. It stores the previous value of the `value` prop in a `ref` using `useRef`. When the `value` prop changes, the `useEffect` hook updates the `ref.current` with the new value, effectively tracking the previous value.
+
+### Example
+
+In the example above, we have created a simple component `TestUsePrevious` that utilizes the `usePrevious` hook to track and display the previous and current values. The component increments the `value` state whenever the "Update" button is clicked, and the `usePrevious` hook returns and displays the previous value.
+
+This custom hook is helpful in scenarios where you need to perform actions based on value changes or display a history of value changes.
