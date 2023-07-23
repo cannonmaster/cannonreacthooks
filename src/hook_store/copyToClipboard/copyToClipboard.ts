@@ -5,7 +5,6 @@ const useCopyToClipboard = () => {
 
   const copyToClipBoard = useCallback(async (value: string) => {
     if (!navigator.clipboard) {
-      console.log(123);
     }
 
     if (navigator.clipboard) {

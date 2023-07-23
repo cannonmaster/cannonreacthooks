@@ -1,7 +1,7 @@
 {
   "name": "@cannonui/reacthooks",
   "type": "module",
-  "version": "0.8.0",
+  "version": "0.8.6",
   "files": [
     "cannonHookReact"
   ],
@@ -10,8 +10,14 @@
   "types": "./cannonHookReact/hook_store/main.d.ts",
   "exports": {
     ".": {
-      "import": "./cannonHookReact/cannon-hook-react.esm.js",
-      "require": "./cannonHookReact/cannon-hook-react.umd.cjs"
+      "import": {
+        "default": "./cannonHookReact/cannon-hook-react.esm.js",
+        "types": "./cannonHookReact/hook_store/main.d.ts" 
+      },
+      "require": {
+        "default": "./cannonHookReact/cannon-hook-react.umd.cjs",
+        "types": "./cannonHookReact/hook_store/main.d.ts" 
+      }
     }
   },
   "scripts": {

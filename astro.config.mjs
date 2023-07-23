@@ -9,6 +9,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "CannonReactHooks",
+      lastUpdated: true,
       social: {
         github: "https://github.com/cannonmaster/cannonreacthooks",
       },
