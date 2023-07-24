@@ -1,0 +1,46 @@
+---
+title: useLocation Hook
+description: A custom React hook to determine if the code is running on the client-side or server-side.
+---
+
+import UseLocation from "@hook/location/demo";
+
+## Introduction
+
+The `useIsClient` hook is a custom React hook that helps you determine if the code is running on the client-side or server-side.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseLocation client:only />
+</div>
+
+## Usage
+
+1. Import the `useIsClient` hook into your component:
+
+```jsx
+import { useIsClient } from "@cannonui/reacthooks";
+```
+
+2. Initialize the hook in your component:
+
+```jsx
+const TestUseIsClient = () => {
+  const isClient = useIsClient();
+
+  return <div>{isClient ? "is client" : "is not client"}</div>;
+};
+```
+
+## How it Works
+
+The `useIsClient` hook uses the `useState` and `useEffect` hooks from React to set the initial state to `false`. During the component's initial rendering on the client-side, the `useEffect` hook is called and updates the state to `true`. As a result, the `isClient` variable will be `true` if the component is running on the client-side and `false` if it's running on the server-side.
+
+## Example
+
+In the example above, we have created a simple component `TestUseIsClient` that uses the `useIsClient` hook to display whether the code is running on the client-side or server-side. When the component renders on the client-side, the message "is client" will be displayed, indicating that it's running in the browser. On the other hand, if the component renders on the server-side (during server-side rendering), the message "is not client" will be displayed.
+
+This custom hook is useful when you need to conditionally execute code based on whether it's running in the browser or on the server. For example, you can use it to conditionally fetch data from an API or perform client-side-only actions.
+
+Keep in mind that the hook relies on the client-side rendering lifecycle, so its value will be accurate during client-side rendering but not during server-side rendering.

@@ -12,11 +12,11 @@
     ".": {
       "import": {
         "default": "./cannonHookReact/cannon-hook-react.esm.js",
-        "types": "./cannonHookReact/hook_store/main.d.ts" 
+        "types": "./cannonHookReact/hook_store/main.d.ts"
       },
       "require": {
         "default": "./cannonHookReact/cannon-hook-react.umd.cjs",
-        "types": "./cannonHookReact/hook_store/main.d.ts" 
+        "types": "./cannonHookReact/hook_store/main.d.ts"
       }
     }
   },
@@ -44,6 +44,8 @@
     "@types/react-dom": "^18.2.7",
     "@uidotdev/usehooks": "^2.0.1",
     "@vitejs/plugin-react": "^4.0.3",
+    "commander": "^11.0.0",
+    "inquirer": "^9.2.8",
     "rollup-plugin-visualizer": "^5.9.2",
     "vite": "^4.4.4",
     "vite-plugin-dts": "^3.3.1"

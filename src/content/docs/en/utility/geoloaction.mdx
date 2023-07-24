@@ -1,0 +1,73 @@
+---
+title: useGeoLocation Hook
+description: A custom React hook to easily copy text to the clipboard.
+---
+
+import UseGeoLocation from "@hook/geolocation/demo";
+
+## Introduction
+
+The `useCopyToClipboard` hook is a custom React hook that provides a simple way to copy text to the clipboard.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseGeoLocation client:visible />
+</div>
+
+## Usage
+
+1. Import the `useCopyToClipboard` hook into your component:
+
+```jsx
+import { useState } from "react";
+import useCopyToClipboard from "./useCopyToClipboard";
+```
+
+2. Initialize the hook in your component and use the returned `copiedText` and `copyToClipboard` variables:
+
+```jsx
+const TestUseCopyToClipboard = () => {
+  const [textToCopy, setTextCopy] = useState("");
+  const [copiedText, copyToClipboard] = useCopyToClipboard();
+
+  const handleChange = (e: any) => {
+    setTextCopy(e.target.value);
+  };
+
+  const handleCopyToClipboard = (e: any) => {
+    copyToClipboard(textToCopy);
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={textToCopy}
+        onChange={handleChange}
+        placeholder="Please enter text"
+      />
+      <button onClick={(e) => handleCopyToClipboard(e)}>
+        Copy to Clipboard
+      </button>
+      {copiedText && <p>Copied: {copiedText}</p>}
+    </div>
+  );
+};
+```
+
+## Features
+
+The `useCopyToClipboard` hook provides the following features:
+
+1. Simple text copying: Easily copy text to the clipboard with a single function call.
+2. Error handling: If the `navigator.clipboard.writeText` method is not available, the hook logs an error message.
+3. Copy success indication: The `copiedText` state variable is updated with the copied text, allowing you to display a success message to the user.
+
+## Example
+
+In the example above, we have created a simple component `TestUseCopyToClipboard` that uses the `useCopyToClipboard` hook. It provides an input field to enter text and a button to copy the text to the clipboard. The copied text is then displayed below the button as a success message.
+
+This custom hook makes copying text to the clipboard effortless and provides a smooth user experience.
+
+Please note that the `navigator.clipboard.writeText` method is only available in modern browsers. If the method is not supported in the user's browser, the hook logs an error message, but the text copying functionality will not work in such cases.

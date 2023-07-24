@@ -1,0 +1,58 @@
+---
+title: useThrottle
+description: useContinueTry example docs.
+---
+
+import UseThrottle from "@hook/throttle/demo";
+
+A custom hook that debounces a value in React.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseThrottle client:visible />
+</div>
+## Parameters
+
+| Parameter          | Type                      | Description                                                    |
+| ------------------ | ------------------------- | -------------------------------------------------------------- |
+| `value`            | `any`                     | The value to be debounced.                                     |
+| `delay`            | `number`                  | The delay in milliseconds before updating the debounced value. |
+| `options`          | `object, optional`        | Additional options for controlling the debounce behavior.      |
+| `options.heading`  | `boolean, default: false` | Determines whether to use the initial heading value.           |
+| `options.trailing` | `boolean, default: true`  | Determines whether to use the trailing value after the delay.  |
+
+## Returns
+
+- `valueToDebounce` (any): The debounced value.
+
+## Example
+
+```jsx
+import { useState } from "react";
+import { useDebounce } from "@cannonui/reacthooks";
+
+const TestUseDebounce = () => {
+  const [inputValue, setInputValue] = useState("");
+  const debouncedValue = useDebounce(inputValue, 1000);
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  return (
+    <div>
+      <input type="text" value={inputValue} onChange={handleChange} />
+      <p>Debounced value: {debouncedValue}</p>
+    </div>
+  );
+};
+
+export default TestUseDebounce;
+```
+
+In the above example, the `useDebounce` hook is used to debounce the `inputValue` state. It accepts three parameters: `value`, `delay`, and `options`. The `value` parameter represents the value to be debounced, the `delay` parameter specifies the delay in milliseconds before updating the debounced value, and the `options` parameter allows you to customize the debounce behavior with `heading` and `trailing` options.
+
+The hook returns the `valueToDebounce`, which represents the debounced value.
+
+To use the `useDebounce` hook, import it from `@cannonui/reacthooks` and pass the required parameters. In the example component `TestUseDebounce`, an input field is rendered, and the `inputValue` state is updated in the `handleChange` function. The debounced value is displayed below the input field.
