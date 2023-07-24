@@ -1,0 +1,113 @@
+---
+title: useGeolocation Hook
+description: 一个用于访问和监控用户地理位置的自定义 React Hook。
+---
+
+## 简介
+
+这是一个自定义的 React Hook，用于访问和监控用户的地理位置信息。
+
+## 使用示例
+
+```tsx
+import React from "react";
+import useGeolocation, { GeolocationData } from "@cannonui/reacthooks";
+
+const GeolocationDisplay = () => {
+  const location: GeolocationData = useGeolocation();
+
+  if (location.loading) {
+    return <div>正在获取地理位置信息...</div>;
+  }
+
+  if (location.error) {
+    return <div>获取地理位置信息时发生错误: {location.error.message}</div>;
+  }
+
+  return (
+    <div>
+      <h2>地理位置信息：</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td>纬度：</td>
+            <td>{location.latitude}</td>
+          </tr>
+          <tr>
+            <td>经度：</td>
+            <td>{location.longitude}</td>
+          </tr>
+          <tr>
+            <td>海拔：</td>
+            <td>{location.altitude}</td>
+          </tr>
+          <tr>
+            <td>精确度：</td>
+            <td>{location.accuracy}</td>
+          </tr>
+          <tr>
+            <td>方向：</td>
+            <td>{location.heading}</td>
+          </tr>
+          <tr>
+            <td>速度：</td>
+            <td>{location.speed}</td>
+          </tr>
+          <tr>
+            <td>时间戳：</td>
+            <td>{new Date(location.timestamp).toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default GeolocationDisplay;
+```
+
+## 参数
+
+| 参数名    | 类型                      | 描述                                                                                                                                                                                                                     |
+| --------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `options` | `PositionOptions`（可选） | 当调用 useGeolocation 时，可以提供一个可选的配置对象。用于调用`navigator.geolocation.watchPosition()`和`navigator.geolocation.getCurrentPosition()`。可以设置的属性包括`enableHighAccuracy`，`timeout`和`maximumAge`等。 |
+
+## 返回值
+
+这个 Hook 返回一个包含以下属性的对象：
+
+| 属性名             | 类型                    | 描述                                                               |
+| ------------------ | ----------------------- | ------------------------------------------------------------------ |
+| `loading`          | `boolean`               | 一个布尔值，表示是否正在获取地理位置信息。                         |
+| `accuracy`         | `number \| null`        | 纬度和经度的精确度，以米为单位。                                   |
+| `altitude`         | `number \| null`        | 海拔高度，以米为单位。                                             |
+| `altitudeAccuracy` | `number \| null`        | 海拔高度的精确度，以米为单位。                                     |
+| `heading`          | `number \| null`        | 设备行进方向。以角度表示，指示设备的行进方向相对于真正北方的偏差。 |
+| `latitude`         | `number \| null`        | 纬度，以十进制度数表示。                                           |
+| `longitude`        | `number \| null`        | 经度，以十进制度数表示。                                           |
+| `speed`            | `number \| null`        | 设备的当前地面速度，以米每秒为单位。                               |
+| `timestamp`        | `number \| null`        | 获取地理位置信息的时间戳。                                         |
+| `error`            | `PositionError \| null` | 如果在获取地理位置信息时发生错误，则返回一个错误对象。             |
+
+## 特点
+
+- 提供了访问用户地理位置信息的能力，包括纬度、经度、海拔高度、精确度、行进方向、速度和时间戳等信息。
+- 处理了在获取地理位置信息时的加载状态。
+- 处理了在获取地理位置信息时可能发生的错误。
+- 如果提供了`options`，则会持续监控地理位置的变化。
+
+## 示例
+
+在这个示例中，我们有一个名为`GeolocationDisplay`的组件，它使用`useGeolocation` Hook 来获取并展示用户的地理位置信息。该组件会根据不同情况展示地理位置信息、加载状态或可能出现的错误信息。
+
+## 使用场景
+
+假设你正在构建一个天气应用程序，需要获取用户当前的地理位置以提供准确的天气信息。你可以在你的应用程序中使用`useGeolocation` Hook 来访问用户的地理位置信息，然后使用纬度和经度数据从外部 API 获取天气数据。
+
+通过`GeolocationDisplay`组件，你可以轻松地获取用户的地理位置信息并在天气应用程序的用户界面上展示出来。该组件会在获取数据时处理加载状态，并展示可能发生的任何错误。
+
+通过将`useGeolocation` Hook 集成到你的天气应用程序中，可以增强用户体验，提供与地理位置相关的天气信息，而无需用户手动输入其位置信息。
+
+```tsx
+import UseGeoLocation from "@hook/geolocation/demo";
+```

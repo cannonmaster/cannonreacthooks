@@ -1,0 +1,117 @@
+---
+title: useGeoLocation Hook
+description: A custom React hook for accessing and monitoring a user's geolocation.
+---
+
+import UseGeoLocation from "@hook/geolocation/demo";
+
+## Introduction
+
+A custom React hook for accessing and monitoring a user's geolocation.
+
+## Play
+
+<div>
+  <UseGeoLocation client:only />
+</div>
+
+## Usage
+
+```tsx
+import React from "react";
+import useGeolocation, { GeolocationData } from "./useGeolocation";
+
+const GeolocationDisplay = () => {
+  const location: GeolocationData = useGeolocation();
+
+  if (location.loading) {
+    return <div>Loading geolocation data...</div>;
+  }
+
+  if (location.error) {
+    return <div>Error fetching geolocation data: {location.error.message}</div>;
+  }
+
+  return (
+    <div>
+      <h2>Geolocation Data:</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td>Latitude:</td>
+            <td>{location.latitude}</td>
+          </tr>
+          <tr>
+            <td>Longitude:</td>
+            <td>{location.longitude}</td>
+          </tr>
+          <tr>
+            <td>Altitude:</td>
+            <td>{location.altitude}</td>
+          </tr>
+          <tr>
+            <td>Accuracy:</td>
+            <td>{location.accuracy}</td>
+          </tr>
+          <tr>
+            <td>Heading:</td>
+            <td>{location.heading}</td>
+          </tr>
+          <tr>
+            <td>Speed:</td>
+            <td>{location.speed}</td>
+          </tr>
+          <tr>
+            <td>Timestamp:</td>
+            <td>{new Date(location.timestamp).toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default GeolocationDisplay;
+```
+
+## Props
+
+| Name      | Type                         | Description                                                                                                                                                                                                                                                                       |
+| --------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options` | `PositionOptions` (optional) | An optional configuration object provided when calling useGeolocation. It is used when calling `navigator.geolocation.watchPosition()` and `navigator.geolocation.getCurrentPosition()`. Some of the attributes it accepts are `enableHighAccuracy`, `timeout`, and `maximumAge`. |
+
+## Return Value
+
+The hook returns an object containing the following properties:
+
+| Name               | Type                    | Description                                                                                                                                    |
+| ------------------ | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loading`          | `boolean`               | A boolean indicating if the geolocation data is currently being fetched.                                                                       |
+| `accuracy`         | `number \| null`        | The accuracy of the latitude and longitude properties in meters.                                                                               |
+| `altitude`         | `number \| null`        | The altitude in meters above the mean sea level.                                                                                               |
+| `altitudeAccuracy` | `number \| null`        | The accuracy of altitude in meters.                                                                                                            |
+| `heading`          | `number \| null`        | The direction in which the device is traveling. This value, specified in degrees, indicates how far off from heading true north the device is. |
+| `latitude`         | `number \| null`        | The latitude in decimal degrees.                                                                                                               |
+| `longitude`        | `number \| null`        | The longitude in decimal degrees.                                                                                                              |
+| `speed`            | `number \| null`        | The current ground speed of the device, specified in meters per second.                                                                        |
+| `timestamp`        | `number \| null`        | The timestamp at which the geolocation data was retrieved.                                                                                     |
+| `error`            | `PositionError \| null` | An error object, if an error occurred while retrieving the geolocation data.                                                                   |
+
+## Features
+
+- Provides access to the user's geolocation data, including latitude, longitude, altitude, accuracy, heading, speed, and timestamp.
+- Handles loading state while fetching geolocation data.
+- Handles errors if geolocation data retrieval fails.
+- Continuously monitors geolocation changes if `options` are provided.
+
+## Example
+
+In this example, we have a component called `GeolocationDisplay` that uses the `useGeolocation` hook to fetch and display the user's geolocation data. The component conditionally renders the geolocation data, loading state, or any error message that might occur during data retrieval.
+
+## Use Scenario
+
+Suppose you are building a weather app and need to fetch the user's current location to provide accurate weather information. You can use the `useGeolocation` hook in your app to access the user's geolocation and then use the latitude and longitude data to fetch weather data from an external API.
+
+With the `GeolocationDisplay` component, you can easily obtain the user's geolocation data and display it on your weather app's user interface. The component will handle the loading state while fetching the data and display any errors that might occur during the process.
+
+By incorporating the `useGeolocation` hook into your weather app, you can enhance the user experience by providing location-specific weather information without the need for the user to manually enter their location.

@@ -7,6 +7,7 @@ import useNetwork from "./network";
 import useRenderTrack from "./renderTrack";
 import useQueue from "./queue";
 import useMouse from "./mouse";
+import useGeolocation from "./geolocation/geolocation";
 export {
   useDebounce,
   useCopyToClipboard,
@@ -16,5 +17,6 @@ export {
   useRenderTrack,
   useQueue,
   useMouse,
+  useGeolocation,
   useClickAway,
 };
