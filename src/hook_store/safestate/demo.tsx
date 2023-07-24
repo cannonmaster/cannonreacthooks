@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useSafeState from "./safestate";
+import { useSafeState } from "@cannonui/reacthooks";
 useState;
 
 const ChildCmp = () => {
@@ -21,7 +21,9 @@ const TestUseSafeState = () => {
 
   return (
     <div>
-      <button onClick={() => setVisible(false)}>close </button>
+      <button onClick={() => setVisible(false)}>
+        click to prevent value update after component unmount
+      </button>
       {visible && <ChildCmp />}
     </div>
   );

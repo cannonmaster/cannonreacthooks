@@ -1,0 +1,67 @@
+---
+title: usePress Hook
+description: 一个用于检测长按操作的自定义 React Hook。
+---
+
+import TestUsePress from "@hook/longpress/demo";
+
+## 介绍
+
+一个用于检测长按操作的自定义 React Hook。
+
+## Play
+
+<div style="margin-top: 3%;">
+  <TestUsePress client:visible />
+</div>
+
+## 用法
+
+```tsx
+import { useEffect, useRef, useState } from "react";
+import { useLongPress } from "@cannonui/reacthooks";
+
+const TestUseLongPress = () => {
+  const callback = () => {
+    console.log("long press detected");
+  };
+
+  // Use the setLongPressed function to update the longPressed state
+  const { longPressed, element } = useLongPress({
+    threshold: 3000,
+    callback,
+  });
+
+  return (
+    <div ref={element}>
+      <button>Press and hold</button>
+      <div>{longPressed && <span>long pressed</span>}</div>
+    </div>
+  );
+};
+
+export default TestUseLongPress;
+```
+
+## 返回值
+
+该 Hook 返回一个对象，包含元素引用和长按状态值。
+
+## 参数
+
+| 名称        | 类型                          | 描述                                           |
+| ----------- | ----------------------------- | ---------------------------------------------- |
+| `options`   | `longPressProps`              | 一个包含长按操作所需信息的配置对象。           |
+| `threshold` | `number`                      | 触发长按操作所需按压时间（毫秒）。             |
+| `onStart`   | `() => void`                  | 在长按操作开始时触发的回调函数。               |
+| `onFinish`  | `() => void`                  | 在长按操作完成时触发的回调函数。               |
+| `callback`  | `(e: HTMLDivElement) => void` | 长按操作触发时执行的回调函数，参数为元素引用。 |
+| `onCancel`  | `() => void`                  | 在长按操作取消时触发的回调函数。               |
+
+## 示例
+
+在这个示例中，我们有一个名为 `TestUseLongPress` 的组件，它使用 `useLongPress` Hook 来检测长按操作。当用户按住按钮一定时间后（6000 毫秒），将触发回调函数 `callback`，并将 `longPressed` 状态设置为 `true`。
+
+## 使用场景
+
+`useLongPress` Hook 在需要检测用户长按操作并触发相应回调的场景中非常有用。例如，在某些应用中，长按操作可能用于显示上下文菜单、激活拖放功能或执行一系列特定任务。通过使用 `useLongPress` Hook，您可以轻松实现与长按操作相关的功能，并为用户提供更好的交互体验。

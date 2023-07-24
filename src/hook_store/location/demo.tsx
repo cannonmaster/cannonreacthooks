@@ -1,4 +1,4 @@
-import useLocation from "./location";
+import { useLocation } from "@cannonui/reacthooks";
 const LocationDisplay = () => {
   const location = useLocation();
 

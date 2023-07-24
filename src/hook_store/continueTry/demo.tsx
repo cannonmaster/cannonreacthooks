@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useContinueTry from "./continueTry";
+import { useContinueTry } from "@cannonui/reacthooks";
 
 const TestUseContinueTry = () => {
   const [count, setCount] = useState<number>(0);

@@ -30,27 +30,26 @@ The `usePrevious` hook is a custom React hook that allows you to track the previ
 1. Import the `usePrevious` hook into your component:
 
 ```jsx
-import usePrevious from "./previous";
+import { usePrevious } from "@cannonui/reacthooks";
 ```
 
 2. Initialize the hook in your component:
 
 ```jsx
-import usePrevious from "./previous";
+import { usePrevious } from "@cannonui/reacthooks";
 import { useState } from "react";
-
 const TestUsePrevious = () => {
   const [value, setValue] = useState < number > 0;
   const previous = usePrevious(value);
 
   const handleUpdate = () => {
-    setValue((prevValue) => prevValue + 1);
+    setValue((value) => value + 1);
   };
 
   return (
     <>
-      <div>Previous Value: {previous}</div>
-      <div>Current Value: {value}</div>
+      <div>previous value: {previous}</div>
+      <div>current value: {value}</div>
       <button onClick={handleUpdate}>Update</button>
     </>
   );

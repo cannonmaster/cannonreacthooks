@@ -1,0 +1,63 @@
+---
+title: useIdle Hook
+description: 一个用于检测用户空闲状态的自定义 React Hook。
+---
+
+import UseIdle from "@hook/idle/demo";
+
+## 介绍
+
+一个用于检测用户空闲状态的自定义 React Hook。
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseIdle client:visible />
+</div>
+
+## 用法
+
+```tsx
+import { useRef } from "react";
+import { useIdle } from "@cannonui/reacthooks";
+
+const TestUseIdle = () => {
+  const element = useRef<HTMLDivElement>(null);
+  const isIdle = useIdle(2000);
+  return (
+    <div>
+      <div
+        style={{ width: "100px", height: "100px", background: "cyan" }}
+        ref={element}
+      >
+        splace mouse here and do not move
+      </div>
+      <div>is idle: {isIdle ? "true" : "false"}</div>
+    </div>
+  );
+};
+export default TestUseIdle;
+```
+
+## 返回值
+
+该 Hook 返回一个布尔值，指示用户是否处于空闲状态。
+
+## 参数
+
+| 名称       | 类型     | 描述                                 |
+| ---------- | -------- | ------------------------------------ |
+| `interval` | `number` | 检测用户空闲状态的间隔时间（毫秒）。 |
+
+## 特性
+
+- 基于指定的空闲间隔时间检测用户空闲状态。
+- 返回一个布尔值，指示用户是否处于空闲状态。
+
+## 示例
+
+在这个示例中，我们有一个名为 `TestUseIdle` 的组件，它使用 `useIdle` Hook 来检测用户是否处于空闲状态。该 Hook 监听鼠标移动、键盘事件、滚动和触摸事件。如果在指定的间隔时间（2000 毫秒）内没有检测到任何活动，则 `isIdle` 状态将被设置为 `true`。
+
+## 使用场景
+
+`useIdle` Hook 在需要检测用户不活动状态并在用户变为空闲状态时触发某些操作的场景中非常有用。例如，您可能希望在用户长时间不活动后显示通知或执行自动注销操作。通过使用 `useIdle` Hook，您可以轻松跟踪用户的空闲状态，并在应用程序中实现各种与空闲相关的功能。

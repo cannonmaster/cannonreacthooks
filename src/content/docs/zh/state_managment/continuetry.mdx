@@ -1,0 +1,67 @@
+---
+title: useContinueTry
+description: 一个用于持续尝试执行函数的自定义 React Hook。
+---
+
+import UseContinueTry from "@hook/continueTry/demo";
+
+## 介绍
+
+一个用于持续尝试执行函数的自定义 React Hook。
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseContinueTry client:visible />
+</div>
+
+## 使用
+
+```tsx
+import { useState } from "react";
+import { useContinueTry } from "@cannonui/reacthooks";
+
+const TestUseContinueTry = () => {
+  const [count, setCount] = useState<number>(0);
+  const fn = () => {
+    console.log("count: " + count);
+    return count > 10;
+  };
+  const resolve = useContinueTry(fn, 1000);
+  const handleClick = () => {
+    setCount((count) => count + 1);
+  };
+  return (
+    <div>
+      <button onClick={handleClick}>Click 11 times to resolve</button>
+      <div>Clicked: {count}</div>
+      <div>{resolve && <span>resolved</span>}</div>
+    </div>
+  );
+};
+export default TestUseContinueTry;
+```
+
+## 返回值
+
+该 Hook 返回一个布尔值，表示是否已成功执行函数。
+
+## 参数
+
+| 名称       | 类型      | 描述                                     |
+| ---------- | --------- | ---------------------------------------- |
+| `fn`       | `() => T` | 要执行的函数。                           |
+| `interval` | `number`  | 两次尝试执行函数之间的间隔时间（毫秒）。 |
+
+## 特性
+
+- 持续尝试执行指定的函数，并返回一个布尔值，表示是否已成功执行函数。
+- 在执行函数时捕获错误，并在指定的时间间隔后再次尝试执行函数，直到函数成功执行为止。
+
+## 示例
+
+在这个示例中，我们有一个名为 `TestUseContinueTry` 的组件，它使用 `useContinueTry` Hook 来持续尝试执行函数 `fn`。当用户点击按钮时，函数 `fn` 将会被不断调用，直到计数器 `count` 的值大于 10，并且在这个过程中，我们通过 `resolve` 布尔值来跟踪函数是否已成功执行。
+
+## 使用场景
+
+`useContinueTry` Hook 在需要持续尝试执行某个函数，并在函数成功执行后执行一些操作的场景中非常有用。例如，当需要从服务器获取数据，但由于网络原因可能出现请求失败的情况时，您可以使用此 Hook 来持续尝试执行请求函数，并在请求成功后进行相应的处理。

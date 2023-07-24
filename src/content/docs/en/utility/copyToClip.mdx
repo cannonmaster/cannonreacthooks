@@ -21,39 +21,43 @@ The `useCopyToClipboard` hook is a custom React hook that provides a simple way 
 
 ```jsx
 import { useState } from "react";
-import useCopyToClipboard from "./useCopyToClipboard";
+import { useCopyToClipboard } from "@cannonui/reacthooks";
 ```
 
 2. Initialize the hook in your component and use the returned `copiedText` and `copyToClipboard` variables:
 
 ```jsx
-const TestUseCopyToClipboard = () => {
+import { useState } from "react";
+import { useCopyToClipboard } from "@cannonui/reacthooks";
+
+const TestUseCopyToClipBoard = () => {
   const [textToCopy, setTextCopy] = useState("");
-  const [copiedText, copyToClipboard] = useCopyToClipboard();
+  const [copiedText, copyToClipBoard] = useCopyToClipboard();
 
   const handleChange = (e: any) => {
     setTextCopy(e.target.value);
   };
 
-  const handleCopyToClipboard = (e: any) => {
-    copyToClipboard(textToCopy);
+  const handleCopyToClipBoard = (e: any) => {
+    copyToClipBoard(textToCopy);
   };
-
   return (
     <div>
       <input
         type="text"
         value={textToCopy}
         onChange={handleChange}
-        placeholder="Please enter text"
+        placeholder="please enter text"
       />
-      <button onClick={(e) => handleCopyToClipboard(e)}>
-        Copy to Clipboard
+      <button onClick={(e) => handleCopyToClipBoard(e)}>
+        copy to clipboard
       </button>
       {copiedText && <p>Copied: {copiedText}</p>}
     </div>
   );
 };
+
+export default TestUseCopyToClipBoard;
 ```
 
 ## Features

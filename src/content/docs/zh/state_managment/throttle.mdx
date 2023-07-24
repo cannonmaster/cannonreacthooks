@@ -1,0 +1,65 @@
+---
+title: useThrottle
+description: 一个用于限制值更新频率的自定义 React Hook。
+---
+
+import UseThrottle from "@hook/throttle/demo";
+
+一个用于限制值更新频率的自定义 React Hook。
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseThrottle client:visible />
+</div>
+
+## 用法
+
+```tsx
+import { useState } from "react";
+import { useThrottle } from "@cannonui/reacthooks";
+
+const TestUseThrottle = () => {
+  const [value, setValue] = useState(0);
+
+  const throttleValue = useThrottle(value, 2000);
+  const handleClick = () => {
+    setValue((prev) => prev + 1);
+  };
+  return (
+    <div>
+      <button onClick={handleClick}>invoke fn</button>
+      <div>value: {value}</div>
+      <div>throttle value: {throttleValue}</div>
+    </div>
+  );
+};
+
+export default TestUseThrottle;
+```
+
+## 返回值
+
+该 Hook 返回经过限制更新频率的值，更新频率由提供的时间间隔决定。
+
+## 参数
+
+| 名称       | 类型     | 默认值 | 描述                                                            |
+| ---------- | -------- | ------ | --------------------------------------------------------------- |
+| `value`    | `any`    |        | 需要限制更新的值。                                              |
+| `interval` | `number` | `100`  | 更新限制的时间间隔（以毫秒为单位）。默认为 100 毫秒（0.1 秒）。 |
+
+## 特性
+
+- 根据指定的时间间隔限制值的更新频率。
+- 返回经过限制更新频率的值。
+
+## 示例
+
+在这个示例中，我们有一个名为 `TestUseThrottle` 的组件，它使用 `useThrottle` Hook 来限制值的更新频率。当点击"调用函数"按钮时，`value` 状态会增加 1。然而，显示的 `throttleValue` 将只在每 2 秒（2000 毫秒）更新一次，以防止过于频繁的更新，并优化某些场景的性能。
+
+## 使用场景
+
+`useThrottle` Hook 在希望限制值更新频率的场景中非常有用，特别是对于计算密集型操作或处理快速用户交互（如输入事件）的情况。通过限制更新频率，您可以避免不必要的重新渲染，并提高 React 应用程序的整体性能。
+
+注意：该 Hook 的实际实现（`useThrottle`）在本示例中未展示，但它确保 `throttleValue` 只在指定的时间间隔内更新，并反映了 `value` 的最新值。

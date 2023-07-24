@@ -1,0 +1,54 @@
+---
+title: useMediaQuery Hook
+description: 一个用于处理媒体查询的自定义 React Hook。
+---
+
+import UseMediaQuery from "@hook/mediaquery/demo";
+
+## 介绍
+
+一个用于处理媒体查询的自定义 React Hook。
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseMediaQuery client:only />
+</div>
+
+## 使用
+
+```tsx
+import { useMediaQuery } from "@cannonui/reacthooks";
+
+const TestUseMediaQuery = () => {
+  const isMatch = useMediaQuery("(max-width: 468px)");
+
+  return (
+    <div>is match max width 468px: {isMatch ? "matched" : "not match"}</div>
+  );
+};
+export default TestUseMediaQuery;
+```
+
+## 返回值
+
+该 Hook 返回一个布尔值，指示媒体查询是否与当前视口匹配。
+
+## 参数
+
+| 名称    | 类型     | 描述                     |
+| ------- | -------- | ------------------------ |
+| `query` | `string` | 要评估的媒体查询字符串。 |
+
+## 特性
+
+- 处理媒体查询，并提供一个布尔值，指示查询是否与当前视口匹配。
+- 支持服务器端渲染和客户端同步媒体查询的更改。
+
+## 示例
+
+在这个示例中，我们有一个名为 `TestUseMediaQuery` 的组件，它使用 `useMediaQuery` Hook 来检查视口高度是否小于等于 468 像素。`useMediaQuery` Hook 处理了媒体查询，并提供了 `isMatch` 布尔值，用于指示查询是否与当前视口匹配。
+
+## 使用场景
+
+`useMediaQuery` Hook 在需要根据视口大小有条件地渲染组件或应用样式的场景中非常有用。例如，您可能希望针对不同的屏幕大小或方向显示不同的布局或组件。通过使用 `useMediaQuery` Hook，您可以轻松处理媒体查询，并使您的 React 组件对不同的视口条件具有响应性。

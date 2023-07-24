@@ -3,15 +3,22 @@ title: useGeolocation Hook
 description: 一个用于访问和监控用户地理位置的自定义 React Hook。
 ---
 
+import UseGeoLocation from "@hook/geolocation/demo";
+
 ## 简介
 
 这是一个自定义的 React Hook，用于访问和监控用户的地理位置信息。
 
+## Play
+
+<div>
+  <UseGeoLocation client:only />
+</div>
 ## 使用示例
 
 ```tsx
 import React from "react";
-import useGeolocation, { GeolocationData } from "@cannonui/reacthooks";
+import { useGeolocation, GeolocationData } from "@cannonui/reacthooks";
 
 const GeolocationDisplay = () => {
   const location: GeolocationData = useGeolocation();

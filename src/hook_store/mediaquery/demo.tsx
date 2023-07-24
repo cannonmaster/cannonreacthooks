@@ -1,8 +1,10 @@
-import useMediaQuery from "./mediaquery";
+import { useMediaQuery } from "@cannonui/reacthooks";
 
 const TestUseMediaQuery = () => {
-  const isMatch = useMediaQuery("(max-height: 468px)");
+  const isMatch = useMediaQuery("(max-width: 468px)");
 
-  return <div>{isMatch ? "matched" : "not match"}</div>;
+  return (
+    <div>is match max width 468px: {isMatch ? "matched" : "not match"}</div>
+  );
 };
 export default TestUseMediaQuery;

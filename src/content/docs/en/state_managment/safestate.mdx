@@ -1,58 +1,76 @@
 ---
 title: useSafeState
-description: useContinueTry example docs.
+description: A custom React Hook that ensures the safety of component unmounting.
 ---
 
 import UseSafeState from "@hook/safestate/demo";
 
-A custom hook that debounces a value in React.
+## Introduction
+
+A custom React Hook that ensures the safety of component unmounting.
 
 ## Play
 
 <div style="margin-top: 3%;">
   <UseSafeState client:visible />
 </div>
-## Parameters
 
-| Parameter          | Type                      | Description                                                    |
-| ------------------ | ------------------------- | -------------------------------------------------------------- |
-| `value`            | `any`                     | The value to be debounced.                                     |
-| `delay`            | `number`                  | The delay in milliseconds before updating the debounced value. |
-| `options`          | `object, optional`        | Additional options for controlling the debounce behavior.      |
-| `options.heading`  | `boolean, default: false` | Determines whether to use the initial heading value.           |
-| `options.trailing` | `boolean, default: true`  | Determines whether to use the trailing value after the delay.  |
+## Usage
 
-## Returns
+```tsx
+import { useState, useEffect } from "react";
+import { useSafeState } from "@cannonui/reacthooks";
+useState;
 
-- `valueToDebounce` (any): The debounced value.
+const ChildCmp = () => {
+  const value = 0;
+  const [safeVal, withSetSafeState] = useSafeState<number>(value);
 
-## Example
+  useEffect(() => {
+    setTimeout(() => {
+      withSetSafeState((prev) => prev + 1);
+    }, 3000);
 
-```jsx
-import { useState } from "react";
-import { useDebounce } from "@cannonui/reacthooks";
+    return () => {};
+  }, []);
 
-const TestUseDebounce = () => {
-  const [inputValue, setInputValue] = useState("");
-  const debouncedValue = useDebounce(inputValue, 1000);
-
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-  };
+  return <div>safe value: {safeVal}</div>;
+};
+const TestUseSafeState = () => {
+  const [visible, setVisible] = useState(true);
 
   return (
     <div>
-      <input type="text" value={inputValue} onChange={handleChange} />
-      <p>Debounced value: {debouncedValue}</p>
+      <button onClick={() => setVisible(false)}>
+        click to prevent value update after component unmount
+      </button>
+      {visible && <ChildCmp />}
     </div>
   );
 };
 
-export default TestUseDebounce;
+export default TestUseSafeState;
 ```
 
-In the above example, the `useDebounce` hook is used to debounce the `inputValue` state. It accepts three parameters: `value`, `delay`, and `options`. The `value` parameter represents the value to be debounced, the `delay` parameter specifies the delay in milliseconds before updating the debounced value, and the `options` parameter allows you to customize the debounce behavior with `heading` and `trailing` options.
+## Return Value
 
-The hook returns the `valueToDebounce`, which represents the debounced value.
+The hook returns an array containing the safe state value and a function `withSetSafeState` to update the state safely.
 
-To use the `useDebounce` hook, import it from `@cannonui/reacthooks` and pass the required parameters. In the example component `TestUseDebounce`, an input field is rendered, and the `inputValue` state is updated in the `handleChange` function. The debounced value is displayed below the input field.
+## Parameters
+
+| Name    | Type | Description        |
+| ------- | ---- | ------------------ |
+| `value` | `T`  | The initial value. |
+
+## Features
+
+- Ensures that component unmounting won't trigger state updates for unmounted components.
+- Provides the `withSetSafeState` function to safely update the state.
+
+## Example
+
+In this example, we have a child component called `ChildCmp` that uses the `useSafeState` hook to ensure that state updates won't be triggered after the component is safely unmounted. The `ChildCmp` component tries to update the state after 3 seconds, but since the parent component `TestUseSafeState` sets `visible` to `false`, the `ChildCmp` component is already unmounted before the state update.
+
+## Use Scenario
+
+The `useSafeState` hook is useful in scenarios where you need to ensure that state updates won't be triggered after the component is unmounted. Often, there are asynchronous operations that may still be running before the component unmounts. If state updates continue to be triggered after unmounting, it can lead to errors or exceptions in the application. By using the `useSafeState` hook, you can avoid such situations and improve the overall stability of your application.

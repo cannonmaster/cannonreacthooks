@@ -1,13 +1,13 @@
 ---
 title: useLocation Hook
-description: A custom React hook to determine if the code is running on the client-side or server-side.
+description: A custom React Hook for tracking and managing the current browser location.
 ---
 
 import UseLocation from "@hook/location/demo";
 
 ## Introduction
 
-The `useIsClient` hook is a custom React hook that helps you determine if the code is running on the client-side or server-side.
+A custom React Hook for tracking and managing the current browser location.
 
 ## Play
 
@@ -17,30 +17,58 @@ The `useIsClient` hook is a custom React hook that helps you determine if the co
 
 ## Usage
 
-1. Import the `useIsClient` hook into your component:
+```tsx
+import { useLocation } from "@cannonui/reacthooks";
+const LocationDisplay = () => {
+  const location = useLocation();
 
-```jsx
-import { useIsClient } from "@cannonui/reacthooks";
-```
-
-2. Initialize the hook in your component:
-
-```jsx
-const TestUseIsClient = () => {
-  const isClient = useIsClient();
-
-  return <div>{isClient ? "is client" : "is not client"}</div>;
+  return (
+    <div>
+      <pre>{JSON.stringify(location, null, 2)}</pre>
+    </div>
+  );
 };
+const TestUseLocation = () => {
+  return (
+    <div>
+      <LocationDisplay />
+    </div>
+  );
+};
+export default TestUseLocation;
 ```
 
-## How it Works
+## Return Value
 
-The `useIsClient` hook uses the `useState` and `useEffect` hooks from React to set the initial state to `false`. During the component's initial rendering on the client-side, the `useEffect` hook is called and updates the state to `true`. As a result, the `isClient` variable will be `true` if the component is running on the client-side and `false` if it's running on the server-side.
+The hook returns an object of type `Location` containing various properties related to the current browser location.
+
+## Properties of `Location`
+
+| Name       | Type                          | Description                                                                     |
+| ---------- | ----------------------------- | ------------------------------------------------------------------------------- |
+| `trigger`  | `string`                      | The trigger that caused the location change (e.g., "popstate" or "hashchange"). |
+| `state`    | `Record<string, any> \| null` | The state associated with the current location (from the browser history API).  |
+| `length`   | `number`                      | The length of the browser history.                                              |
+| `hash`     | `string`                      | The hash portion of the current location (e.g., "#section1").                   |
+| `host`     | `string`                      | The host and port of the current location (e.g., "example.com:8080").           |
+| `hostname` | `string`                      | The host name of the current location (e.g., "example.com").                    |
+| `href`     | `string`                      | The full URL of the current location.                                           |
+| `origin`   | `string`                      | The origin of the current location (e.g., "http://example.com:8080").           |
+| `pathname` | `string`                      | The pathname portion of the current location (e.g., "/products").               |
+| `port`     | `string`                      | The port of the current location (e.g., "8080").                                |
+| `protocol` | `string`                      | The protocol of the current location (e.g., "http:" or "https:").               |
+| `search`   | `string`                      | The query string portion of the current location (e.g., "?id=123").             |
+
+## Features
+
+- Tracks and manages the current browser location.
+- Provides various properties related to the current location, such as pathname, search, hash, host, and more.
+- Supports detecting location changes triggered by history API (`popstate`) and hash changes (`hashchange`).
 
 ## Example
 
-In the example above, we have created a simple component `TestUseIsClient` that uses the `useIsClient` hook to display whether the code is running on the client-side or server-side. When the component renders on the client-side, the message "is client" will be displayed, indicating that it's running in the browser. On the other hand, if the component renders on the server-side (during server-side rendering), the message "is not client" will be displayed.
+In this example, we have a component called `TestUseLocation` that uses the `useLocation` Hook to track and display the current browser location. The `LocationDisplay` component displays the location properties obtained from the `useLocation` Hook.
 
-This custom hook is useful when you need to conditionally execute code based on whether it's running in the browser or on the server. For example, you can use it to conditionally fetch data from an API or perform client-side-only actions.
+## Use Scenario
 
-Keep in mind that the hook relies on the client-side rendering lifecycle, so its value will be accurate during client-side rendering but not during server-side rendering.
+The `useLocation` Hook is useful in scenarios where you need to access and react to changes in the current browser location. It allows you to build location-aware React components and implement dynamic behavior based on the URL or browser history changes. For example, you can use it to implement client-side routing, conditionally render components based on the current URL, or update the application state when the user navigates through different routes.

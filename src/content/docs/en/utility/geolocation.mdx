@@ -19,10 +19,10 @@ A custom React hook for accessing and monitoring a user's geolocation.
 
 ```tsx
 import React from "react";
-import useGeolocation, { GeolocationData } from "./useGeolocation";
+import { useGeolocation } from "@cannonui/reacthooks";
 
 const GeolocationDisplay = () => {
-  const location: GeolocationData = useGeolocation();
+  const location = useGeolocation();
 
   if (location.loading) {
     return <div>Loading geolocation data...</div>;

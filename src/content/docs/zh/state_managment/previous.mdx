@@ -30,28 +30,27 @@ import UsePrevious from "@hook/previous/demo";
 1. 在组件中导入 `usePrevious` Hook：
 
 ```jsx
-import usePrevious from "./previous";
+import { usePrevious } from "@cannonui/reacthooks";
 ```
 
 2. 在组件中初始化 Hook：
 
 ```jsx
-import usePrevious from "./previous";
+import { usePrevious } from "@cannonui/reacthooks";
 import { useState } from "react";
-
 const TestUsePrevious = () => {
   const [value, setValue] = useState < number > 0;
   const previous = usePrevious(value);
 
   const handleUpdate = () => {
-    setValue((prevValue) => prevValue + 1);
+    setValue((value) => value + 1);
   };
 
   return (
     <>
-      <div>上一个值: {previous}</div>
-      <div>当前值: {value}</div>
-      <button onClick={handleUpdate}>更新</button>
+      <div>previous value: {previous}</div>
+      <div>current value: {value}</div>
+      <button onClick={handleUpdate}>Update</button>
     </>
   );
 };

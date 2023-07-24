@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import useLongPress from "./longpress";
+import { useLongPress } from "@cannonui/reacthooks";
 
 const TestUseLongPress = () => {
   const callback = () => {
@@ -8,14 +8,14 @@ const TestUseLongPress = () => {
 
   // Use the setLongPressed function to update the longPressed state
   const { longPressed, element } = useLongPress({
-    threshold: 6000,
+    threshold: 3000,
     callback,
   });
 
   return (
     <div ref={element}>
       <button>Press and hold</button>
-      {longPressed && <span>long pressed</span>}
+      <div>{longPressed && <span>long pressed</span>}</div>
     </div>
   );
 };

@@ -21,37 +21,43 @@ import UseCopyToClipboard from "@hook/copyToClipboard/demo";
 
 ```jsx
 import { useState } from "react";
-import useCopyToClipboard from "./useCopyToClipboard";
+import { useCopyToClipboard } from "@cannonui/reacthooks";
 ```
 
 2. 在你的组件中初始化 Hook，并使用返回的`copiedText`和`copyToClipboard`变量：
 
 ```jsx
-const TestUseCopyToClipboard = () => {
+import { useState } from "react";
+import { useCopyToClipboard } from "@cannonui/reacthooks";
+
+const TestUseCopyToClipBoard = () => {
   const [textToCopy, setTextCopy] = useState("");
-  const [copiedText, copyToClipboard] = useCopyToClipboard();
+  const [copiedText, copyToClipBoard] = useCopyToClipboard();
 
   const handleChange = (e: any) => {
     setTextCopy(e.target.value);
   };
 
-  const handleCopyToClipboard = (e: any) => {
-    copyToClipboard(textToCopy);
+  const handleCopyToClipBoard = (e: any) => {
+    copyToClipBoard(textToCopy);
   };
-
   return (
     <div>
       <input
         type="text"
         value={textToCopy}
         onChange={handleChange}
-        placeholder="请输入文本"
+        placeholder="please enter text"
       />
-      <button onClick={(e) => handleCopyToClipboard(e)}>复制到剪贴板</button>
-      {copiedText && <p>已复制：{copiedText}</p>}
+      <button onClick={(e) => handleCopyToClipBoard(e)}>
+        copy to clipboard
+      </button>
+      {copiedText && <p>Copied: {copiedText}</p>}
     </div>
   );
 };
+
+export default TestUseCopyToClipBoard;
 ```
 
 ## 特点

@@ -1,4 +1,4 @@
-import useGeolocation from "./geolocation";
+import { useGeolocation } from "@cannonui/reacthooks";
 
 const TestUseGeolocation = () => {
   const location = useGeolocation();

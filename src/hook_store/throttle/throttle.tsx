@@ -12,7 +12,6 @@ const useThrottle = (value: any, interval = 100) => {
       setThrottledValue(value);
       lastUpdate.current = Date.now();
     } else {
-      console.log(123123123123);
       timeId = setTimeout(() => {
         setThrottledValue(value);
         lastUpdate.current = Date.now();

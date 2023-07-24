@@ -1,58 +1,65 @@
 ---
 title: useThrottle
-description: useContinueTry example docs.
+description: A custom React hook for throttling the updates of a value.
 ---
 
 import UseThrottle from "@hook/throttle/demo";
 
-A custom hook that debounces a value in React.
+A custom React hook for throttling the updates of a value.
 
 ## Play
 
 <div style="margin-top: 3%;">
   <UseThrottle client:visible />
 </div>
-## Parameters
 
-| Parameter          | Type                      | Description                                                    |
-| ------------------ | ------------------------- | -------------------------------------------------------------- |
-| `value`            | `any`                     | The value to be debounced.                                     |
-| `delay`            | `number`                  | The delay in milliseconds before updating the debounced value. |
-| `options`          | `object, optional`        | Additional options for controlling the debounce behavior.      |
-| `options.heading`  | `boolean, default: false` | Determines whether to use the initial heading value.           |
-| `options.trailing` | `boolean, default: true`  | Determines whether to use the trailing value after the delay.  |
+## Usage
 
-## Returns
-
-- `valueToDebounce` (any): The debounced value.
-
-## Example
-
-```jsx
+```tsx
 import { useState } from "react";
-import { useDebounce } from "@cannonui/reacthooks";
+import { useThrottle } from "@cannonui/reacthooks";
 
-const TestUseDebounce = () => {
-  const [inputValue, setInputValue] = useState("");
-  const debouncedValue = useDebounce(inputValue, 1000);
+const TestUseThrottle = () => {
+  const [value, setValue] = useState(0);
 
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
+  const throttleValue = useThrottle(value, 2000);
+  const handleClick = () => {
+    setValue((prev) => prev + 1);
   };
-
   return (
     <div>
-      <input type="text" value={inputValue} onChange={handleChange} />
-      <p>Debounced value: {debouncedValue}</p>
+      <button onClick={handleClick}>invoke fn</button>
+      <div>value: {value}</div>
+      <div>throttle value: {throttleValue}</div>
     </div>
   );
 };
 
-export default TestUseDebounce;
+export default TestUseThrottle;
 ```
 
-In the above example, the `useDebounce` hook is used to debounce the `inputValue` state. It accepts three parameters: `value`, `delay`, and `options`. The `value` parameter represents the value to be debounced, the `delay` parameter specifies the delay in milliseconds before updating the debounced value, and the `options` parameter allows you to customize the debounce behavior with `heading` and `trailing` options.
+## Return Value
 
-The hook returns the `valueToDebounce`, which represents the debounced value.
+The hook returns the throttled value, which is updated based on the provided interval.
 
-To use the `useDebounce` hook, import it from `@cannonui/reacthooks` and pass the required parameters. In the example component `TestUseDebounce`, an input field is rendered, and the `inputValue` state is updated in the `handleChange` function. The debounced value is displayed below the input field.
+## Parameters
+
+| Name       | Type     | Default | Description                                                                                             |
+| ---------- | -------- | ------- | ------------------------------------------------------------------------------------------------------- |
+| `value`    | `any`    |         | The value to be throttled.                                                                              |
+| `interval` | `number` | `100`   | The interval (in milliseconds) at which to update the throttled value. Defaults to 100ms (0.1 seconds). |
+
+## Features
+
+- Throttles the updates of a value based on the specified interval.
+- Returns the throttled value that is updated at the defined interval.
+
+## Example
+
+In this example, we have a component called `TestUseThrottle` that uses the `useThrottle` hook to throttle the updates of a value. When the "Invoke function" button is clicked, the `value` state is incremented by 1. However, the displayed `throttleValue` will only update every 2 seconds (2000ms), preventing rapid updates and optimizing performance for certain scenarios.
+
+## Use Scenario
+
+The `useThrottle` hook is useful in scenarios where you want to limit the frequency of updates to a value, especially for computationally expensive operations or for handling rapid user interactions like input events. By throttling the updates, you can avoid unnecessary re-renders and improve the overall performance of your React application.
+
+Note: The actual implementation of the hook (`useThrottle`) is not shown in this example, but it ensures that the `throttleValue` is updated only at the specified interval and reflects the latest value of `value`.

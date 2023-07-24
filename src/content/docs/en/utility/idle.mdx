@@ -1,13 +1,13 @@
 ---
 title: useIdle Hook
-description: A custom React hook to detect clicks outside a specific component.
+description: A custom React Hook for detecting user idle state.
 ---
 
 import UseIdle from "@hook/idle/demo";
 
 ## Introduction
 
-The `useClickAway` hook is a useful custom React hook that allows you to track clicks occurring outside a specific component. It provides a way to pass a callback function that will be triggered whenever a click occurs outside the component's area. This hook is particularly helpful when implementing dropdown menus, modals, or any other UI elements that need to be closed when the user clicks outside of them. By attaching event listeners to the document, the hook checks if the click target is within the component's reference, and if not, it invokes the provided callback function.
+A custom React Hook for detecting user idle state.
 
 ## Play
 
@@ -15,54 +15,53 @@ The `useClickAway` hook is a useful custom React hook that allows you to track c
   <UseIdle client:visible />
 </div>
 
+## Introduction
+
+A custom React Hook for detecting user idle state.
+
 ## Usage
 
-1. Import the `useClickAway` hook into your component:
+```tsx
+import { useRef } from "react";
+import { useIdle } from "@cannonui/reacthooks";
 
-```jsx
-import useClickAway from "@cannonui/reacthooks";
-```
-
-2. Initialize the hook in your component:
-
-```jsx
-import { useState } from "react";
-import useClickAway from "./useClickAway";
-
-const TestUseClickedAway = () => {
-  const isClickedOutside = (e: any) => {
-    setClickStatus(true);
-  };
-
-  const ref = useClickAway(isClickedOutside);
-  const [clickStatus, setClickStatus] = useState(false);
-
+const TestUseIdle = () => {
+  const element = useRef<HTMLDivElement>(null);
+  const isIdle = useIdle(2000);
   return (
-    <>
+    <div>
       <div
-        ref={ref}
-        style={{ width: "300px", height: "200px", backgroundColor: "cyan" }}
+        style={{ width: "100px", height: "100px", background: "cyan" }}
+        ref={element}
       >
-        Click to see if clicked outside
+        splace mouse here and do not move
       </div>
-      <div>{clickStatus ? "Clicked away" : ""}</div>
-    </>
+      <div>is idle: {isIdle ? "true" : "false"}</div>
+    </div>
   );
 };
-
-export default TestUseClickedAway;
+export default TestUseIdle;
 ```
 
-## How it Works
+## Return Value
 
-The `useClickAway` hook utilizes the `useRef` and `useEffect` hooks from React to handle click events outside the specified component. It returns a ref object, which should be attached to a React element to monitor click events. The ref provides a way to access the properties of the element it is attached to.
+The hook returns a boolean value indicating whether the user is idle or not.
 
-The hook sets up a `click` event listener on the document and checks if the click target is outside the component's reference. If the click occurs outside, the provided callback function is invoked.
+## Parameters
+
+| Name       | Type     | Description                                         |
+| ---------- | -------- | --------------------------------------------------- |
+| `interval` | `number` | The interval (in milliseconds) to detect user idle. |
+
+## Features
+
+- Detects user idle state based on specified idle interval.
+- Returns a boolean value indicating whether the user is idle or not.
 
 ## Example
 
-In the example above, we have created a simple component `TestUseClickedAway` that uses the `useClickAway` hook to track whether a click occurs outside the `<div>` element with the cyan background. If a click happens outside the `<div>`, it sets the `clickStatus` state to `true`, indicating that the user has clicked away.
+In this example, we have a component called `TestUseIdle` that uses the `useIdle` hook to detect whether the user is idle or not. The hook listens for mouse movements, keyboard events, scrolling, and touch events. If no activity is detected within the specified interval (2000 milliseconds), the `isIdle` state will be set to `true`.
 
-This custom hook can be helpful when you need to implement UI elements that should be closed when users interact outside of them.
+## Use Scenario
 
-Please note that this hook tracks click events only on the client-side and may not be accurate during server-side rendering or when running on the server.
+The `useIdle` hook is useful in scenarios where you want to detect user inactivity and trigger certain actions when the user becomes idle. For example, you might want to show a notification or perform an auto-logout after a certain period of user inactivity. By using the `useIdle` hook, you can easily track user idle state and implement various idle-related features in your application.

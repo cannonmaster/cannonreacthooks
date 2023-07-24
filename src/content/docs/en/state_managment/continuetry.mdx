@@ -1,58 +1,67 @@
 ---
 title: useContinueTry
-description: useContinueTry example docs.
+description: A custom React Hook for continuously trying to execute a function.
 ---
 
 import UseContinueTry from "@hook/continueTry/demo";
 
-A custom hook that debounces a value in React.
+## Introduction
+
+A custom React Hook for continuously trying to execute a function.
 
 ## Play
 
 <div style="margin-top: 3%;">
   <UseContinueTry client:visible />
 </div>
-## Parameters
 
-| Parameter          | Type                      | Description                                                    |
-| ------------------ | ------------------------- | -------------------------------------------------------------- |
-| `value`            | `any`                     | The value to be debounced.                                     |
-| `delay`            | `number`                  | The delay in milliseconds before updating the debounced value. |
-| `options`          | `object, optional`        | Additional options for controlling the debounce behavior.      |
-| `options.heading`  | `boolean, default: false` | Determines whether to use the initial heading value.           |
-| `options.trailing` | `boolean, default: true`  | Determines whether to use the trailing value after the delay.  |
+## Usage
 
-## Returns
-
-- `valueToDebounce` (any): The debounced value.
-
-## Example
-
-```jsx
+```tsx
 import { useState } from "react";
-import { useDebounce } from "@cannonui/reacthooks";
+import { useContinueTry } from "@cannonui/reacthooks";
 
-const TestUseDebounce = () => {
-  const [inputValue, setInputValue] = useState("");
-  const debouncedValue = useDebounce(inputValue, 1000);
-
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
+const TestUseContinueTry = () => {
+  const [count, setCount] = useState<number>(0);
+  const fn = () => {
+    console.log("count: " + count);
+    return count > 10;
   };
-
+  const resolve = useContinueTry(fn, 1000);
+  const handleClick = () => {
+    setCount((count) => count + 1);
+  };
   return (
     <div>
-      <input type="text" value={inputValue} onChange={handleChange} />
-      <p>Debounced value: {debouncedValue}</p>
+      <button onClick={handleClick}>Click 11 times to resolve</button>
+      <div>Clicked: {count}</div>
+      <div>{resolve && <span>resolved</span>}</div>
     </div>
   );
 };
-
-export default TestUseDebounce;
+export default TestUseContinueTry;
 ```
 
-In the above example, the `useDebounce` hook is used to debounce the `inputValue` state. It accepts three parameters: `value`, `delay`, and `options`. The `value` parameter represents the value to be debounced, the `delay` parameter specifies the delay in milliseconds before updating the debounced value, and the `options` parameter allows you to customize the debounce behavior with `heading` and `trailing` options.
+## Return Value
 
-The hook returns the `valueToDebounce`, which represents the debounced value.
+The hook returns a boolean value indicating whether the function has been successfully executed.
 
-To use the `useDebounce` hook, import it from `@cannonui/reacthooks` and pass the required parameters. In the example component `TestUseDebounce`, an input field is rendered, and the `inputValue` state is updated in the `handleChange` function. The debounced value is displayed below the input field.
+## Parameters
+
+| Name       | Type      | Description                                     |
+| ---------- | --------- | ----------------------------------------------- |
+| `fn`       | `() => T` | The function to be executed.                    |
+| `interval` | `number`  | The interval (in milliseconds) between retries. |
+
+## Features
+
+- Continuously tries to execute the specified function and returns a boolean value indicating whether the function has been successfully executed.
+- Captures errors during the function execution and retries after the specified time interval until the function is successfully executed.
+
+## Example
+
+In this example, we have a component called `TestUseContinueTry` that uses the `useContinueTry` Hook to continuously try to execute the function `fn`. When the user clicks the button, the function `fn` will be called repeatedly until the `count` variable is greater than 10. During this process, we use the `resolve` boolean value to track whether the function has been successfully executed.
+
+## Use Scenario
+
+The `useContinueTry` Hook is useful in scenarios where you need to continuously attempt to execute a function and perform certain actions after the function is successfully executed. For example, when you need to fetch data from a server, but network issues might cause the request to fail, you can use this Hook to continuously retry the request function and perform relevant actions once the request is successful.

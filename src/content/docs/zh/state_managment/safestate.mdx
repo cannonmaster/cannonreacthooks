@@ -1,0 +1,76 @@
+---
+title: useSafeState
+description: 一个用于确保组件安全卸载的自定义 React Hook。
+---
+
+import UseSafeState from "@hook/safestate/demo";
+
+## 介绍
+
+一个用于确保组件安全卸载的自定义 React Hook。
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseSafeState client:visible />
+</div>
+
+## 用法
+
+```tsx
+import { useState, useEffect } from "react";
+import { useSafeState } from "@cannonui/reacthooks";
+useState;
+
+const ChildCmp = () => {
+  const value = 0;
+  const [safeVal, withSetSafeState] = useSafeState<number>(value);
+
+  useEffect(() => {
+    setTimeout(() => {
+      withSetSafeState((prev) => prev + 1);
+    }, 3000);
+
+    return () => {};
+  }, []);
+
+  return <div>safe value: {safeVal}</div>;
+};
+const TestUseSafeState = () => {
+  const [visible, setVisible] = useState(true);
+
+  return (
+    <div>
+      <button onClick={() => setVisible(false)}>
+        click to prevent value update after component unmount
+      </button>
+      {visible && <ChildCmp />}
+    </div>
+  );
+};
+
+export default TestUseSafeState;
+```
+
+## 返回值
+
+该 Hook 返回一个数组，包含安全状态值和用于设置安全状态的函数。
+
+## 参数
+
+| 名称    | 类型 | 描述         |
+| ------- | ---- | ------------ |
+| `value` | `T`  | 初始状态值。 |
+
+## 特性
+
+- 确保组件安全卸载后，不会触发已卸载组件的状态更新。
+- 提供 `withSetSafeState` 函数，用于设置安全状态。
+
+## 示例
+
+在这个示例中，我们有一个名为 `ChildCmp` 的子组件，它使用 `useSafeState` Hook 来确保组件在安全卸载后不会触发状态更新。`ChildCmp` 组件在 3 秒后尝试更新状态，但因为父组件 `TestUseSafeState` 中设置了 `visible` 为 `false`，因此 `ChildCmp` 组件在更新状态前已被卸载。
+
+## 使用场景
+
+`useSafeState` Hook 在需要确保组件安全卸载后不会触发状态更新的场景中非常有用。通常在组件被卸载前，异步操作可能还在进行中，如果在组件卸载后继续触发状态更新，可能会导致应用程序出现错误或异常。通过使用 `useSafeState` Hook，可以避免这种情况的发生，并提高应用程序的稳定性。

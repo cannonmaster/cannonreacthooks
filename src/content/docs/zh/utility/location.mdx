@@ -1,0 +1,76 @@
+---
+title: useLocation Hook
+description: 一个用于跟踪和管理当前浏览器位置的自定义 React Hook。
+---
+
+import UseLocation from "@hook/location/demo";
+
+## 介绍
+
+一个用于跟踪和管理当前浏览器位置的自定义 React Hook。
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseLocation client:only />
+</div>
+
+## 使用
+
+```tsx
+import { useLocation } from "@cannonui/reacthooks";
+const LocationDisplay = () => {
+  const location = useLocation();
+
+  return (
+    <div>
+      <pre>{JSON.stringify(location, null, 2)}</pre>
+    </div>
+  );
+};
+const TestUseLocation = () => {
+  return (
+    <div>
+      <LocationDisplay />
+    </div>
+  );
+};
+export default TestUseLocation;
+```
+
+## 返回值
+
+该 Hook 返回一个类型为 `Location` 的对象，其中包含各种与当前浏览器位置相关的属性。
+
+## `Location` 对象的属性
+
+| 名称       | 类型                          | 描述                                                      |
+| ---------- | ----------------------------- | --------------------------------------------------------- |
+| `trigger`  | `string`                      | 导致位置更改的触发器（例如 "popstate" 或 "hashchange"）。 |
+| `state`    | `Record<string, any> \| null` | 与当前位置相关联的状态（来自浏览器历史记录 API）。        |
+| `length`   | `number`                      | 浏览器历史记录长度。                                      |
+| `hash`     | `string`                      | 当前位置的哈希部分（例如 "#section1"）。                  |
+| `host`     | `string`                      | 当前位置的主机和端口（例如 "example.com:8080"）。         |
+| `hostname` | `string`                      | 当前位置的主机名（例如 "example.com"）。                  |
+| `href`     | `string`                      | 当前位置的完整 URL。                                      |
+| `origin`   | `string`                      | 当前位置的来源（例如 "http://example.com:8080"）。        |
+| `pathname` | `string`                      | 当前位置的路径部分（例如 "/products"）。                  |
+| `port`     | `string`                      | 当前位置的端口（例如 "8080"）。                           |
+| `protocol` | `string`                      | 当前位置的协议（例如 "http:" 或 "https:"）。              |
+| `search`   | `string`                      | 当前位置的查询字符串部分（例如 "?id=123"）。              |
+
+## 特性
+
+- 跟踪和管理当前浏览器位置。
+- 提供与当前位置相关的各种属性，例如 pathname、search、hash、host 等等。
+- 支持检测由历史记录 API（`popstate`）和哈希变化（`hashchange`）触发的位置更改。
+
+## 示例
+
+在这个示例中，我们有一个名为 `TestUseLocation` 的组件，它使用 `useLocation` Hook 来跟踪并显示当前浏览器位置。`LocationDisplay` 组件用于展示从 `useLocation` Hook 获取的位置属性。
+
+## 使用场景
+
+`useLocation` Hook 在需要访问和响应当前浏览器位置变化的场景中非常有用。它允许您构建位置感知的 React 组件，并根据 URL 或浏览器历史记录的变化来实现动态行为。例如，您可以使用它来实现客户端路由，根据当前 URL 条件性地渲染组件，或者在用户通过不同路由导航时更新应用程序状态。通过 `useLocation` Hook，您可以轻松创建交互性强大的应用程序，并在用户导航和操作时做出相应的响应。
+
+翻译完整！如果有更多问题或需要进一步帮助，请随时询问。

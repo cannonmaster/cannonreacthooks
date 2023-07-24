@@ -1,13 +1,13 @@
 ---
 title: useOnline Hook
-description: A custom React hook to track the number of times a component is rendered.
+description: A custom React Hook for detecting online/offline status.
 ---
 
 import UseOnline from "@hook/online/demo";
 
 ## Introduction
 
-The `useRenderTrack` hook is a custom React hook that allows you to track the number of times a component is rendered.
+A custom React Hook for detecting online/offline status.
 
 ## Play
 
@@ -17,48 +17,28 @@ The `useRenderTrack` hook is a custom React hook that allows you to track the nu
 
 ## Usage
 
-1. Import the `useRenderTrack` hook into your component:
-
-```jsx
-import { useRenderTrack } from "@cannonui/reacthooks";
-```
-
-2. Initialize the hook in your component:
-
-```jsx
-import { useState, StrictMode } from "react";
-import useRenderTrack from "./useRenderTrack";
-
-const TestUserRenderTrack = () => {
-  const [value, setValue] = useState(0);
-  const renderTrack = useRenderTrack();
-
-  const handleIncrement = () => {
-    setValue((value) => value + 1);
-  };
-
-  return (
-    <StrictMode>
-      <button onClick={handleIncrement}>Increment</button>
-      <div>Increment times: {value}</div>
-      <div>Actually rendered times: {renderTrack} times</div>
-    </StrictMode>
-  );
+```tsx
+import { useOnline } from "@cannonui/reacthooks";
+const TestUseOnline = () => {
+  const online = useOnline();
+  return <div>{online ? "online" : "not online"}</div>;
 };
-
-export default TestUserRenderTrack;
+export default TestUseOnline;
 ```
 
-## How it Works
+## Return Value
 
-The `useRenderTrack` hook utilizes the `useRef` hook from React to keep track of the number of times the component is rendered. It creates a ref named `renderTrack` and increments its value every time the component renders.
+The hook returns a boolean value indicating whether the browser is online or offline.
+
+## Features
+
+- Detects the online/offline status of the browser.
+- Provides a boolean value indicating whether the browser is online (`true`) or offline (`false`).
 
 ## Example
 
-In the example above, we have created a simple component `TestUserRenderTrack` that uses the `useRenderTrack` hook to track the number of times it's rendered. The component also provides a button that increments a counter (`value`) when clicked.
+In this example, we have a component called `TestUseOnline` that uses the `useOnline` Hook to detect the online/offline status of the browser. The hook listens for the `online` and `offline` events of the `window` object and updates the `online` state accordingly.
 
-The hook ensures that the rendering count (`renderTrack`) is accurately tracked, even if the component's state changes due to user interactions or other updates.
+## Use Scenario
 
-This custom hook is helpful when you need to monitor the frequency of component renders for performance optimization or debugging purposes.
-
-Please note that the hook only tracks the number of renders on the client-side and may not be accurate during server-side rendering or when running on the server.
+The `useOnline` Hook is useful in scenarios where you want to detect the online/offline status of the browser and perform certain actions based on the network connectivity. For example, you might want to show a notification when the user goes offline or fetch data from the server when the user comes back online. By using the `useOnline` Hook, you can easily handle online/offline events and implement network-aware behavior in your React application.

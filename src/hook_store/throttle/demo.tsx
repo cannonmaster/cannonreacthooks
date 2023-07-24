@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useThrottle from "./throttle";
+import { useThrottle } from "@cannonui/reacthooks";
 
 const TestUseThrottle = () => {
   const [value, setValue] = useState(0);

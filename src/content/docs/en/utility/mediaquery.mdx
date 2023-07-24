@@ -1,13 +1,13 @@
 ---
 title: useMediaQuery Hook
-description: A custom React hook to determine if the code is running on the client-side or server-side.
+description: A custom React Hook for handling media queries.
 ---
 
 import UseMediaQuery from "@hook/mediaquery/demo";
 
 ## Introduction
 
-The `useIsClient` hook is a custom React hook that helps you determine if the code is running on the client-side or server-side.
+A custom React Hook for handling media queries.
 
 ## Play
 
@@ -17,30 +17,38 @@ The `useIsClient` hook is a custom React hook that helps you determine if the co
 
 ## Usage
 
-1. Import the `useIsClient` hook into your component:
+```tsx
+import { useMediaQuery } from "@cannonui/reacthooks";
 
-```jsx
-import { useIsClient } from "@cannonui/reacthooks";
-```
+const TestUseMediaQuery = () => {
+  const isMatch = useMediaQuery("(max-width: 468px)");
 
-2. Initialize the hook in your component:
-
-```jsx
-const TestUseIsClient = () => {
-  const isClient = useIsClient();
-
-  return <div>{isClient ? "is client" : "is not client"}</div>;
+  return (
+    <div>is match max width 468px: {isMatch ? "matched" : "not match"}</div>
+  );
 };
+export default TestUseMediaQuery;
 ```
 
-## How it Works
+## Return Value
 
-The `useIsClient` hook uses the `useState` and `useEffect` hooks from React to set the initial state to `false`. During the component's initial rendering on the client-side, the `useEffect` hook is called and updates the state to `true`. As a result, the `isClient` variable will be `true` if the component is running on the client-side and `false` if it's running on the server-side.
+The hook returns a boolean value indicating whether the media query matches the current viewport or not.
+
+## Parameters
+
+| Name    | Type     | Description                      |
+| ------- | -------- | -------------------------------- |
+| `query` | `string` | The media query to be evaluated. |
+
+## Features
+
+- Handles media queries and provides a boolean value indicating whether the query matches the current viewport.
+- Supports server-side rendering and client-side synchronization of media query changes.
 
 ## Example
 
-In the example above, we have created a simple component `TestUseIsClient` that uses the `useIsClient` hook to display whether the code is running on the client-side or server-side. When the component renders on the client-side, the message "is client" will be displayed, indicating that it's running in the browser. On the other hand, if the component renders on the server-side (during server-side rendering), the message "is not client" will be displayed.
+In this example, we have a component called `TestUseMediaQuery` that uses the `useMediaQuery` Hook to check if the viewport height is less than or equal to 468 pixels. The `useMediaQuery` Hook handles the media query and provides the `isMatch` boolean value, which indicates whether the query matches the current viewport.
 
-This custom hook is useful when you need to conditionally execute code based on whether it's running in the browser or on the server. For example, you can use it to conditionally fetch data from an API or perform client-side-only actions.
+## Use Scenario
 
-Keep in mind that the hook relies on the client-side rendering lifecycle, so its value will be accurate during client-side rendering but not during server-side rendering.
+The `useMediaQuery` Hook is useful in scenarios where you want to conditionally render components or apply styles based on the viewport size. For example, you might want to show different layouts or components for different screen sizes or orientations. By using the `useMediaQuery` Hook, you can easily handle media queries and make your React components responsive to different viewport conditions.

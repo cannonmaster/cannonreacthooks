@@ -8,7 +8,23 @@ import useRenderTrack from "./renderTrack";
 import useQueue from "./queue";
 import useMouse from "./mouse";
 import useGeolocation from "./geolocation/geolocation";
+import useThrottle from "./throttle";
+import useSafeState from "./safestate";
+import useIdle from "./idle";
+import useLongPress from "./longpress";
+import useMediaQuery from "./mediaquery";
+import useContinueTry from "./continueTry";
+import useLocation from "./location";
+import useOnline from "./online";
+import useMap from "./map";
+import usePrevious from "./previous";
 export {
+  useMap,
+  usePrevious,
+  useLocation,
+  useOnline,
+  useContinueTry,
+  useMediaQuery,
   useDebounce,
   useCopyToClipboard,
   useIntersectionObserver,
@@ -19,4 +35,8 @@ export {
   useMouse,
   useGeolocation,
   useClickAway,
+  useThrottle,
+  useSafeState,
+  useLongPress,
+  useIdle,
 };

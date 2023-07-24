@@ -1,0 +1,44 @@
+---
+title: useOnline Hook
+description: 一个用于检测在线/离线状态的自定义 React Hook。
+---
+
+import UseOnline from "@hook/online/demo";
+
+## 介绍
+
+一个用于检测在线/离线状态的自定义 React Hook。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <UseOnline client:only />
+</div>
+
+## 使用方法
+
+```tsx
+import { useOnline } from "@cannonui/reacthooks";
+const TestUseOnline = () => {
+  const online = useOnline();
+  return <div>{online ? "online" : "not online"}</div>;
+};
+export default TestUseOnline;
+```
+
+## 返回值
+
+该 Hook 返回一个布尔值，用于表示浏览器的在线/离线状态。
+
+## 特性
+
+- 检测浏览器的在线/离线状态。
+- 提供一个布尔值，表示浏览器是否在线（`true`）或离线（`false`）。
+
+## 示例
+
+在这个示例中，我们有一个名为 `TestUseOnline` 的组件，它使用 `useOnline` Hook 来检测浏览器的在线/离线状态。该 Hook 监听 `window` 对象的 `online` 和 `offline` 事件，并相应地更新 `online` 状态。
+
+## 使用场景
+
+`useOnline` Hook 在需要检测浏览器的在线/离线状态，并根据网络连接情况执行某些操作的场景中非常有用。例如，当用户离线时，您可能希望显示一条通知，或者在用户重新连接到网络时从服务器获取数据。通过使用 `useOnline` Hook，您可以轻松处理在线/离线事件，并在 React 应用程序中实现对网络状态的感知。
