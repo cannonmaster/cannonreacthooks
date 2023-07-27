@@ -1,0 +1,66 @@
+---
+title: useToggle
+description: A custom React Hook for managing a boolean state with utility functions to toggle, set on, set off, and get the current state.
+---
+
+import TestUseToggle from "@hook/toggle/demo";
+
+## Introduction
+
+A custom React Hook for managing a boolean state with utility functions to toggle, set on, set off, and get the current state.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <TestUseToggle client:visible />
+</div>
+
+## Usage
+
+```tsx
+import useToggle from "@cannonui/reacthooks";
+
+const TestUseToggle = () => {
+  const { setOn, setOff, current, toggle } = useToggle();
+
+  return (
+    <div>
+      <div>current state: {current()}</div>
+      <button onClick={setOn}>On</button>
+      <button onClick={toggle}>Toggle</button>
+      <button onClick={setOff}>Off</button>
+    </div>
+  );
+};
+export default TestUseToggle;
+```
+
+## Return Value
+
+The hook returns an object containing the following utility functions:
+
+| Function  | Description                                   |
+| --------- | --------------------------------------------- |
+| `setOn`   | Sets the state to `true`.                     |
+| `setOff`  | Sets the state to `false`.                    |
+| `current` | Gets the current value of the state.          |
+| `toggle`  | Toggles the state between `true` and `false`. |
+
+## Parameters
+
+| Name   | Type      | Description                                      |
+| ------ | --------- | ------------------------------------------------ |
+| `init` | `boolean` | The initial value of the state. (default: false) |
+
+## Features
+
+- Manages a simple boolean state with utility functions to control and retrieve the state.
+- Provides functions to toggle the state, set it to on, set it to off, and get the current state.
+
+## Example
+
+In this example, we have a component called `TestUseToggle` that uses the `useToggle` Hook to manage a boolean state. The current state is displayed, and buttons are provided to control the state using the utility functions.
+
+## Use Scenario
+
+The `useToggle` Hook is useful in scenarios where you need to manage a boolean state and perform actions based on its value. For instance, you might use this Hook to implement a toggle button, switch between different modes, or enable/disable certain features in your application.

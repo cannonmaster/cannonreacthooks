@@ -37,6 +37,15 @@ export default defineConfig({
           },
         },
         {
+          label: "useFetch",
+          translations: {
+            "zh-CN": "useFetch",
+          },
+          autogenerate: {
+            directory: "useFetch",
+          },
+        },
+        {
           label: "Dom",
           translations: {
             "zh-CN": "Dom",

@@ -1,0 +1,67 @@
+---
+title: useGet
+description: A custom React Hook for performing GET requests and handling loading and errors.
+---
+
+import useGet from "@hook/get";
+
+## Introduction
+
+The `useGet` hook is a custom React Hook that facilitates GET requests and handles the loading state and errors for such requests. It is particularly useful when you need to retrieve data from a server or API using GET requests and want to handle the loading and error states in your React components efficiently.
+
+## Usage
+
+```tsx
+import React from "react";
+import useGet from "./useGet";
+
+const TestUseGet = () => {
+  const { res, isLoading, err } = useGet("http://localhost:3001");
+
+  return (
+    <>
+      <div>isLoading: {isLoading ? "true" : "false"}</div>
+      {err ? <div>Error: {err.message}</div> : <div>no error</div>}
+      <div>res: {res ? res.data : ""}</div>
+    </>
+  );
+};
+
+export default TestUseGet;
+```
+
+## Return Value
+
+The hook returns an object containing the following properties:
+
+| Name        | Type                 | Description                                          |
+| ----------- | -------------------- | ---------------------------------------------------- |
+| `res`       | ResponseData \| null | The response data from the GET request, if any.      |
+| `isLoading` | boolean              | A boolean indicating whether the request is loading. |
+| `err`       | Error \| null        | The error object in case of an error, if any.        |
+
+## Parameters
+
+| Name     | Type                              | Description                                      |
+| -------- | --------------------------------- | ------------------------------------------------ |
+| `url`    | string                            | The URL from which the GET request will be sent. |
+| `config` | ExtendedRequestOptions (optional) | Additional configuration for the GET request.    |
+
+## Features
+
+- Facilitates GET requests in React components, simplifying the process of fetching data from a server or API.
+- Automatically handles the loading state, allowing you to display a loading indicator while the GET request is ongoing.
+- Provides an error object to handle and display any errors that occur during the GET request.
+- Can be customized using the optional `config` parameter to add additional headers, set a timeout, or handle request retries.
+
+## Example
+
+In the `TestUseGet` component, we use the `useGet` hook to make a GET request to the URL "http://localhost:3001". The `useGet` hook handles the GET request and provides the `res`, `isLoading`, and `err` values to manage the loading and error states.
+
+The component conditionally renders different content based on the state of the GET request. If the request is still loading, it displays "isLoading: true". If there's an error, it displays an error message with the error's `message`. If the request is successful (`res` is not `null`), it displays the response data (`res.data`).
+
+You can use the `TestUseGet` component in your application whenever you need to handle GET requests to retrieve data from a server or API, and it will automatically manage the loading and error states, providing a smooth user experience.
+
+## Use Scenario
+
+The `useGet` hook is useful in scenarios where you need to perform GET requests in a React component and handle the loading and error states associated with those requests. It allows you to interact with APIs or servers to retrieve data while maintaining a smooth user experience by displaying loading indicators and handling errors gracefully.

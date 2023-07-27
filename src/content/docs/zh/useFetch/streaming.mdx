@@ -1,0 +1,124 @@
+---
+title: useStreaming
+description: 用于处理流式请求并管理加载和错误的自定义 React Hook。
+---
+
+import UseStreaming from "@hook/streaming/demo";
+
+## 介绍
+
+`useStreaming` Hook 是一个自定义的 React Hook，它简化了处理流式请求并管理加载和错误的过程。特别适用于在 React 组件中接收来自服务器或 API 的数据，并希望高效地管理加载和错误状态。
+
+## 演示
+
+<UseStreaming client:visible />
+
+## 使用方法
+
+```tsx
+import React from "react";
+import useStreaming from "./useStreaming";
+
+const TestUseStreaming = () => {
+  const [streamedData, setStreamedData] = React.useState("");
+  const textDecoder = new TextDecoder();
+
+  // 在接收到每个数据块时调用的函数
+  const onDataChunk = (dataChunk: ReadableStreamReadResult<any>) => {
+    setStreamedData((prev) => prev + textDecoder.decode(dataChunk.value));
+  };
+
+  const { err, res, isLoading } = useStreaming(
+    "http://localhost:3001/streaming",
+    {
+      onDataChunk,
+    }
+  );
+
+  return (
+    <>
+      <div>isLoading: {isLoading ? "true" : "false"}</div>
+      {err ? <div>Error: {err.message}</div> : <div>no error</div>}
+      <div>res: {res ? res.data : ""}</div>
+      <div>{streamedData}</div>
+    </>
+  );
+};
+
+export default TestUseStreaming;
+```
+
+### 使用 Express 设置服务器模拟
+
+以下是使用 Express 设置服务器模拟以处理流式请求的示例：
+
+```javascript
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+
+// 解析传入的 JSON 数据的中间件
+app.use(bodyParser.json());
+
+// 用于处理流式请求的端点
+app.get("/streaming", (req, res) => {
+  // 在这里编写服务器端逻辑以处理流式请求
+  // 对于这个模拟，我们简单地发送一个流式响应
+  const data = "流式响应数据";
+  const readableStream = new ReadableStream({
+    start(controller) {
+      for (const chunk of data.split("")) {
+        controller.enqueue(chunk);
+      }
+      controller.close();
+    },
+  });
+
+  const stream = new Response(readableStream, {
+    headers: { "Content-Type": "text/plain" },
+  });
+  res.writeHeader(200, { "Content-Type": "text/plain" });
+  stream.body.pipe(res);
+});
+
+// 在端口 3001 上启动服务器
+app.listen(3001, () => {
+  console.log("服务器运行在 http://localhost:3001");
+});
+```
+
+## 返回值
+
+`useStreaming` Hook 返回一个包含以下属性的对象：
+
+| 名称        | 类型                 | 描述                                                |
+| ----------- | -------------------- | --------------------------------------------------- |
+| `res`       | ResponseData \| null | 来自流式请求的响应数据，如果有的话。                |
+| `isLoading` | boolean              | 表示请求是否正在加载的布尔值。                      |
+| `err`       | Error \| null        | 在出现错误时包含错误对象，如果没有错误则为 `null`。 |
+
+## 参数
+
+| 名称     | 类型                          | 描述                   |
+| -------- | ----------------------------- | ---------------------- |
+| `url`    | string                        | 将发送流式请求的 URL。 |
+| `config` | ExtendedRequestOptions (可选) | 流式请求的额外配置。   |
+
+## 特点
+
+- 简化在 React 组件中进行流式请求的过程，使得从服务器或 API 接收和处理数据变得容易。
+- 自动处理加载状态，允许在流式请求进行时显示加载指示器。
+- 提供错误对象，以处理和显示流式请求期间出现的任何错误。
+- 可以使用可选的 `config` 参数进行定制，添加额外的标头、设置超时时间或处理请求重试。
+
+## 示例
+
+在 `TestUseStreaming` 组件中，我们使用 `useStreaming` Hook 来进行流式请求到 URL "http://localhost:3001/streaming"。`useStreaming` Hook 处理流式请求并提供 `res`、`isLoading` 和 `err` 值，以管理加载和错误状态。
+
+组件根据流式请求的状态条件性地渲染不同的内容。如果请求仍在加载中，则显示 "isLoading: true"。如果出现错误，则显示错误消息及其 `message`。如果请求成功 (`res` 不为 `null`)，则显示响应数据 (`res.data`)。
+
+您可以在应用程序中使用 `TestUseStreaming` 组件，无论何时需要处理流式请求以接收和处理来自服务器或 API 的数据，它都会自动管理加载和错误状态，提供流畅的用户体验。
+
+## 使用场景
+
+`useStreaming` Hook 在需要在 React 组件中接收来自服务器或 API 的数据的场景非常有用，它允许您高效地与 API 或服务器交互，同时通过显示加载指示器和优雅处理错误来维护流畅的用户体验。

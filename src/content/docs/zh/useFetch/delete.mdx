@@ -1,0 +1,91 @@
+---
+title: useDelete
+description: 一个用于执行 DELETE 请求并处理加载和错误的自定义 React Hook。
+---
+
+import UseDelete from "@hook/delete/demo";
+
+## 简介
+
+`useDelete` 是一个自定义的 React Hook，用于执行 DELETE 请求并处理加载状态和错误。当您需要从服务器或 API 删除数据并希望高效处理加载和错误状态时，它特别有用。
+
+## 示例
+
+<UseDelete client:visible />
+
+## 使用方法
+
+```tsx
+import React from "react";
+import useDelete from "./useDelete";
+
+const DeleteComponent = () => {
+  const deleteUrl = "https://api.example.com/resource/1";
+  const { res, isLoading, err } = useDelete(deleteUrl, {
+    // 可选的配置选项，如果需要的话
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (err) {
+    return <div>Error: {err.message}</div>;
+  }
+
+  return <div>{res ? <div>Resource deleted successfully!</div> : null}</div>;
+};
+export default DeleteComponent;
+```
+
+```tsx
+// 使用 express 进行服务器模拟
+
+app.delete("/resource/:id", (req, res) => {
+  res.status(200).send("delete response");
+});
+```
+
+## 返回值
+
+该 Hook 返回一个包含以下属性的对象：
+
+| 名称        | 类型                 | 描述                                          |
+| ----------- | -------------------- | --------------------------------------------- |
+| `res`       | ResponseData \| null | DELETE 请求的响应数据，如果有的话。           |
+| `isLoading` | boolean              | 表示请求是否正在加载的布尔值。                |
+| `err`       | Error \| null        | DELETE 请求出现错误时的错误对象，如果有的话。 |
+
+## 参数
+
+| 名称     | 类型                          | 描述                             |
+| -------- | ----------------------------- | -------------------------------- |
+| `url`    | string                        | 将发送 DELETE 请求的 URL。       |
+| `config` | ExtendedRequestOptions (可选) | 用于 DELETE 请求的其他配置选项。 |
+
+## 特点
+
+- 在 React 组件中简化了执行 DELETE 请求的过程，使删除数据从服务器或 API 变得简单。
+- 自动处理加载状态，允许在 DELETE 请求进行中显示加载指示器。
+- 提供错误对象以处理和显示 DELETE 请求期间出现的任何错误。
+- 可以使用可选的 `config` 参数进行定制，添加附加的请求头、设置超时或处理请求重试。
+
+## 示例
+
+- 在 `DeleteComponent` 中，我们定义了 `deleteUrl`，它是我们要删除的资源的 URL。请用实际的资源端点 URL 替换 `"https://api.example.com/resource/1"`。
+
+- 我们使用 `useDelete` Hook，传入 `deleteUrl` 和可选的配置对象。`useDelete` Hook 处理发送到指定 URL 的 DELETE 请求，并返回一个对象，其中包含三个属性：`res`、`isLoading` 和 `err`。
+
+- `res` 包含 DELETE 请求的响应数据，如果有的话。如果请求成功，它可能包含有关已删除资源的信息。如果请求失败或未返回数据，则为 `null`。
+
+- `isLoading` 是一个布尔值，指示 DELETE 请求是否仍在加载中。在请求进行中时，`isLoading` 为 `true`，允许您显示加载指示器或执行其他操作。
+
+- `err` 是一个错误对象，其中包含 DELETE 请求期间出现的任何错误的信息。如果没有错误，它将为 `null`。如果出现错误，您可以向用户显示错误消息。
+
+- `DeleteComponent` 根据 DELETE 请求的状态有条件地呈现不同的内容。如果请求仍在加载中，它显示 "Loading..."。如果有错误，它显示一个带有错误 `message` 的错误消息。如果请求成功（`res` 不为 `null`），它显示一个成功消息，说明资源已成功删除。
+
+您可以在应用程序中使用 `DeleteComponent`，无论何时需要处理 DELETE 请求以从服务器中删除资源，它都会自动处理加载和错误状态，提供流畅的用户体验。
+
+## 使用场景
+
+`useDelete` Hook 在需要在 React 组件中执行 DELETE 请求并处理加载和错误状态的场景非常有用。它允许您与 API 或服务器交互，以删除资源，并通过显示加载指示器和优雅地处理错误来保持平滑的用户体验。

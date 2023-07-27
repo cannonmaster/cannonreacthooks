@@ -1,0 +1,96 @@
+---
+title: usePost
+description: 用于执行POST请求并处理加载和错误的自定义React Hook。
+---
+
+import UsePost from "@hook/post/demo";
+
+## 介绍
+
+`usePost`是一个自定义的 React Hook，简化了执行 POST 请求和处理加载状态与错误的过程。当您需要使用 HTTP POST 方法将数据发送到服务器或 API，并希望在 React 组件中高效地管理加载和错误状态时，它特别有用。
+
+## 演示
+
+<UsePost client:visible />
+
+## 用法
+
+```tsx
+import React from "react";
+import usePost from "./usePost";
+
+const TestUsePost = () => {
+  const { res, err, isLoading } = usePost("http://localhost:3001/endpoint");
+
+  return (
+    <>
+      <div>isLoading: {isLoading ? "true" : "false"}</div>
+      {err ? <div>Error: {err.message}</div> : <div>no error</div>}
+      <div>res: {res ? res.data : ""}</div>
+    </>
+  );
+};
+
+export default TestUsePost;
+```
+
+### 使用 Express 进行服务器模拟
+
+以下是使用 Express 设置服务器模拟来处理 POST 请求的示例：
+
+```javascript
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+
+// 中间件，用于解析传入的JSON数据
+app.use(bodyParser.json());
+
+// POST端点，处理请求
+app.post("/endpoint", (req, res) => {
+  // 在此处编写处理POST请求的服务器端逻辑
+  // 对于此模拟，我们只发送成功响应
+  res.status(200).json({ message: "数据接收成功！" });
+});
+
+// 在端口3001上启动服务器
+app.listen(3001, () => {
+  console.log("服务器正在运行，地址为：http://localhost:3001");
+});
+```
+
+## 返回值
+
+`usePost` Hook 返回一个包含以下属性的对象：
+
+| 名称        | 类型                 | 描述                                   |
+| ----------- | -------------------- | -------------------------------------- |
+| `res`       | ResponseData \| null | 来自 POST 请求的响应数据，如果有的话。 |
+| `isLoading` | boolean              | 表示请求是否正在加载的布尔值。         |
+| `err`       | Error \| null        | 表示错误对象，如果有错误的话。         |
+
+## 参数
+
+| 名称     | 类型                          | 描述                       |
+| -------- | ----------------------------- | -------------------------- |
+| `url`    | string                        | 要发送 POST 请求的 URL。   |
+| `config` | ExtendedRequestOptions (可选) | 用于 POST 请求的其他配置。 |
+
+## 特点
+
+- 简化在 React 组件中执行 POST 请求的过程，轻松将数据发送到服务器或 API。
+- 自动处理加载状态，允许您在 POST 请求正在进行时显示加载指示器。
+- 提供错误对象来处理和显示 POST 请求期间出现的任何错误。
+- 可以使用可选的`config`参数进行定制，添加额外的请求头，设置超时或处理请求重试。
+
+## 示例
+
+在`TestUsePost`组件中，我们使用`usePost` Hook 向 URL "http://localhost:3001/endpoint" 发送 POST 请求。`usePost` Hook 处理 POST 请求并提供`res`，`isLoading`和`err`值以管理加载和错误状态。
+
+组件根据 POST 请求的状态条件性地渲染不同的内容。如果请求仍在加载中，它显示"isLoading: true"。如果存在错误，它显示带有错误消息的错误信息。如果请求成功（`res`不为`null`），它显示响应数据（`res.data`）。
+
+您可以在需要处理 POST 请求以将数据发送到服务器或 API 的应用程序中使用`TestUsePost`组件，它会自动管理加载和错误状态，提供流畅的用户体验。
+
+## 使用场景
+
+`usePost` Hook 在需要使用 POST 方法将数据发送到服务器或 API 的 React 组件中非常有用。通过显示加载指示器并优雅地处理错误，它允许您与 API 或服务器交互以提交数据，同时保持流畅的用户体验。

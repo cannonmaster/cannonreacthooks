@@ -1,0 +1,95 @@
+---
+title: usePatch
+description: A custom React Hook for performing PATCH requests and handling loading and errors.
+---
+
+import UsePatch from "@hook/patch/demo";
+
+## Introduction
+
+The `usePatch` hook is a custom React Hook that simplifies the process of making PATCH requests and handling loading and errors. It is particularly useful when you need to update data on a server or API using the HTTP PATCH method and want to manage the loading and error states in your React components efficiently.
+
+## Play
+
+<UsePatch client:visible />
+
+## Usage
+
+```tsx
+import React from "react";
+import usePatch from "./usePatch";
+
+const TestUsePatch = () => {
+  const { res, err, isLoading } = usePatch("http://localhost:3001/endpoint");
+
+  return (
+    <div>
+      <div>Loading: {isLoading ? "true" : "false"}</div>
+      {err ? <pre>{JSON.stringify(err, null, 2)}</pre> : <div>no error</div>}
+      <div>res: {res ? res.data : ""}</div>
+    </div>
+  );
+};
+export default TestUsePatch;
+```
+
+### Server Mockup using Express
+
+Here's an example of how you can set up a server mockup using Express to handle the PATCH request:
+
+```javascript
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+
+// Middleware to parse incoming JSON data
+app.use(bodyParser.json());
+
+// PATCH endpoint to handle the request
+app.patch("/endpoint", (req, res) => {
+  // Your server-side logic here to handle the PATCH request
+  // For this mockup, we simply send a success response
+  res.status(200).json({ message: "Data updated successfully!" });
+});
+
+// Start the server on port 3001
+app.listen(3001, () => {
+  console.log("Server is running on http://localhost:3001");
+});
+```
+
+## Return Value
+
+The `usePatch` hook returns an object containing the following properties:
+
+| Name        | Type                 | Description                                          |
+| ----------- | -------------------- | ---------------------------------------------------- |
+| `res`       | ResponseData \| null | The response data from the PATCH request, if any.    |
+| `isLoading` | boolean              | A boolean indicating whether the request is loading. |
+| `err`       | Error \| null        | The error object in case of an error, if any.        |
+
+## Parameters
+
+| Name     | Type                              | Description                                      |
+| -------- | --------------------------------- | ------------------------------------------------ |
+| `url`    | string                            | The URL to which the PATCH request will be sent. |
+| `config` | ExtendedRequestOptions (optional) | Additional configuration for the PATCH request.  |
+
+## Features
+
+- Simplifies making PATCH requests in React components, making it easy to update data on servers or APIs.
+- Automatically handles the loading state, allowing you to display a loading indicator while the PATCH request is ongoing.
+- Provides an error object to handle and display any errors that occur during the PATCH request.
+- Can be customized using the optional `config` parameter to add additional headers, set a timeout, or handle request retries.
+
+## Example
+
+In the `TestUsePatch` component, we use the `usePatch` hook to make a PATCH request to the URL "http://localhost:3001/endpoint". The `usePatch` hook handles the PATCH request and provides the `res`, `isLoading`, and `err` values to manage the loading and error states.
+
+The component conditionally renders different content based on the state of the PATCH request. If the request is still loading, it displays "Loading: true". If there's an error, it displays the error object in a preformatted JSON format. If the request is successful (`res` is not `null`), it displays the response data (`res.data`).
+
+You can use the `TestUsePatch` component in your application whenever you need to handle PATCH requests to update data on a server or API, and it will automatically manage the loading and error states, providing a smooth user experience.
+
+## Use Scenario
+
+The `usePatch` hook is useful in scenarios where you need to update data on a server or API using the PATCH method in a React component. It allows you to interact with APIs or servers to modify existing data while maintaining a smooth user experience by displaying loading indicators and handling errors gracefully.

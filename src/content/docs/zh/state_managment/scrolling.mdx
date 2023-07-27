@@ -1,0 +1,69 @@
+---
+title: useScrolling
+description: 一个自定义的 React Hook，用于跟踪元素当前是否正在滚动。
+---
+
+import TestUseScrolling from "@hook/scrolling/demo";
+
+## 简介
+
+一个自定义的 React Hook，用于跟踪元素当前是否正在滚动。
+
+## 示例
+
+<div style="margin-top: 3%;">
+  <TestUseScrolling client:visible />
+</div>
+
+## 使用方法
+
+```tsx
+import { useRef } from "react";
+import useScrolling from "@cannonui/reacthooks";
+
+const TestUseScrolling = () => {
+  const element = useRef<HTMLDivElement>(null);
+  const isScrolling = useScrolling(element);
+
+  return (
+    <div>
+      <div
+        style={{ height: "100px", width: "200px", overflow: "scroll" }}
+        ref={element}
+      >
+        Scrolling me to test, this is dummy text. this is dummy text. this is
+        dummy text. this is dummy text. this is dummy text. this is dummy text.
+        this is dummy text. this is dummy text. this is dummy text. this is
+        dummy text.
+      </div>
+
+      <div>{isScrolling ? "scrolling" : "not scrolling"}</div>
+    </div>
+  );
+};
+export default TestUseScrolling;
+```
+
+## 返回值
+
+该 hook 返回一个布尔值，指示元素当前是否正在滚动。
+
+## 参数
+
+| 名称    | 类型                     | 描述                                                 |
+| ------- | ------------------------ | ---------------------------------------------------- |
+| `ref`   | `RefObject<HTMLElement>` | 代表 HTML 元素的引用对象。                           |
+| `delay` | `number`                 | 更新滚动状态的延迟时间（以毫秒为单位）。 (默认: 150) |
+
+## 特性
+
+- 跟踪指定元素当前是否正在滚动。
+- 提供一个布尔值来指示滚动状态。
+
+## 示例
+
+在这个例子中，我们有一个名为`TestUseScrolling`的组件，它使用`useScrolling` Hook 来跟踪指定的`div`元素是否正在滚动。滚动状态将在用户界面中显示为“scrolling”或“not scrolling”。
+
+## 使用场景
+
+当您需要监视特定元素是否正在滚动，并基于此触发某些操作或显示相关的用户界面元素时，`useScrolling` Hook 非常有用。例如，当用户向下滚动页面时，您可能希望显示“返回顶部”按钮，而这个 Hook 帮助您跟踪容器元素的滚动行为。

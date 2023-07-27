@@ -1,0 +1,96 @@
+---
+title: usePost
+description: A custom React Hook for performing POST requests and handling loading and errors.
+---
+
+import UsePost from "@hook/post/demo";
+
+## Introduction
+
+The `usePost` hook is a custom React Hook that simplifies the process of making POST requests and handling loading and errors. It is particularly useful when you need to send data to a server or API using the HTTP POST method and want to manage the loading and error states in your React components efficiently.
+
+## Play
+
+<UsePost client:visible />
+
+## Usage
+
+```tsx
+import React from "react";
+import usePost from "./usePost";
+
+const TestUsePost = () => {
+  const { res, err, isLoading } = usePost("http://localhost:3001/endpoint");
+
+  return (
+    <>
+      <div>isLoading: {isLoading ? "true" : "false"}</div>
+      {err ? <div>Error: {err.message}</div> : <div>no error</div>}
+      <div>res: {res ? res.data : ""}</div>
+    </>
+  );
+};
+
+export default TestUsePost;
+```
+
+### Server Mockup using Express
+
+Here's an example of how you can set up a server mockup using Express to handle the POST request:
+
+```javascript
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+
+// Middleware to parse incoming JSON data
+app.use(bodyParser.json());
+
+// POST endpoint to handle the request
+app.post("/endpoint", (req, res) => {
+  // Your server-side logic here to handle the POST request
+  // For this mockup, we simply send a success response
+  res.status(200).json({ message: "Data received successfully!" });
+});
+
+// Start the server on port 3001
+app.listen(3001, () => {
+  console.log("Server is running on http://localhost:3001");
+});
+```
+
+## Return Value
+
+The `usePost` hook returns an object containing the following properties:
+
+| Name        | Type                 | Description                                          |
+| ----------- | -------------------- | ---------------------------------------------------- |
+| `res`       | ResponseData \| null | The response data from the POST request, if any.     |
+| `isLoading` | boolean              | A boolean indicating whether the request is loading. |
+| `err`       | Error \| null        | The error object in case of an error, if any.        |
+
+## Parameters
+
+| Name     | Type                              | Description                                     |
+| -------- | --------------------------------- | ----------------------------------------------- |
+| `url`    | string                            | The URL to which the POST request will be sent. |
+| `config` | ExtendedRequestOptions (optional) | Additional configuration for the POST request.  |
+
+## Features
+
+- Simplifies making POST requests in React components, making it easy to send data to servers or APIs.
+- Automatically handles the loading state, allowing you to display a loading indicator while the POST request is ongoing.
+- Provides an error object to handle and display any errors that occur during the POST request.
+- Can be customized using the optional `config` parameter to add additional headers, set a timeout, or handle request retries.
+
+## Example
+
+In the `TestUsePost` component, we use the `usePost` hook to make a POST request to the URL "http://localhost:3001/endpoint". The `usePost` hook handles the POST request and provides the `res`, `isLoading`, and `err` values to manage the loading and error states.
+
+The component conditionally renders different content based on the state of the POST request. If the request is still loading, it displays "isLoading: true". If there's an error, it displays an error message with the error's `message`. If the request is successful (`res` is not `null`), it displays the response data (`res.data`).
+
+You can use the `TestUsePost` component in your application whenever you need to handle POST requests to send data to a server or API, and it will automatically manage the loading and error states, providing a smooth user experience.
+
+## Use Scenario
+
+The `usePost` hook is useful in scenarios where you need to send data to a server or API using the POST method in a React component. It allows you to interact with APIs or servers to submit data while maintaining a smooth user experience by displaying loading indicators and handling errors gracefully.

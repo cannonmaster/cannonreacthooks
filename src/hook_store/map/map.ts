@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-useState;
 const useMap = <k, v>(init: [k, v][] = []) => {
   const [map, setMap] = useState(new Map<k, v>(init));
 

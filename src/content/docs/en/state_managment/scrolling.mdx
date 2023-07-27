@@ -1,0 +1,69 @@
+---
+title: useScrolling
+description: A custom React Hook to track whether an element is currently being scrolled.
+---
+
+import TestUseScrolling from "@hook/scrolling/demo";
+
+## Introduction
+
+A custom React Hook to track whether an element is currently being scrolled.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <TestUseScrolling client:visible />
+</div>
+
+## Usage
+
+```tsx
+import { useRef } from "react";
+import useScrolling from "@cannonui/reacthooks";
+
+const TestUseScrolling = () => {
+  const element = useRef<HTMLDivElement>(null);
+  const isScrolling = useScrolling(element);
+
+  return (
+    <div>
+      <div
+        style={{ height: "100px", width: "200px", overflow: "scroll" }}
+        ref={element}
+      >
+        Scrolling me to test, this is dummy text. this is dummy text. this is
+        dummy text. this is dummy text. this is dummy text. this is dummy text.
+        this is dummy text. this is dummy text. this is dummy text. this is
+        dummy text.
+      </div>
+
+      <div>{isScrolling ? "scrolling" : "not scrolling"}</div>
+    </div>
+  );
+};
+export default TestUseScrolling;
+```
+
+## Return Value
+
+The hook returns a boolean value indicating whether the element is currently being scrolled.
+
+## Parameters
+
+| Name    | Type                     | Description                                                                     |
+| ------- | ------------------------ | ------------------------------------------------------------------------------- |
+| `ref`   | `RefObject<HTMLElement>` | A ref object representing the HTML element.                                     |
+| `delay` | `number`                 | The delay (in milliseconds) before updating the scrolling state. (default: 150) |
+
+## Features
+
+- Tracks whether the specified element is currently being scrolled.
+- Provides a boolean value to indicate the scrolling state.
+
+## Example
+
+In this example, we have a component called `TestUseScrolling` that uses the `useScrolling` Hook to track whether the specified `div` element is being scrolled. The scrolling state is displayed in the UI as "scrolling" or "not scrolling."
+
+## Use Scenario
+
+The `useScrolling` Hook is useful when you need to monitor whether a specific element is being scrolled, and based on that, you may want to trigger some actions or show relevant UI elements. For example, you might want to display a "Back to Top" button when the user scrolls down a page, and this Hook helps you track the scrolling behavior of the container element.

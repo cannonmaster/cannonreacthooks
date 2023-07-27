@@ -1,0 +1,91 @@
+---
+title: useDelete
+description: A custom React Hook for performing DELETE requests and handling loading and errors.
+---
+
+import UseDelete from "@hook/delete/demo";
+
+## Introduction
+
+The `useDelete` hook is a custom React Hook that facilitates DELETE requests and handles the loading state and errors for such requests. It is particularly useful when you need to delete data from a server or API and want to handle the loading and error states in your React components efficiently.
+
+## Play
+
+<UseDelete client:visible />
+
+## Usage
+
+```tsx
+import React from "react";
+import useDelete from "./useDelete";
+
+const DeleteComponent = () => {
+  const deleteUrl = "https://api.example.com/resource/1";
+  const { res, isLoading, err } = useDelete(deleteUrl, {
+    // Optional configuration options, if needed
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (err) {
+    return <div>Error: {err.message}</div>;
+  }
+
+  return <div>{res ? <div>Resource deleted successfully!</div> : null}</div>;
+};
+export default DeleteComponent;
+```
+
+```tsx
+// server mockup using express
+
+app.delete("/resource/:id", (req, res) => {
+  res.status(200).send("delete response");
+});
+```
+
+## Return Value
+
+The hook returns an object containing the following properties:
+
+| Name        | Type                 | Description                                          |
+| ----------- | -------------------- | ---------------------------------------------------- |
+| `res`       | ResponseData \| null | The response data from the DELETE request, if any.   |
+| `isLoading` | boolean              | A boolean indicating whether the request is loading. |
+| `err`       | Error \| null        | The error object in case of an error, if any.        |
+
+## Parameters
+
+| Name     | Type                              | Description                                       |
+| -------- | --------------------------------- | ------------------------------------------------- |
+| `url`    | string                            | The URL to which the DELETE request will be sent. |
+| `config` | ExtendedRequestOptions (optional) | Additional configuration for the DELETE request.  |
+
+## Features
+
+- Facilitates DELETE requests in React components, simplifying the process of deleting data from a server or API.
+- Automatically handles the loading state, allowing you to display a loading indicator while the DELETE request is ongoing.
+- Provides an error object to handle and display any errors that occur during the DELETE request.
+- Can be customized using the optional `config` parameter to add additional headers, set a timeout, or handle request retries.
+
+## Example
+
+- In the `DeleteComponent`, we define the `deleteUrl`, which is the URL of the resource we want to delete. Replace `"https://api.example.com/resource/1"` with the actual endpoint URL of the resource you want to delete.
+
+- We call the `useDelete` hook with the `deleteUrl` and an optional configuration object. The `useDelete` hook handles the DELETE request to the specified URL, and it returns an object with three properties: `res`, `isLoading`, and `err`.
+
+- `res` contains the response data from the DELETE request, if any. If the request is successful, it may contain information about the deleted resource. If the request fails or no data is returned, it will be `null`.
+
+- `isLoading` is a boolean that indicates whether the DELETE request is still loading. While the request is ongoing, `isLoading` will be `true`, allowing you to display a loading indicator or perform other actions.
+
+- `err` is an error object that contains information about any errors that occur during the DELETE request. If there are no errors, it will be `null`. If an error occurs, you can display an error message to the user.
+
+- The `DeleteComponent` component then conditionally renders different content based on the state of the DELETE request. If the request is still loading, it displays "Loading...". If there's an error, it displays an error message with the error's `message`. If the request is successful (`res` is not `null`), it displays a success message stating that the resource was deleted successfully.
+
+You can use the `DeleteComponent` in your application whenever you need to handle DELETE requests to delete resources from the server, and it will automatically manage the loading and error states, providing a smooth user experience.
+
+## Use Scenario
+
+The `useDelete` hook is useful in scenarios where you need to perform DELETE requests in a React component and handle the loading and error states associated with those requests. It allows you to interact with APIs or servers to delete resources while maintaining a smooth user experience by displaying loading indicators and handling errors gracefully.

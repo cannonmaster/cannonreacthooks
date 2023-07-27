@@ -1,0 +1,124 @@
+---
+title: useStreaming
+description: A custom React Hook for handling streaming requests and managing loading and errors.
+---
+
+import UseStreaming from "@hook/streaming/demo";
+
+## Introduction
+
+The `useStreaming` hook is a custom React Hook that simplifies the process of handling streaming requests and managing loading and errors. It is particularly useful when you need to receive data from a server or API using a streaming response and want to manage the loading and error states in your React components efficiently.
+
+## Play
+
+<UseStreaming client:visible />
+
+## Usage
+
+```tsx
+import React from "react";
+import useStreaming from "./useStreaming";
+
+const TestUseStreaming = () => {
+  const [streamedData, setStreamedData] = React.useState("");
+  const textDecoder = new TextDecoder();
+
+  // Function to be called on each chunk of data received during streaming
+  const onDataChunk = (dataChunk: ReadableStreamReadResult<any>) => {
+    setStreamedData((prev) => prev + textDecoder.decode(dataChunk.value));
+  };
+
+  const { err, res, isLoading } = useStreaming(
+    "http://localhost:3001/streaming",
+    {
+      onDataChunk,
+    }
+  );
+
+  return (
+    <>
+      <div>isLoading: {isLoading ? "true" : "false"}</div>
+      {err ? <div>Error: {err.message}</div> : <div>no error</div>}
+      <div>res: {res ? res.data : ""}</div>
+      <div>{streamedData}</div>
+    </>
+  );
+};
+
+export default TestUseStreaming;
+```
+
+### Server Mockup using Express
+
+Here's an example of how you can set up a server mockup using Express to handle the streaming request:
+
+```javascript
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+
+// Middleware to parse incoming JSON data
+app.use(bodyParser.json());
+
+// Streaming endpoint to handle the request
+app.get("/streaming", (req, res) => {
+  // Your server-side logic here to handle the streaming request
+  // For this mockup, we simply send a streaming response
+  const data = "Streaming response data";
+  const readableStream = new ReadableStream({
+    start(controller) {
+      for (const chunk of data.split("")) {
+        controller.enqueue(chunk);
+      }
+      controller.close();
+    },
+  });
+
+  const stream = new Response(readableStream, {
+    headers: { "Content-Type": "text/plain" },
+  });
+  res.writeHeader(200, { "Content-Type": "text/plain" });
+  stream.body.pipe(res);
+});
+
+// Start the server on port 3001
+app.listen(3001, () => {
+  console.log("Server is running on http://localhost:3001");
+});
+```
+
+## Return Value
+
+The `useStreaming` hook returns an object containing the following properties:
+
+| Name        | Type                 | Description                                           |
+| ----------- | -------------------- | ----------------------------------------------------- |
+| `res`       | ResponseData \| null | The response data from the streaming request, if any. |
+| `isLoading` | boolean              | A boolean indicating whether the request is loading.  |
+| `err`       | Error \| null        | The error object in case of an error, if any.         |
+
+## Parameters
+
+| Name     | Type                              | Description                                          |
+| -------- | --------------------------------- | ---------------------------------------------------- |
+| `url`    | string                            | The URL to which the streaming request will be sent. |
+| `config` | ExtendedRequestOptions (optional) | Additional configuration for the streaming request.  |
+
+## Features
+
+- Simplifies making streaming requests in React components, making it easy to receive and process data from servers or APIs.
+- Automatically handles the loading state, allowing you to display a loading indicator while the streaming request is ongoing.
+- Provides an error object to handle and display any errors that occur during the streaming request.
+- Can be customized using the optional `config` parameter to add additional headers, set a timeout, or handle request retries.
+
+## Example
+
+In the `TestUseStreaming` component, we use the `useStreaming` hook to make a streaming request to the URL "http://localhost:3001/streaming". The `useStreaming` hook handles the streaming request and provides the `res`, `isLoading`, and `err` values to manage the loading and error states.
+
+The component conditionally renders different content based on the state of the streaming request. If the request is still loading, it displays "isLoading: true". If there's an error, it displays an error message with the error's `message`. If the request is successful (`res` is not `null`), it displays the response data (`res.data`).
+
+You can use the `TestUseStreaming` component in your application whenever you need to handle streaming requests to receive and process data from a server or API, and it will automatically manage the loading and error states, providing a smooth user experience.
+
+## Use Scenario
+
+The `useStreaming` hook is useful in scenarios where you need to receive data from a server or API using streaming responses in a React component. It allows you to interact with APIs or servers to receive and process data efficiently while maintaining a smooth user experience by displaying loading indicators and handling errors gracefully.

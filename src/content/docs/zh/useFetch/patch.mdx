@@ -1,0 +1,97 @@
+---
+title: usePatch
+description: 一个用于执行 PATCH 请求并处理加载和错误的自定义 React Hook。
+---
+
+import UsePatch from "@hook/patch/demo";
+
+## 介绍
+
+`usePatch`是一个自定义的 React Hook，简化了执行 PATCH 请求并处理加载和错误的过程。当你需要使用 HTTP PATCH 方法更新服务器或 API 上的数据，并希望在 React 组件中高效地管理加载和错误状态时，它特别有用。
+
+## 演示
+
+<UsePatch client:visible />
+
+## 使用方法
+
+```tsx
+import React from "react";
+import usePatch from "./usePatch";
+
+const TestUsePatch = () => {
+  const { res, err, isLoading } = usePatch("http://localhost:3001/endpoint");
+
+  return (
+    <div>
+      <div>Loading: {isLoading ? "true" : "false"}</div>
+      {err ? <pre>{JSON.stringify(err, null, 2)}</pre> : <div>no error</div>}
+      <div>res: {res ? res.data : ""}</div>
+    </div>
+  );
+};
+export default TestUsePatch;
+```
+
+### 使用 Express 设置服务器模拟
+
+以下是使用 Express 设置服务器模拟来处理 PATCH 请求的示例：
+
+```javascript
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+
+// 用于解析传入的JSON数据的中间件
+app.use(bodyParser.json());
+
+// PATCH端点用于处理请求
+app.patch("/endpoint", (req, res) => {
+  // 在此处处理PATCH请求的服务器端逻辑
+  // 对于此模拟，我们简单地发送一个成功响应
+  res.status(200).json({ message: "数据更新成功！" });
+});
+
+// 在端口3001上启动服务器
+app.listen(3001, () => {
+  console.log("服务器运行在http://localhost:3001");
+});
+```
+
+## 返回值
+
+`usePatch` Hook 返回一个包含以下属性的对象：
+
+| 名称        | 类型                 | 描述                                                  |
+| ----------- | -------------------- | ----------------------------------------------------- |
+| `res`       | ResponseData \| null | 来自 PATCH 请求的响应数据，如果有的话。               |
+| `isLoading` | boolean              | 一个布尔值，表示请求是否正在加载。                    |
+| `err`       | Error \| null        | 如果出现错误，则为错误对象，如果没有错误，则为 null。 |
+
+## 参数
+
+| 名称     | 类型                          | 描述                      |
+| -------- | ----------------------------- | ------------------------- |
+| `url`    | string                        | 将发送 PATCH 请求的 URL。 |
+| `config` | ExtendedRequestOptions (可选) | PATCH 请求的其他配置。    |
+
+## 特点
+
+- 简化在 React 组件中执行 PATCH 请求，轻松更新服务器或 API 上的数据。
+- 自动处理加载状态，允许在 PATCH 请求正在进行时显示加载指示器。
+- 提供错误对象以处理和显示 PATCH 请求期间出现的任何错误。
+- 可使用可选的`config`参数进行自定义，添加额外的请求头、设置超时或处理请求重试。
+
+## 示例
+
+在`TestUsePatch`组件中，我们使用`usePatch` Hook 对 URL "http://localhost:3001/endpoint" 发起 PATCH 请求。`usePatch` Hook 处理 PATCH 请求并提供`res`、`isLoading`和`err`值，用于管理加载和错误状态。
+
+该组件根据 PATCH 请求的状态条件性地呈现不同内容。如果请求仍在加载中，它显示"Loading: true"。如果出现错误，它以预格式化的 JSON 格式显示错误对象。如果请求成功（`res`不为`null`），它显示响应数据（`res.data`）。
+
+您可以在需要处理 PATCH 请求以更新服务器或 API 上的数据的任何应用程序中使用`TestUsePatch`组件，它将自动管理加载和错误状态，提供平滑的用户体验。
+
+## 使用场景
+
+`usePatch` Hook 在需要使用 PATCH 方法在 React 组件中更新服务器或 API 上的数据的场景中非常有用。它允许您与 API 或服务器交互，修改现有数据，并通过显示加载指示器和优雅处理错误来提供流畅的用户体验。
+
+翻译完成。现在，此文档涵盖了`usePatch` Hook，它简化了执行 PATCH 请求并处理加载和错误的过程。提供的示例演示了如何使用`TestUsePatch`组件执行 PATCH 请求，并相应地显示加载和错误状态。如果您有任何额外的代码或组件需要文档说明，或者需要进一步改进，请随时告诉我！我将继续为您提供帮助。

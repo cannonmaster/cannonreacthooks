@@ -1,0 +1,66 @@
+---
+title: useToggle
+description: 一个自定义的 React Hook，用于管理布尔状态，并提供切换、打开、关闭和获取当前状态的实用功能。
+---
+
+import TestUseToggle from "@hook/toggle/demo";
+
+## 简介
+
+一个自定义的 React Hook，用于管理布尔状态，并提供切换、打开、关闭和获取当前状态的实用功能。
+
+## 示例
+
+<div style="margin-top: 3%;">
+  <TestUseToggle client:visible />
+</div>
+
+## 使用方法
+
+```tsx
+import useToggle from "@cannonui/reacthooks";
+
+const TestUseToggle = () => {
+  const { setOn, setOff, current, toggle } = useToggle();
+
+  return (
+    <div>
+      <div>current state: {current()}</div>
+      <button onClick={setOn}>On</button>
+      <button onClick={toggle}>Toggle</button>
+      <button onClick={setOff}>Off</button>
+    </div>
+  );
+};
+export default TestUseToggle;
+```
+
+## 返回值
+
+该 hook 返回一个包含以下实用功能的对象：
+
+| 函数      | 描述                            |
+| --------- | ------------------------------- |
+| `setOn`   | 将状态设置为`true`。            |
+| `setOff`  | 将状态设置为`false`。           |
+| `current` | 获取当前状态的值。              |
+| `toggle`  | 在`true`和`false`之间切换状态。 |
+
+## 参数
+
+| 名称   | 类型      | 描述                            |
+| ------ | --------- | ------------------------------- |
+| `init` | `boolean` | 状态的初始值。（默认为`false`） |
+
+## 特性
+
+- 管理简单的布尔状态，并提供控制和检索状态的实用功能。
+- 提供切换状态、将其设置为打开或关闭状态以及获取当前状态的功能。
+
+## 示例
+
+在这个例子中，我们有一个名为`TestUseToggle`的组件，它使用`useToggle` Hook 来管理布尔状态。当前状态将被显示，并提供按钮来使用实用功能控制状态。
+
+## 使用场景
+
+`useToggle` Hook 在需要管理布尔状态并根据其值执行操作的场景中非常有用。例如，您可以使用这个 Hook 来实现切换按钮，在不同模式之间切换，或在应用程序中启用/禁用某些功能。

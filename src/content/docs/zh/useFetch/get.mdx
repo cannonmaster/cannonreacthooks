@@ -1,0 +1,67 @@
+---
+title: useGet
+description: 用于执行 GET 请求并处理加载和错误的自定义 React Hook。
+---
+
+import useGet from "@hook/get";
+
+## 简介
+
+`useGet` 是一个自定义的 React Hook，它简化了执行 GET 请求并处理加载状态和错误的过程。当您需要使用 GET 请求从服务器或 API 检索数据并希望在 React 组件中高效处理加载和错误状态时，这个 Hook 尤其有用。
+
+## 使用方法
+
+```tsx
+import React from "react";
+import useGet from "./useGet";
+
+const TestUseGet = () => {
+  const { res, isLoading, err } = useGet("http://localhost:3001");
+
+  return (
+    <>
+      <div>isLoading: {isLoading ? "true" : "false"}</div>
+      {err ? <div>Error: {err.message}</div> : <div>no error</div>}
+      <div>res: {res ? res.data : ""}</div>
+    </>
+  );
+};
+
+export default TestUseGet;
+```
+
+## 返回值
+
+该 Hook 返回一个包含以下属性的对象：
+
+| 属性名      | 类型                 | 描述                                     |
+| ----------- | -------------------- | ---------------------------------------- |
+| `res`       | ResponseData \| null | GET 请求的响应数据（如果有的话）。       |
+| `isLoading` | boolean              | 表示请求是否正在加载的布尔值。           |
+| `err`       | Error \| null        | 请求过程中出现的错误对象（如果有的话）。 |
+
+## 参数
+
+| 参数名   | 类型                           | 描述                    |
+| -------- | ------------------------------ | ----------------------- |
+| `url`    | string                         | 要发送 GET 请求的 URL。 |
+| `config` | ExtendedRequestOptions（可选） | GET 请求的附加配置项。  |
+
+## 特点
+
+- 简化在 React 组件中执行 GET 请求的过程，从而简化了从服务器或 API 检索数据的流程。
+- 自动处理加载状态，让您在 GET 请求进行中时可以显示加载指示器。
+- 提供错误对象，以处理并显示 GET 请求过程中出现的错误。
+- 可以使用可选的 `config` 参数进行定制，例如添加额外的请求头、设置超时或处理请求重试。
+
+## 示例
+
+在 `TestUseGet` 组件中，我们使用 `useGet` Hook 发起一个 GET 请求到 URL "http://localhost:3001"。`useGet` Hook 负责处理 GET 请求，并提供 `res`、`isLoading` 和 `err` 值来管理加载和错误状态。
+
+该组件根据 GET 请求的状态条件性地渲染不同的内容。如果请求正在加载中，它显示 "isLoading: true"。如果出现错误，它会显示一个带有错误消息的提示。如果请求成功（`res` 不为 `null`），它会显示响应数据 (`res.data`)。
+
+当您需要从服务器或 API 检索数据并希望自动处理加载和错误状态时，您可以在应用程序中使用 `TestUseGet` 组件，它将自动管理加载和错误状态，提供流畅的用户体验。
+
+## 使用场景
+
+`useGet` Hook 在需要在 React 组件中执行 GET 请求并处理加载和错误状态的场景非常有用。它让您可以与 API 或服务器进行交互，从而检索数据并在加载过程中展示加载指示器，同时在出现错误时优雅地处理错误，从而为用户提供良好的用户体验。
