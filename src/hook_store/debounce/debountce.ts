@@ -3,9 +3,9 @@ import { useState, useRef, useEffect } from "react";
 type optionsType = {
   heading?: boolean;
   trailing?: boolean;
-  cb: (prev: any) => any;
+  cb?: (prev: any) => any;
 };
-const useDebounce = (value: any, delay: number, options: optionsType) => {
+const useDebounce = (value: any, delay: number, options: optionsType = {}) => {
   if (delay === 0) {
     return value;
   }
