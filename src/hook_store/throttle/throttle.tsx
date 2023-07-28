@@ -7,8 +7,6 @@ const useThrottle = (value: any, interval = 100) => {
   useEffect(() => {
     let timeId: ReturnType<typeof setTimeout>;
     if (Date.now() > lastUpdate.current + interval) {
-      console.log("666");
-
       setThrottledValue(value);
       lastUpdate.current = Date.now();
     } else {
@@ -16,12 +14,10 @@ const useThrottle = (value: any, interval = 100) => {
         setThrottledValue(value);
         lastUpdate.current = Date.now();
       }, interval);
-      return () => {
-        console.log(321321);
-
-        clearTimeout(timeId);
-      };
     }
+    return () => {
+      if (timeId) clearTimeout(timeId);
+    };
   }, [value, interval]);
 
   return throttledValue;

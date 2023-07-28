@@ -20,17 +20,15 @@ type RequestConfig = {
   cache: Map<string, CacheData>;
 };
 type RequestConfigKey = keyof RequestConfig;
-const requestConfigContainer: Map<RequestConfigKey, any> = new Map();
-requestConfigContainer.set("defaultHeaders", {});
-requestConfigContainer.set("baseUrl", "");
-requestConfigContainer.set("beforeInterceptors", new Set());
-requestConfigContainer.set("cacheSize", 0);
-requestConfigContainer.set("cacheTime", 0);
-requestConfigContainer.set("afterInterceptors", new Set());
-requestConfigContainer.set("cache", new Map());
+const config: Map<RequestConfigKey, any> = new Map();
+config.set("defaultHeaders", {});
+config.set("baseUrl", "");
+config.set("beforeInterceptors", new Set());
+config.set("cacheSize", 0);
+config.set("cacheTime", 0);
+config.set("afterInterceptors", new Set());
+config.set("cache", new Map());
 const requestConfig = () => {
-  const config = requestConfigContainer;
-
   const updateDefaultHeaders = (newHeaders: Record<string, string>) => {
     const headers = config.get("defaultHeaders");
     config.set("defaultHeaders", { ...headers, ...newHeaders });
@@ -81,7 +79,7 @@ const requestConfig = () => {
   };
 
   const getCurrentCacheSize = () => {
-    return config.get("cache").size();
+    return config.get("cache").size;
   };
 
   const getRequestCache = (url: string) => {
@@ -140,8 +138,8 @@ const requestConfig = () => {
     getMaxCacheSize,
     getDefaultHeaders,
     getConfig,
-    requestConfig,
+    // requestConfig,
   };
 };
-
-export default requestConfig;
+const shareConfig = requestConfig();
+export default shareConfig;

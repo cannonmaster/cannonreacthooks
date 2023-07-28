@@ -1,6 +1,8 @@
 import requestConfig from "@hook/requestConfig";
 type ExtendedRequestOptions = RequestOptions & RequestInit;
 interface RequestOptions {
+  debounce?: number;
+  polling?: number;
   url?: string | URL;
   params?: Record<string, string | number>;
   data?: any;
@@ -80,6 +82,7 @@ const executeRequest = async (
     onError,
     onSuccess,
     onFinally,
+    polling = 0,
     //@ts-ignore
     ...rest
   } = config;
@@ -97,7 +100,7 @@ const executeRequest = async (
     updateRequestCache,
     deleteRequestCache,
     baseUrl,
-  } = requestConfig();
+  } = requestConfig;
   let requestURL: URL;
   if (baseUrl()) {
     requestURL = new URL(url, baseUrl());

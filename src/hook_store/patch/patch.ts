@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ExtendedRequestOptions, ResponseData } from "@hook/_request";
 import executeRequest from "@hook/_request/_request";
 
@@ -6,7 +6,8 @@ const usePatch = (url: string, config: ExtendedRequestOptions = {}) => {
   const [res, setRes] = useState<ResponseData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [err, setErr] = useState<Error | null>(null);
-
+  const { debounce = 0 } = config;
+  const reqId = useRef<any>();
   useEffect(() => {
     const patch = async () => {
       try {
@@ -20,7 +21,16 @@ const usePatch = (url: string, config: ExtendedRequestOptions = {}) => {
       }
     };
 
-    patch();
+    if (!debounce) {
+      patch();
+    } else {
+      if (reqId.current) clearTimeout(reqId.current);
+      reqId.current = setTimeout(patch, debounce);
+    }
+
+    return () => {
+      if (reqId.current) clearTimeout(reqId.current);
+    };
   }, [url]);
 
   return {

@@ -3,15 +3,15 @@ import { useState, useRef, useEffect } from "react";
 type optionsType = {
   heading?: boolean;
   trailing?: boolean;
+  cb: (prev: any) => any;
 };
-const useDebounce = (
-  value: any,
-  delay: number,
-  options: optionsType = { trailing: true }
-) => {
+const useDebounce = (value: any, delay: number, options: optionsType) => {
+  if (delay === 0) {
+    return value;
+  }
   const [valueToDebounce, setDebouncedValue] = useState(value);
 
-  const { heading, trailing } = options;
+  const { heading, cb, trailing } = options;
   const valueRef = useRef(value);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
@@ -22,28 +22,24 @@ const useDebounce = (
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    if (trailing && heading) {
-      const shouldUseTrailing = () => {
-        if (valueRef.current !== valueToDebounce)
-          setDebouncedValue(valueRef.current);
-      };
-      timeoutRef.current = setTimeout(shouldUseTrailing, delay);
-    } else if (heading) {
-      setDebouncedValue(valueRef.current);
-      setTimeout(() => {}, delay);
-    } else if (trailing) {
-      timeoutRef.current = setTimeout(() => {
-        if (valueRef.current !== valueToDebounce) {
+    timeoutRef.current = setTimeout(() => {
+      if (trailing || valueRef.current !== valueToDebounce) {
+        if (cb) {
+          setDebouncedValue(cb(valueRef.current));
+        }
+
+        if (!cb) {
           setDebouncedValue(valueRef.current);
         }
-      }, delay);
-    }
+      }
+    }, delay);
+
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [value, delay, heading, trailing]);
+  }, [value, delay]);
 
   return valueToDebounce;
 };

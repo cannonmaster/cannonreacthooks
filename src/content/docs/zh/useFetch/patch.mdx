@@ -9,10 +9,6 @@ import UsePatch from "@hook/patch/demo";
 
 `usePatch`是一个自定义的 React Hook，简化了执行 PATCH 请求并处理加载和错误的过程。当你需要使用 HTTP PATCH 方法更新服务器或 API 上的数据，并希望在 React 组件中高效地管理加载和错误状态时，它特别有用。
 
-## 演示
-
-<UsePatch client:visible />
-
 ## 使用方法
 
 ```tsx
@@ -20,7 +16,10 @@ import React from "react";
 import usePatch from "./usePatch";
 
 const TestUsePatch = () => {
-  const { res, err, isLoading } = usePatch("http://localhost:3001/endpoint");
+  const { res, err, isLoading } = usePatch(
+    "http://localhost:3001/endpoint",
+    {}
+  );
 
   return (
     <div>
@@ -74,6 +73,40 @@ app.listen(3001, () => {
 | -------- | ----------------------------- | ------------------------- |
 | `url`    | string                        | 将发送 PATCH 请求的 URL。 |
 | `config` | ExtendedRequestOptions (可选) | PATCH 请求的其他配置。    |
+
+## 扩展请求选项
+
+`useGet` 钩子的 `config` 参数允许您使用以下属性自定义 GET 请求的行为：
+
+| 名称             | 类型                                                              | 描述                                                                                                         |
+| ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `debounce`       | `number`（可选）                                                  | 在最后触发后发送请求之前等待的时间（以毫秒为单位）。默认为 `undefined`。                                     |
+| `polling`        | `number`（可选）                                                  | 定期 GET 请求之间的时间间隔，用于定期轮询以获取更新的数据。默认为 `undefined`。                              |
+| `tabular`        | `TabularFormat`（可选）                                           | 一个可选对象，用于指定表格数据的格式，如果 API 返回的数据是表格格式的。                                      |
+| `params`         | `Record<string, string \| number>`                                | 与 GET 请求一起发送的附加参数。通常用于分页或过滤。                                                          |
+| `data`           | `any`（可选）                                                     | 要发送的请求主体数据。适用于发送 POST 请求中的数据。默认为 `undefined`。                                     |
+| `files`          | `File[]`（可选）                                                  | 一个包含要上传的文件的 File 对象数组。适用于文件上传请求。默认为 `undefined`。                               |
+| `isFormData`     | `boolean`（可选）                                                 | 一个标志，指示请求主体是否为 FormData 类型。默认为 `false`。                                                 |
+| `timeout`        | `number`（可选）                                                  | GET 请求的超时时间（以毫秒为单位）。如果请求花费的时间超过指定的超时时间，请求将被中止。默认为 `undefined`。 |
+| `offline`        | `boolean`（可选）                                                 | 一个标志，指示在设备离线时是否从缓存中存储和提供请求。默认为 `false`。                                       |
+| `onDataChunk`    | `(chunk: ReadableStreamReadResult<any>)`                          | 用于在使用流式响应时处理数据块的函数。默认为 `undefined`。                                                   |
+| `onBefore`       | `Array<(params: ExtendedRequestOptions) => any>`                  | 一个函数数组，在发送 GET 请求之前执行。这些函数可用于修改请求配置。默认为一个空数组。                        |
+| `onSuccess`      | `Array<(data: any, params: ExtendedRequestOptions) => any>`       | 一个函数数组，在 GET 请求成功时执行。这些函数可用于处理和修改响应数据。默认为一个空数组。                    |
+| `onError`        | `(error: Error)`                                                  | 在 GET 请求发生错误时执行的函数。默认为 `undefined`。                                                        |
+| `onFinally`      | `(params: ExtendedRequestOptions, data: any, error: any) => void` | 在 GET 请求完成后执行的函数，无论是成功还是发生错误。默认为 `undefined`。                                    |
+| `maxRetry`       | `number`（可选）                                                  | 在网络错误的情况下重试 GET 请求的最大次数。默认为 `undefined`。                                              |
+| `body`           | `BodyInit \| null`                                                | 要随 GET 请求发送的请求主体。可以为 `null`。                                                                 |
+| `cache`          | `RequestCache`                                                    | 一个字符串，指示请求将如何与浏览器缓存交互以设置请求的缓存。                                                 |
+| `credentials`    | `RequestCredentials`                                              | 一个字符串，指示是否始终发送请求的凭据，永不发送，或仅在发送到同源 URL 时发送。设置请求的凭据。              |
+| `headers`        | `HeadersInit`                                                     | 一个 Headers 对象、一个对象字面量或一个包含两个项数组的数组，用于设置请求的头部。                            |
+| `integrity`      | `string`                                                          | 要通过请求获取的资源的加密哈希。设置请求的完整性。                                                           |
+| `keepalive`      | `boolean`                                                         | 一个布尔值，用于设置请求的 keepalive。                                                                       |
+| `method`         | `string`                                                          | 一个字符串，用于设置请求的方法。                                                                             |
+| `mode`           | `RequestMode`                                                     | 一个字符串，用于指示请求是否使用 CORS，或是否限制为同源 URL。设置请求的模式。                                |
+| `redirect`       | `RequestRedirect`                                                 | 一个字符串，指示请求是否跟随重定向，遇到重定向时是否导致错误，或以不透明方式返回重定向。设置请求的重定向。   |
+| `referrer`       | `string`                                                          | 一个字符串，其值为同源 URL、"about:client" 或空字符串，用于设置请求的 referrer。                             |
+| `referrerPolicy` | `ReferrerPolicy`                                                  | 用于设置请求的 referrerPolicy 的 referrer 策略。                                                             |
+| `signal`         | `AbortSignal \| null`                                             | 一个 AbortSignal，用于设置请求                                                                               |
 
 ## 特点
 

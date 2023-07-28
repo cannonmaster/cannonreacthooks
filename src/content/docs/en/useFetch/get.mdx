@@ -3,7 +3,7 @@ title: useGet
 description: A custom React Hook for performing GET requests and handling loading and errors.
 ---
 
-import useGet from "@hook/get";
+import UseGet from "@hook/get/demo";
 
 ## Introduction
 
@@ -16,7 +16,9 @@ import React from "react";
 import useGet from "./useGet";
 
 const TestUseGet = () => {
-  const { res, isLoading, err } = useGet("http://localhost:3001");
+  const { res, isLoading, err } = useGet("http://localhost:3001", {
+    // config
+  });
 
   return (
     <>
@@ -46,6 +48,41 @@ The hook returns an object containing the following properties:
 | -------- | --------------------------------- | ------------------------------------------------ |
 | `url`    | string                            | The URL from which the GET request will be sent. |
 | `config` | ExtendedRequestOptions (optional) | Additional configuration for the GET request.    |
+
+## Extended Request Options
+
+The `config` parameter of the `useGet` hook allows you to customize the behavior of the GET request using the following properties:
+
+| Name                         | Type                                                              | Description                                                                                                                                                                       |
+| ---------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `debounce`(optional)         | `number`                                                          | The time in milliseconds to wait before sending the request after the last trigger. Defaults to `undefined`.                                                                      |
+| `polling`(not available yet) | `number`                                                          | The interval in milliseconds between periodic GET requests. Allows periodic polling for updated data. Defaults to `undefined`.                                                    |
+| `tabular`                    | `TabularFormat` (optional)                                        | An optional object specifying the format of tabular data if your API returns data in a tabular format.                                                                            |
+| `params`(optional)           | `Record<string, string \| number>`                                | Additional parameters to be sent along with the GET request. Used for pagination or filtering.                                                                                    |
+| `data`(optional)             | `any`                                                             | Data to be sent as the request body. Useful for sending data in POST requests. Defaults to `undefined`.                                                                           |
+| `files`(optional)            | `File[]` (optional)                                               | An array of File objects representing files to be uploaded in a file upload request.                                                                                              |
+| `isFormData`(optional)       | `boolean`                                                         | A flag indicating whether the request body is of type FormData. Defaults to `false`.                                                                                              |
+| `timeout`(optional)          | `number`                                                          | The timeout duration in milliseconds for the GET request. If the request takes longer, it will be aborted. Defaults to `undefined`.                                               |
+| `offline`(not available yet) | `boolean` (optional)                                              | A flag to indicate whether to store and serve the request from cache when the device is offline. Defaults to `false`.                                                             |
+| `onDataChunk`(optional)      | `(chunk: ReadableStreamReadResult<any>)`                          | A function to process chunks of data as they arrive when using streaming responses. Defaults to `undefined`.                                                                      |
+| `onBefore`(optional)         | `Array<(params: ExtendedRequestOptions) => any>`                  | An array of functions to be executed before sending the GET request. Defaults to an empty array.                                                                                  |
+| `onSuccess`(optional)        | `Array<(data: any, params: ExtendedRequestOptions) => any>`       | An array of functions to be executed when the GET request is successful. Defaults to an empty array.                                                                              |
+| `onError`(optional)          | `(error: Error)`                                                  | A function to be executed when an error occurs during the GET request. Defaults to `undefined`.                                                                                   |
+| `onFinally`(optional)        | `(params: ExtendedRequestOptions, data: any, error: any) => void` | A function to be executed after the GET request is completed, regardless of success or error. Defaults to `undefined`.                                                            |
+| `maxRetry`(optional)         | `number` (optional)                                               | The maximum number of times to retry the GET request in case of network errors. Defaults to `undefined`.                                                                          |
+| `body`(optional)             | `BodyInit \| null`                                                | The request body to be sent with the GET request. Can be `null`.                                                                                                                  |
+| `cache`(optional)            | `RequestCache`                                                    | A string indicating how the request will interact with the browser's cache to set request's cache.                                                                                |
+| `credentials` (optional)     | `RequestCredentials`                                              | A string indicating whether credentials will be sent with the request always, never, or only when sent to a same-origin URL. Sets request's credentials.                          |
+| `headers` (optional)         | `HeadersInit`                                                     | A Headers object, an object literal, or an array of two-item arrays to set request's headers.                                                                                     |
+| `integrity`(optional)        | `string`                                                          | A cryptographic hash of the resource to be fetched by request. Sets request's integrity.                                                                                          |
+| `keepalive`(optional)        | `boolean`                                                         | A boolean to set request's keepalive.                                                                                                                                             |
+| `method` (optional)          | `string`                                                          | A string to set request's method.                                                                                                                                                 |
+| `mode` (optional)            | `RequestMode`                                                     | A string to indicate whether the request will use CORS, or will be restricted to same-origin URLs. Sets request's mode.                                                           |
+| `redirect`(optional)         | `RequestRedirect`                                                 | A string indicating whether request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). Sets request's redirect. |
+| `referrer`(optional)         | `string`                                                          | A string whose value is a same-origin URL, "about:client", or the empty string, to set request's referrer.                                                                        |
+| `referrerPolicy`(optional)   | `ReferrerPolicy`                                                  | A referrer policy to set request's referrerPolicy.                                                                                                                                |
+| `signal` (optional)          | `AbortSignal \| null`                                             | An AbortSignal to set request's signal.                                                                                                                                           |
+| `window` (optional)          | `null`                                                            | Can only be null. Used to disassociate request from any Window.                                                                                                                   |
 
 ## Features
 

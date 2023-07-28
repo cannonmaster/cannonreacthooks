@@ -1,5 +1,4 @@
 import usePatch from "./patch";
-
 const TestUsePatch = () => {
   const { res, err, isLoading } = usePatch("http://localhost:3001/endpoint");
 

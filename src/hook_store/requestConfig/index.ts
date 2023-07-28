@@ -1,2 +1,2 @@
-import useRequestConfig from "./requestConfig";
-export default useRequestConfig;
+import requestConfig from "./requestConfig";
+export default requestConfig;
