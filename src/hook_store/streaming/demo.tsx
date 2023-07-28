@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useStreaming from "./streaming";
+import { useStreaming } from "@cannonui/reacthooks";
 
 const TestUseStreaming = () => {
   // let streamedData = "";

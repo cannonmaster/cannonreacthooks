@@ -1,4 +1,4 @@
-import usePatch from "./patch";
+import { usePatch } from "@cannonui/reacthooks";
 const TestUsePatch = () => {
   const { res, err, isLoading } = usePatch("http://localhost:3001/endpoint");
 

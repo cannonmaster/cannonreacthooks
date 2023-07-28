@@ -1,4 +1,4 @@
-import usePost from "./post";
+import { usePost } from "@cannonui/reacthooks";
 
 const TestUsePost = () => {
   const { res, err, isLoading } = usePost("http://localhost:3001/endpoint", {

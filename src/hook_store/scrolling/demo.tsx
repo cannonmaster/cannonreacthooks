@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import useScrolling from "./scrolling";
+import { useScrolling } from "@cannonui/reacthooks";
 const TestUseScrolling = () => {
   const element = useRef<HTMLDivElement>(null);
   const isScrolling = useScrolling(element);

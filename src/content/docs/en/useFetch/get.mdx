@@ -13,7 +13,7 @@ The `useGet` hook is a custom React Hook that facilitates GET requests and handl
 
 ```tsx
 import React from "react";
-import useGet from "./useGet";
+import { useGet } from "@cannonui/reacthooks";
 
 const TestUseGet = () => {
   const { res, isLoading, err } = useGet("http://localhost:3001", {

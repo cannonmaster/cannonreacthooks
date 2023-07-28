@@ -1,4 +1,4 @@
-import useToggle from "./toggle";
+import { useToggle } from "@cannonui/reacthooks";
 
 const TestUseToggle = () => {
   const { setOn, setOff, isToggle, toggle } = useToggle();

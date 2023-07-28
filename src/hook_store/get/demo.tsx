@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useGet from "./get";
+import { useGet } from "@cannonui/reacthooks";
 const TestUseGet = () => {
   const [c, setC] = useState(0);
   const { res, isLoading, err } = useGet("http://localhost:3001", {

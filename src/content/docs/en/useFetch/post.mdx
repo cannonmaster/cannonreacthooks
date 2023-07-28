@@ -13,7 +13,7 @@ The `usePost` hook is a custom React Hook that simplifies the process of making 
 
 ```tsx
 import React from "react";
-import usePost from "./usePost";
+import { usePost } from "@cannonui/reacthooks";
 
 const TestUsePost = () => {
   const { res, err, isLoading } = usePost("http://localhost:3001/endpoint", {

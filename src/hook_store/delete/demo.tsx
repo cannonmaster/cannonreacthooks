@@ -1,4 +1,4 @@
-import useDelete from "./delete";
+import { useDelete } from "@cannonui/reacthooks";
 
 const TestUseDelete = () => {
   const { res, err, isLoading } = useDelete("http://localhost:3001/endpoint");

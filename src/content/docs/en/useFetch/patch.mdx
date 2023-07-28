@@ -13,7 +13,7 @@ The `usePatch` hook is a custom React Hook that simplifies the process of making
 
 ```tsx
 import React from "react";
-import usePatch from "./usePatch";
+import { usePatch } from "@cannonui/reacthooks";
 
 const TestUsePatch = () => {
   const { res, err, isLoading } = usePatch("http://localhost:3001/endpoint", {

@@ -13,7 +13,7 @@ import useGet from "@hook/get";
 
 ```tsx
 import React from "react";
-import useGet from "./useGet";
+import { useGet } from "@cannonui/reacthooks";
 
 const TestUseGet = () => {
   const { res, isLoading, err } = useGet("http://localhost:3001", {});

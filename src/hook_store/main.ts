@@ -18,7 +18,21 @@ import useLocation from "./location";
 import useOnline from "./online";
 import useMap from "./map";
 import usePrevious from "./previous";
+import useGet from "./get";
+import usePost from "./post";
+import usePatch from "./patch";
+import useStreaming from "./streaming";
+import useDelete from "./delete";
+import useToggle from "./toggle";
+import useScrolling from "./scrolling";
 export {
+  useScrolling,
+  useDelete,
+  useStreaming,
+  usePatch,
+  usePost,
+  useGet,
+  useToggle,
   useMap,
   usePrevious,
   useLocation,
