@@ -1,0 +1,100 @@
+---
+title: useIntervalWhen Hook
+description: A custom React Hook for executing a callback at a specified interval when a condition is met.
+---
+
+import UseIntervalwhen from "@hook/intervalwhen/demo";
+
+## Introduction
+
+The `useIsClient` hook is a custom React hook that helps you determine if the code is running on the client-side or server-side.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseIntervalwhen client:only />
+</div>
+
+## Hook Implementation
+
+```tsx
+import { useRef, useEffect } from "react";
+
+interface ConfigTypes {
+  condition: boolean;
+  immediate?: boolean;
+  delay?: number;
+}
+
+type CallbackType = () => void;
+
+const useIntervalWhen = (callback: CallbackType, config: ConfigTypes) => {
+  const intervalId = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { condition, immediate = true, delay = 100 } = config;
+
+  useEffect(() => {
+    if (immediate && condition) {
+      callback();
+    }
+
+    if (condition) {
+      intervalId.current = setInterval(callback, delay);
+    }
+
+    return () => {
+      if (intervalId.current) {
+        clearInterval(intervalId.current);
+        intervalId.current = null;
+      }
+    };
+  }, [callback, condition, delay, immediate]);
+};
+
+export default useIntervalWhen;
+```
+
+## Parameters
+
+| Name        | Type                 | Description                                                                                                                          |
+| ----------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `callback`  | `CallbackType`       | The callback function that will be executed at the specified interval when the condition is met.                                     |
+| `config`    | `ConfigTypes`        | An object that includes the following properties:                                                                                    |
+| `condition` | `boolean`            | The condition that determines whether the callback function should be executed at the specified interval.                            |
+| `immediate` | `boolean` (optional) | If `true`, the callback function will be executed immediately once the hook is invoked and the condition is met. Defaults to `true`. |
+| `delay`     | `number` (optional)  | The interval in milliseconds at which the callback function should be executed. Defaults to `100` milliseconds.                      |
+
+## Example
+
+```tsx
+import { useState } from "react";
+import useIntervalWhen from "./intervalwhen";
+
+const TestUseIntervalWhen = () => {
+  const [sec, setSec] = useState(0);
+  const [condition, setCondition] = useState(false);
+
+  useIntervalWhen(
+    () => {
+      setSec((sec) => sec + 0.1);
+    },
+    { condition }
+  );
+
+  return (
+    <div>
+      <div>sec: {sec}</div>
+      <button onClick={() => setCondition(!condition)}>Run/Stop</button>
+    </div>
+  );
+};
+
+export default TestUseIntervalWhen;
+```
+
+In this example, we have a component called `TestUseIntervalWhen` that uses the `useIntervalWhen` hook to execute a callback function, updating the `sec` state at a specified interval when the `condition` is true. Clicking the "Run/Stop" button toggles the `condition`, controlling whether the callback should be executed or stopped.
+
+The hook automatically handles starting and stopping the interval based on the `condition`. When the condition is `true`, the interval will start running, and the callback will be executed every 100 milliseconds, updating the `sec` state by 0.1 with each interval. When the condition is `false`, the interval will be stopped, and the callback won't be executed.
+
+## Use Scenario
+
+The `useIntervalWhen` hook is useful when you need to perform a task repeatedly at a specified interval, but only when a specific condition is met. It allows you to control the execution of the callback function, making it convenient for scenarios such as polling for data or triggering actions based on certain conditions in your React application.

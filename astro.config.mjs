@@ -46,6 +46,15 @@ export default defineConfig({
           },
         },
         {
+          label: "useStore",
+          translations: {
+            "zh-CN": "useStore",
+          },
+          autogenerate: {
+            directory: "useStore",
+          },
+        },
+        {
           label: "Dom",
           translations: {
             "zh-CN": "Dom",

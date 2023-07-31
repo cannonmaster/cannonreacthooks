@@ -1,0 +1,117 @@
+---
+title: useStore
+description: 用于管理状态并提供订阅功能的自定义 React Hook。
+---
+
+import UseStore from "@hook/store/demo";
+
+## 介绍
+
+`useStore` hook 旨在用于在 React 应用程序中管理状态和处理订阅。它提供了一种简单的方式来定义和使用可以在组件之间访问和更新的状态数据。
+
+<UseStore client:visible />
+
+## 用法
+
+```tsx
+import useStore from "./store";
+import store from "./astore";
+import storeC from "./cstore";
+import CmpA from "./cmpA";
+import CmpC from "./cmpC";
+
+const TestCreateStore = () => {
+  const { inc, dec, reset } = useStore(store);
+
+  return (
+    <div>
+      <button onClick={() => inc()}>增加</button>
+      <button onClick={() => dec()}>减少</button>
+      <button onClick={() => reset()}>重置</button>
+      <CmpA />
+      <CmpC />
+    </div>
+  );
+};
+
+export default TestCreateStore;
+
+//cmpC
+import useStore from "./store";
+import store from "./astore";
+const CmpA = () => {
+  const { val } = useStore(store);
+
+  return <div>组件 A: {val}</div>;
+};
+export default CmpA;
+
+import useStore from "./store";
+import store from "./astore";
+const CmpC = () => {
+  const { val } = useStore(store);
+
+  return <div>组件 C: {val}</div>;
+};
+export default CmpC;
+
+// astore.ts
+import { StoreApi, createStoreApi } from "./store";
+type storeType = {
+  val: number;
+  inc: () => void;
+  dec: () => void;
+  reset: () => void;
+};
+const store = createStoreApi<storeType>((set, get) => ({
+  val: 0,
+  inc: () => set((state: storeType) => ({ val: state.val + 1 })),
+  dec: () => set((state: storeType) => ({ val: state.val - 1 })),
+  reset: () => set({ val: 0 }),
+}));
+export type { storeType };
+export default store;
+
+//cstore.ts
+import { createStoreApi } from "./store";
+type storeType = {
+  val: number;
+  inc: () => void;
+  dec: () => void;
+  reset: () => void;
+};
+const store = createStoreApi<storeType>((set, get) => ({
+  val: 100,
+  inc: () => set((state: storeType) => ({ val: state.val + 1 })),
+  dec: () => set((state: storeType) => ({ val: state.val - 1 })),
+  reset: () => set({ val: 0 }),
+}));
+export type { storeType };
+export default store;
+```
+
+## 返回值
+
+`useStore` hook 返回一个包含在存储中定义的状态和操作的对象。
+
+## 参数
+
+`useStore` hook 接受以下参数：
+
+| Name  | Type          | Description                            |
+| ----- | ------------- | -------------------------------------- |
+| `api` | `StoreApi<S>` | 使用 `createStoreApi` 创建的存储 API。 |
+
+## 特点
+
+- 在单个存储中管理状态和操作。
+- 提供订阅功能以在存储状态更改时更新组件。
+- 支持多个存储。
+
+## 示例
+
+在提供的示例中，我们创建了多个存储，其中包含初始状态和操作，用于管理状态。然后在组件中使用存储 API 来显示和更新计数值。
+
+## 使用场景
+
+`useStore` hook 在需要在 React 应用程序中管理多个组件的状态时非常有用。它允许您定义一个中心化的存储，并订阅更新以确保组件与状态更改保持同步。

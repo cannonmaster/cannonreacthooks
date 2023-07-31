@@ -1,0 +1,67 @@
+---
+title: useFavicon Hook
+description: 一个用于动态更改网页Favicon的自定义React Hook。
+---
+
+import UseFavicon from "@hook/favicon/demo";
+
+## 简介
+
+这是一个用于动态更改网页 Favicon 的自定义 React Hook。
+
+## 示例
+
+<UseFavicon />
+
+## 使用方法
+
+```tsx
+import { useEffect } from "react";
+
+const useFavicon = (url: string) => {
+  useEffect(() => {
+    const favicon: HTMLLinkElement | null =
+      document.querySelector("link[rel='icon']");
+    if (!favicon) {
+      const _favicon = document.createElement("link");
+      _favicon.rel = "icon";
+      _favicon.href = url;
+      document.head.appendChild(_favicon);
+    } else {
+      favicon.href = url;
+    }
+  }, [url]);
+};
+export default useFavicon;
+```
+
+## 参数
+
+| 名称  | 类型     | 描述                |
+| ----- | -------- | ------------------- |
+| `url` | `string` | 新 Favicon 的 URL。 |
+
+## 特点
+
+- 动态更改网页 Favicon。
+- 当`url`参数变化时自动更新 Favicon。
+
+## 示例
+
+```tsx
+import useFavicon from "./favicon";
+
+const TestUseFavicon = () => {
+  let url = "path/to/favicon.png"; // 替换为您的Favicon图像的实际URL。
+  useFavicon(url);
+
+  return <div>favicon</div>;
+};
+export default TestUseFavicon;
+```
+
+在此示例中，我们有一个名为`TestUseFavicon`的组件，它使用`useFavicon`钩子来动态更改网页的 Favicon。`url`变量代表新 Favicon 图像的 URL。当组件挂载或`url`参数发生变化时，Favicon 将相应地更新。
+
+## 使用场景
+
+当您希望根据特定事件或条件动态更改网页的 Favicon 时，`useFavicon`钩子非常有用。它使您能够轻松更新 Favicon，而无需直接修改 HTML。这在您的 Web 应用程序中指示不同状态或事件时非常有用。

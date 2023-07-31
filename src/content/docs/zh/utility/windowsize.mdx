@@ -1,0 +1,82 @@
+---
+title: useWindowSize
+description: 用于跟踪浏览器窗口尺寸的自定义 React Hook。
+---
+
+import UseWindowSize from "@hook/windowsize/demo";
+
+## 介绍
+
+`useWindowSize` Hook 旨在跟踪 React 组件中浏览器窗口的尺寸。它会在 "resize" 事件上添加监听器，以确保在窗口调整大小时动态更新尺寸。该 Hook 返回一个包含当前窗口宽度和高度的 "size" 对象，使组件可以访问和利用窗口尺寸，以用于各种目的，例如响应式布局调整、条件渲染或基于可用空间的计算。
+
+## Play
+
+<div>
+  <UseWindowSize client:only />
+</div>
+
+## Usage
+
+```tsx
+import { useEffect, useState } from "react";
+
+const useWindowSize = () => {
+  const [size, setSize] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  const handleWindowResize = () => {
+    setSize({
+      height: window.innerHeight,
+      width: window.innerWidth,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  return size;
+};
+
+export default useWindowSize;
+```
+
+## Return Value
+
+`useWindowSize` Hook 返回一个包含当前浏览器窗口尺寸的对象：
+
+| 名称     | 类型     | 描述             |
+| -------- | -------- | ---------------- |
+| `width`  | `number` | 当前窗口的宽度。 |
+| `height` | `number` | 当前窗口的高度。 |
+
+## Example
+
+在提供的示例中，`useWindowSize` Hook 在 `TestWindowSize` 组件中用于显示当前窗口的宽度和高度：
+
+```tsx
+import useWindowSize from "./useWindowSize";
+
+const TestWindowSize = () => {
+  const { height, width } = useWindowSize();
+
+  return (
+    <>
+      <div>window width: {width}</div>
+      <div>window height: {height}</div>
+    </>
+  );
+};
+
+export default TestWindowSize;
+```
+
+## Use Scenario
+
+`useWindowSize` Hook 适用于需要根据浏览器窗口尺寸调整 UI 的场景。它允许您轻松访问当前窗口的宽度和高度，并在窗口大小发生变化时做出响应，从而在 React 应用程序中创建具有响应性和动态性的用户界面。

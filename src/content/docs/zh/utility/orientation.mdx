@@ -1,0 +1,88 @@
+---
+title: useOrientation
+description: 用于检测设备方向的自定义React Hook。
+---
+
+import UseOrientation from "@hook/orientation/demo";
+
+用于检测设备方向的自定义 React Hook。
+
+## 介绍
+
+`useOrientation` hook 用于在 React 应用中检测设备方向。它提供了一种简单的方式来访问设备当前的方向，并在方向发生变化时更新状态。
+
+## 演示
+
+<div>
+  <UseOrientation client:only />
+</div>
+
+## 使用方法
+
+```tsx
+import { useEffect, useState } from "react";
+
+const useOrientation = () => {
+  const [orientation, setOrientation] = useState<string | undefined>(
+    window.screen.orientation?.type || "unknown"
+  );
+
+  useEffect(() => {
+    const handleOrientation = () => {
+      if (window.screen.orientation) {
+        setOrientation(window.screen.orientation.type);
+      } else {
+        setOrientation("unknown");
+      }
+    };
+    window.addEventListener("orientationchange", handleOrientation);
+
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientation);
+    };
+  }, []);
+
+  return orientation;
+};
+
+export default useOrientation;
+```
+
+## 返回值
+
+| 类型                  | 描述                                                        |
+| --------------------- | ----------------------------------------------------------- |
+| `string \| undefined` | 当前设备的方向。可能的取值包括：                            |
+|                       | - `"portrait-primary"`: 设备处于纵向方向，主要顶部朝上。    |
+|                       | - `"portrait-secondary"`: 设备处于纵向方向，次要底部朝上。  |
+|                       | - `"landscape-primary"`: 设备处于横向方向，主要左侧朝上。   |
+|                       | - `"landscape-secondary"`: 设备处于横向方向，次要右侧朝上。 |
+|                       | - `"portrait"`: 设备处于纵向方向，但方向未指定。            |
+|                       | - `"landscape"`: 设备处于横向方向，但方向未指定。           |
+|                       | - `"unknown"`: 无法确定设备的方向。                         |
+
+## 使用方法
+
+`useOrientation` hook 用于在 React 应用中检测设备方向。它提供了一种简单的方式来访问设备当前的方向，并在方向发生变化时更新状态。
+
+## 示例
+
+在提供的示例中，我们使用 `useOrientation` hook 来检测设备方向。`TestUseOrientation` 组件显示设备当前的方向。
+
+```tsx
+import useOrientation from "./useOrientation";
+
+const TestUseOrientation = () => {
+  const orientation = useOrientation();
+
+  return <div>orientation: {orientation}</div>;
+};
+
+export default TestUseOrientation;
+```
+
+## 适用场景
+
+`useOrientation` hook 在需要根据设备方向调整用户界面的场景中非常有用。例如，您可能希望为纵向和横向方向显示不同的布局或样式。该 hook 允许您轻松访问当前方向，并对设备方向的变化做出响应。
+
+---

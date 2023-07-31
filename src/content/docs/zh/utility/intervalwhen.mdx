@@ -1,0 +1,100 @@
+---
+title: useIntervalWhen Hook
+description: 一个自定义的 React Hook，用于在满足条件时按指定间隔执行回调函数。
+---
+
+import UseIntervalwhen from "@hook/intervalwhen/demo";
+
+## 介绍
+
+`useIntervalWhen` 是一个自定义的 React Hook，可以帮助您在满足条件时按指定间隔执行回调函数。它特别适用于需要定期执行特定任务的场景，例如轮询数据更新或在满足特定条件时触发操作。
+
+## 使用演示
+
+<div style="margin-top: 3%;">
+  <UseIntervalwhen client:only />
+</div>
+
+## Hook 实现
+
+```tsx
+import { useRef, useEffect } from "react";
+
+interface ConfigTypes {
+  condition: boolean;
+  immediate?: boolean;
+  delay?: number;
+}
+
+type CallbackType = () => void;
+
+const useIntervalWhen = (callback: CallbackType, config: ConfigTypes) => {
+  const intervalId = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { condition, immediate = true, delay = 100 } = config;
+
+  useEffect(() => {
+    if (immediate && condition) {
+      callback();
+    }
+
+    if (condition) {
+      intervalId.current = setInterval(callback, delay);
+    }
+
+    return () => {
+      if (intervalId.current) {
+        clearInterval(intervalId.current);
+        intervalId.current = null;
+      }
+    };
+  }, [callback, condition, delay, immediate]);
+};
+
+export default useIntervalWhen;
+```
+
+## 参数
+
+| 名称        | 类型             | 描述                                                                       |
+| ----------- | ---------------- | -------------------------------------------------------------------------- |
+| `callback`  | `CallbackType`   | 将在满足条件时按指定间隔执行的回调函数。                                   |
+| `config`    | `ConfigTypes`    | 包含以下属性的对象：                                                       |
+| `condition` | `boolean`        | 决定是否在满足条件时执行回调函数的条件。                                   |
+| `immediate` | `boolean` (可选) | 如果为 `true`，则在调用 Hook 并满足条件时立即执行回调函数。默认为 `true`。 |
+| `delay`     | `number` (可选)  | 回调函数执行的间隔，以毫秒为单位。默认为 `100` 毫秒。                      |
+
+## 示例
+
+```tsx
+import { useState } from "react";
+import useIntervalWhen from "./intervalwhen";
+
+const TestUseIntervalWhen = () => {
+  const [sec, setSec] = useState(0);
+  const [condition, setCondition] = useState(false);
+
+  useIntervalWhen(
+    () => {
+      setSec((sec) => sec + 0.1);
+    },
+    { condition }
+  );
+
+  return (
+    <div>
+      <div>秒数：{sec}</div>
+      <button onClick={() => setCondition(!condition)}>运行/停止</button>
+    </div>
+  );
+};
+
+export default TestUseIntervalWhen;
+```
+
+在此示例中，我们有一个名为 `TestUseIntervalWhen` 的组件，它使用 `useIntervalWhen` Hook 来按指定间隔执行回调函数，并在满足 `condition` 为 `true` 时更新 `sec` 状态。点击 "运行/停止" 按钮会切换 `condition`，控制是否执行回调函数。
+
+该 Hook 自动处理基于 `condition` 的间隔启动和停止。当 `condition` 为 `true` 时，间隔会开始运行，并且每 100 毫秒执行一次回调函数，每次执行都会使 `sec` 状态增加 0.1。当 `condition` 为 `false` 时，间隔会停止，并且回调函数将不再执行。
+
+## 使用场景
+
+`useIntervalWhen` Hook 适用于需要定期按指定间隔执行任务的场景，但仅在满足特定条件时执行。它允许您控制回调函数的执行，非常适合用于 React 应用程序中的轮询数据或根据特定条件触发操作等场景。

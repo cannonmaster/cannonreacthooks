@@ -1,0 +1,71 @@
+---
+title: useMeasure Hook
+description: 一个用于测量元素尺寸的自定义 React Hook。
+---
+
+import UseMeasure from "@hook/measure/demo";
+
+## 简介
+
+useMeasure Hook 是一个用于测量元素尺寸的自定义 React Hook。
+
+## 示例
+
+<div style="margin-top: 3%;">
+  <UseMeasure client:only />
+</div>
+
+## 用法
+
+```tsx
+import { useMeasure } from "@cannonui/reacthooks";
+
+const TestUseMeasure = () => {
+  const [rect, ref] = useMeasure();
+
+  return (
+    <div>
+      <div
+        style={{ width: "100%", height: "100px", backgroundColor: "cyan" }}
+        ref={ref}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100%",
+          }}
+        >
+          调整窗口大小以查看元素尺寸
+        </div>
+      </div>
+
+      <div>宽度：{rect.width}</div>
+      <div>高度：{rect.height}</div>
+    </div>
+  );
+};
+
+export default TestUseMeasure;
+```
+
+## 返回值
+
+| 名称   | 类型                                | 描述                                |
+| ------ | ----------------------------------- | ----------------------------------- |
+| `rect` | `{ width: number; height: number }` | 包含元素尺寸宽度和高度的对象。      |
+| `ref`  | `RefObject<HTMLDivElement>`         | 需要附加到要测量的元素的 ref 对象。 |
+
+## 特性
+
+- 测量元素尺寸。
+- 当元素大小发生变化时，自动更新尺寸。
+
+## 示例
+
+在此示例中，我们有一个名为 `TestUseMeasure` 的组件，使用 `useMeasure` Hook 来测量一个 div 元素的尺寸。`rect` 对象包含了元素的当前宽度和高度。`ref` 对象被附加到 div 元素上以实现测量。
+
+## 使用场景
+
+useMeasure Hook 适用于需要根据元素尺寸动态调整 UI 的场景。例如，您可以使用它来创建响应式设计、动画或根据可用空间调整布局。

@@ -1,0 +1,86 @@
+---
+title: useOrientation
+description: A custom React Hook for detecting the device orientation.
+---
+
+import UseOrientation from "@hook/orientation/demo";
+
+A custom React Hook for detecting the device orientation.
+
+## Introduction
+
+The `useOrientation` hook is designed to detect the device orientation in a React application. It provides a simple way to access the current orientation of the device and update the state whenever the orientation changes.
+
+## Play
+
+<div>
+  <UseOrientation client:only />
+</div>
+
+## Usage
+
+```tsx
+import { useEffect, useState } from "react";
+
+const useOrientation = () => {
+  const [orientation, setOrientation] = useState<string | undefined>(
+    window.screen.orientation?.type || "unknown"
+  );
+
+  useEffect(() => {
+    const handleOrientation = () => {
+      if (window.screen.orientation) {
+        setOrientation(window.screen.orientation.type);
+      } else {
+        setOrientation("unknown");
+      }
+    };
+    window.addEventListener("orientationchange", handleOrientation);
+
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientation);
+    };
+  }, []);
+
+  return orientation;
+};
+
+export default useOrientation;
+```
+
+## Return Value
+
+| Type                  | Description                                                                                         |
+| --------------------- | --------------------------------------------------------------------------------------------------- |
+| `string \| undefined` | The current device orientation. Possible values are:                                                |
+|                       | - `"portrait-primary"`: The device is in portrait orientation with the primary top side up.         |
+|                       | - `"portrait-secondary"`: The device is in portrait orientation with the secondary bottom side up.  |
+|                       | - `"landscape-primary"`: The device is in landscape orientation with the primary left side up.      |
+|                       | - `"landscape-secondary"`: The device is in landscape orientation with the secondary right side up. |
+|                       | - `"portrait"`: The device is in portrait orientation, but the orientation is unspecified.          |
+|                       | - `"landscape"`: The device is in landscape orientation, but the orientation is unspecified.        |
+|                       | - `"unknown"`: The device orientation cannot be determined.                                         |
+
+## Usage
+
+The `useOrientation` hook is designed to detect the device orientation in a React application. It provides a simple way to access the current orientation of the device and update the state whenever the orientation changes.
+
+## Example
+
+In the provided example, the `useOrientation` hook is used to detect the device orientation. The `TestUseOrientation` component displays the current orientation of the device.
+
+```tsx
+import useOrientation from "./useOrientation";
+
+const TestUseOrientation = () => {
+  const orientation = useOrientation();
+
+  return <div>orientation: {orientation}</div>;
+};
+
+export default TestUseOrientation;
+```
+
+## Use Scenario
+
+The `useOrientation` hook is useful in scenarios where you need to adapt the UI based on the device orientation. For example, you may want to display different layouts or styles for portrait and landscape orientations. This hook allows you to easily access the current orientation and respond to changes in the orientation of the device.

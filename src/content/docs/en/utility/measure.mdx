@@ -1,0 +1,71 @@
+---
+title: useMeasure Hook
+description: A custom React Hook for measuring the dimensions of an element.
+---
+
+import UseMeasure from "@hook/measure/demo";
+
+## Introduction
+
+A custom React Hook for measuring the dimensions of an element.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseMeasure client:only />
+</div>
+
+## Usage
+
+```tsx
+import { useMeasure } from "@cannonui/reacthooks";
+
+const TestUseMeasure = () => {
+  const [rect, ref] = useMeasure();
+
+  return (
+    <div>
+      <div
+        style={{ width: "100%", height: "100px", backgroundColor: "cyan" }}
+        ref={ref}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100%",
+          }}
+        >
+          resize the window to see the element measure
+        </div>
+      </div>
+
+      <div>width: {rect.width}</div>
+      <div>height: {rect.height}</div>
+    </div>
+  );
+};
+
+export default TestUseMeasure;
+```
+
+## Return Value
+
+| Name   | Type                                | Description                                                            |
+| ------ | ----------------------------------- | ---------------------------------------------------------------------- |
+| `rect` | `{ width: number; height: number }` | Object containing the width and height properties of the element.      |
+| `ref`  | `RefObject<HTMLDivElement>`         | Ref object that should be attached to the element you want to measure. |
+
+## Features
+
+- Measures the dimensions of an element.
+- Automatically updates the dimensions when the element is resized.
+
+## Example
+
+In this example, we have a component called `TestUseMeasure` that uses the `useMeasure` Hook to measure the dimensions of a div element. The `rect` object contains the `width` and `height` properties, which represent the current dimensions of the element. The `ref` object is attached to the div element to enable measurement.
+
+## Use Scenario
+
+The `useMeasure` Hook is useful in scenarios where you need to dynamically adjust your UI based on the dimensions of an element. For example, you can use it to create responsive designs, animations, or to adjust layout based on available space.

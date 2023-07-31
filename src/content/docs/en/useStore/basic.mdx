@@ -1,0 +1,117 @@
+---
+title: useStore
+description: A custom React Hook for managing state and providing subscription functionality.
+---
+
+import UseStore from "@hook/store/demo";
+
+## Introduction
+
+The `useStore` hook is designed to manage state and handle subscriptions in a React application. It provides a simple way to define and use stateful data that can be accessed and updated across components.
+
+<UseStore client:visible />
+
+## Usage
+
+```tsx
+import useStore from "./store";
+import store from "./astore";
+import storeC from "./cstore";
+import CmpA from "./cmpA";
+import CmpC from "./cmpC";
+
+const TestCreateStore = () => {
+  const { inc, dec, reset } = useStore(store);
+
+  return (
+    <div>
+      <button onClick={() => inc()}>inc</button>
+      <button onClick={() => dec()}>dec</button>
+      <button onClick={() => reset()}>reset</button>
+      <CmpA />
+      <CmpC />
+    </div>
+  );
+};
+
+export default TestCreateStore;
+
+//cmpC
+import useStore from "./store";
+import store from "./astore";
+const CmpA = () => {
+  const { val } = useStore(store);
+
+  return <div>Component A: {val}</div>;
+};
+export default CmpA;
+
+import useStore from "./store";
+import store from "./astore";
+const CmpC = () => {
+  const { val } = useStore(store);
+
+  return <div>Component C: {val}</div>;
+};
+export default CmpC;
+
+// astore.ts
+import { StoreApi, createStoreApi } from "./store";
+type storeType = {
+  val: number;
+  inc: () => void;
+  dec: () => void;
+  reset: () => void;
+};
+const store = createStoreApi<storeType>((set, get) => ({
+  val: 0,
+  inc: () => set((state: storeType) => ({ val: state.val + 1 })),
+  dec: () => set((state: storeType) => ({ val: state.val - 1 })),
+  reset: () => set({ val: 0 }),
+}));
+export type { storeType };
+export default store;
+
+//cstore.ts
+import { createStoreApi } from "./store";
+type storeType = {
+  val: number;
+  inc: () => void;
+  dec: () => void;
+  reset: () => void;
+};
+const store = createStoreApi<storeType>((set, get) => ({
+  val: 100,
+  inc: () => set((state: storeType) => ({ val: state.val + 1 })),
+  dec: () => set((state: storeType) => ({ val: state.val - 1 })),
+  reset: () => set({ val: 0 }),
+}));
+export type { storeType };
+export default store;
+```
+
+## Return Value
+
+The `useStore` hook returns an object containing state and actions defined in the store.
+
+## Parameters
+
+The `useStore` hook takes the following parameter:
+
+| Name  | Type          | Description                                  |
+| ----- | ------------- | -------------------------------------------- |
+| `api` | `StoreApi<S>` | The store API created with `createStoreApi`. |
+
+## Features
+
+- Manages state and actions in a single store.
+- Provides subscription functionality to update components when the store state changes.
+- Multiple store
+
+## Example
+
+In the provided example, we create multiple store with initial state and actions to manage the state. The store API is then used in a component to display and update the count value.
+
+## Use Scenario
+
+The `useStore` hook is useful in scenarios where you need to manage state across multiple components in a React application. It allows you to define a centralized store with actions and subscribe to updates to keep components in sync with the state changes.

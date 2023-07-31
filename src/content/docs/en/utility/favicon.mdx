@@ -1,0 +1,67 @@
+---
+title: useFavicon Hook
+description: A custom React Hook for dynamically changing the favicon of a web page.
+---
+
+import UseFavicon from "@hook/favicon/demo";
+
+## Introduction
+
+A custom React Hook for dynamically changing the favicon of a web page.
+
+## Play
+
+<UseFavicon />
+
+## Usage
+
+```tsx
+import { useEffect } from "react";
+
+const useFavicon = (url: string) => {
+  useEffect(() => {
+    const favicon: HTMLLinkElement | null =
+      document.querySelector("link[rel='icon']");
+    if (!favicon) {
+      const _favicon = document.createElement("link");
+      _favicon.rel = "icon";
+      _favicon.href = url;
+      document.head.appendChild(_favicon);
+    } else {
+      favicon.href = url;
+    }
+  }, [url]);
+};
+export default useFavicon;
+```
+
+## Parameters
+
+| Name  | Type     | Description                 |
+| ----- | -------- | --------------------------- |
+| `url` | `string` | The URL of the new favicon. |
+
+## Features
+
+- Dynamically changes the favicon of a web page.
+- Automatically updates the favicon when the `url` parameter changes.
+
+## Example
+
+```tsx
+import useFavicon from "./favicon";
+
+const TestUseFavicon = () => {
+  let url = "path/to/favicon.png"; // Replace with the actual URL of your favicon image.
+  useFavicon(url);
+
+  return <div>favicon</div>;
+};
+export default TestUseFavicon;
+```
+
+In this example, we have a component called `TestUseFavicon` that uses the `useFavicon` hook to dynamically change the favicon of the web page. The `url` variable represents the URL of the new favicon image. When the component mounts or when the `url` parameter changes, the favicon will be updated accordingly.
+
+## Use Scenario
+
+The `useFavicon` hook is useful when you want to dynamically change the favicon of a web page based on certain events or conditions. It allows you to easily update the favicon without having to modify the HTML directly. This can be handy for indicating different states or events in your web application.

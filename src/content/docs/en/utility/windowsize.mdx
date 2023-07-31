@@ -1,0 +1,82 @@
+---
+title: useWindowSize
+description: A custom React Hook for tracking the dimensions of the browser window.
+---
+
+import UseWindowSize from "@hook/windowsize/demo";
+
+## Introduction
+
+The `useWindowSize` hook is designed to track the dimensions of the browser window within a React component. It attaches an event listener to the "resize" event, ensuring that the window size is updated dynamically whenever the window is resized. The hook returns a "size" object containing the current width and height of the window, enabling components to access and utilize the window dimensions for various purposes, such as responsive layout adjustments, conditional rendering, or calculations based on the available space.
+
+## Play
+
+<div>
+  <UseWindowSize client:only />
+</div>
+
+## Usage
+
+```tsx
+import { useEffect, useState } from "react";
+
+const useWindowSize = () => {
+  const [size, setSize] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  const handleWindowResize = () => {
+    setSize({
+      height: window.innerHeight,
+      width: window.innerWidth,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  return size;
+};
+
+export default useWindowSize;
+```
+
+## Return Value
+
+The `useWindowSize` hook returns an object containing the current dimensions of the browser window:
+
+| Name     | Type     | Description                       |
+| -------- | -------- | --------------------------------- |
+| `width`  | `number` | The current width of the window.  |
+| `height` | `number` | The current height of the window. |
+
+## Example
+
+In the provided example, the `useWindowSize` hook is used in the `TestWindowSize` component to display the current window width and height:
+
+```tsx
+import useWindowSize from "./useWindowSize";
+
+const TestWindowSize = () => {
+  const { height, width } = useWindowSize();
+
+  return (
+    <>
+      <div>window width: {width}</div>
+      <div>window height: {height}</div>
+    </>
+  );
+};
+
+export default TestWindowSize;
+```
+
+## Use Scenario
+
+The `useWindowSize` hook is useful in scenarios where you need to adapt the UI based on the dimensions of the browser window. It allows you to easily access the current window width and height and respond to changes in the window size, enabling you to create responsive and dynamic user interfaces in your React application.

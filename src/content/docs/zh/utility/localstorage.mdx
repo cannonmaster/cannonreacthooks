@@ -1,0 +1,73 @@
+---
+title: useLocalstorage Hook
+description: 一个用于处理本地存储数据的自定义 React Hook。
+---
+
+import UseLocalstorage from "@hook/localstorage/demo";
+
+## 简介
+
+useLocalstorage Hook 是一个用于处理本地存储数据的自定义 React Hook。
+
+## 示例
+
+<div style="margin-top: 3%;">
+  <UseLocalstorage client:only />
+</div>
+
+### 用法
+
+```tsx
+import { useEffect } from "react";
+import useLocalStorage from "./localstorage";
+
+const TestUseLocalStorage = () => {
+  const [val, setVal] = useLocalStorage<string>("abc123", {
+    initVal: "123",
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setVal("abc321");
+    }, 3000);
+    // setVal("123");
+  }, [setVal]);
+
+  return <div>localstorage value (刷新页面以查看是否数据持久化): {val}</div>;
+};
+export default TestUseLocalStorage;
+```
+
+### 返回值
+
+useLocalstorage Hook 返回包含以下内容的元组：
+
+| 名称     | 类型                 | 描述                             |
+| -------- | -------------------- | -------------------------------- |
+| `val`    | `T`                  | 从本地存储获取的值，或者初始值。 |
+| `setVal` | `(value: T) => void` | 用于更新本地存储中的值的函数。   |
+
+### 选项
+
+useLocalstorage Hook 接受一个包含以下属性的选项对象：
+
+| 名称          | 类型                   | 默认值                        | 描述                                                                                   |
+| ------------- | ---------------------- | ----------------------------- | -------------------------------------------------------------------------------------- |
+| `initVal`     | `T` 或者 `() => T`     | `undefined`                   | 如果在本地存储中未找到键，则使用的初始值。可以是固定值或返回初始值的函数。             |
+| `serialize`   | `(val: any) => string` | `JSON.stringify`              | 存储数据之前用于序列化值的函数。默认使用 `JSON.stringify`。                            |
+| `deserialize` | `(val: any) => any`    | `JSON.parse`                  | 在返回值之前将存储的值反序列化的函数。默认使用 `JSON.parse`。                          |
+| `onError`     | `(error: any) => void` | `(err) => console.error(err)` | 如果在序列化或反序列化过程中出现错误，将调用的函数。默认行为是将错误日志记录到控制台。 |
+
+### 特性
+
+- 处理本地存储数据，自动进行序列化和反序列化。
+- 支持初始值和更新存储值。
+- 使用 `storage` 事件在标签页或窗口之间同步更改。
+
+### 示例
+
+在此示例中，我们有一个名为 `TestUseLocalStorage` 的组件，使用 `useLocalstorage` Hook 来管理本地存储中的值。`val` 变量表示存储在本地的当前值，并且 `setVal` 函数用于更新值。
+
+### 使用场景
+
+useLocalstorage Hook 在您需要在浏览器中跨页面刷新或即使用户关闭浏览器并重新打开时持久化数据时非常有用。它简化了从本地存储读取和写入数据的过程，并自动进行数据的序列化和反序列化。

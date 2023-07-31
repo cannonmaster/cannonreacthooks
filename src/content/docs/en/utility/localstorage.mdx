@@ -1,0 +1,77 @@
+---
+title: useLocalstorage Hook
+description: A custom React Hook for handling data in localStorage.
+---
+
+import UseLocalstorage from "@hook/localstorage/demo";
+
+## Introduction
+
+A custom React Hook for handling data in localStorage.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseLocalstorage client:only />
+</div>
+
+### Usage
+
+```tsx
+import { useEffect } from "react";
+import useLocalStorage from "./localstorage";
+
+const TestUseLocalStorage = () => {
+  const [val, setVal] = useLocalStorage<string>("abc123", {
+    initVal: "123",
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setVal("abc321");
+    }, 3000);
+    // setVal("123");
+  }, [setVal]);
+
+  return (
+    <div>
+      localstorage value (refresh to see if the value is persisted): {val}
+    </div>
+  );
+};
+export default TestUseLocalStorage;
+```
+
+### Return Value
+
+The `useLocalStorage` hook returns a tuple containing the following:
+
+| Name     | Type                 | Description                                                  |
+| -------- | -------------------- | ------------------------------------------------------------ |
+| `val`    | `T`                  | The value retrieved from localStorage, or the initial value. |
+| `setVal` | `(value: T) => void` | A function to update the value in localStorage.              |
+
+### Options
+
+The `useLocalStorage` hook accepts an options object with the following properties:
+
+| Name          | Type                   | Default Value                 | Description                                                                                                                                         |
+| ------------- | ---------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `initVal`     | `T` or `() => T`       | `undefined`                   | The initial value to use if the key is not found in localStorage. It can be a constant value or a function that returns the initial value.          |
+| `serialize`   | `(val: any) => string` | `JSON.stringify`              | A function to serialize the value before storing it in localStorage. By default, it uses `JSON.stringify`.                                          |
+| `deserialize` | `(val: any) => any`    | `JSON.parse`                  | A function to deserialize the stored value before returning it. By default, it uses `JSON.parse`.                                                   |
+| `onError`     | `(error: any) => void` | `(err) => console.error(err)` | A function that will be called if an error occurs during serialization or deserialization. The default behavior is to log the error to the console. |
+
+### Features
+
+- Handles data in localStorage with automatic serialization and deserialization.
+- Supports initial values and updates to the stored value.
+- Synchronizes changes across tabs or windows using the `storage` event.
+
+### Example
+
+In this example, we have a component called `TestUseLocalStorage` that uses the `useLocalStorage` hook to manage a value in localStorage. The `val` variable represents the current value stored in localStorage, and the `setVal` function is used to update the value.
+
+### Use Scenario
+
+The `useLocalStorage` hook is useful when you need to persist data locally in a browser across page reloads or even when the user closes the browser and opens it again. It simplifies the process of reading from and writing to localStorage with automatic serialization and deserialization of data.
