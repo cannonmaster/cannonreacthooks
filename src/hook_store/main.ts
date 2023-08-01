@@ -25,7 +25,17 @@ import useStreaming from "./streaming";
 import useDelete from "./delete";
 import useToggle from "./toggle";
 import useScrolling from "./scrolling";
+import useWindowSize from "./windowsize";
+import useMeasure from "./measure";
+import useLocalStorage from "./localstorage";
+import useIntervalWhen from "./intervalwhen";
+import useFavicon from "./favicon";
 export {
+  useFavicon,
+  useIntervalWhen,
+  useLocalStorage,
+  useMeasure,
+  useWindowSize,
   useScrolling,
   useDelete,
   useStreaming,
