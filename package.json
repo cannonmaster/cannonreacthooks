@@ -1,7 +1,7 @@
 {
   "name": "@cannonui/reacthooks",
   "type": "module",
-  "version": "1.0.26",
+  "version": "1.0.30",
   "files": [
     "cannonHookReact"
   ],

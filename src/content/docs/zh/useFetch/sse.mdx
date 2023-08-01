@@ -1,0 +1,79 @@
+---
+title: useSse Hook
+description: 一个用于接收服务器发送事件（Server-Sent Events，SSE）的自定义 React Hook。
+---
+
+import UseSse from "@hook/sse/demo";
+
+## 简介
+
+`useSse`是一个自定义的 React Hook，允许你从服务器接收服务器发送事件（SSE）。SSE 是一种简单高效的方式，通过单个 HTTP 连接从服务器实时向客户端发送更新。
+
+## 参数
+
+| 名称  | 类型     | 描述             |
+| ----- | -------- | ---------------- |
+| `url` | `string` | SSE 端点的 URL。 |
+
+## 特点
+
+- 实时从服务器接收服务器发送事件（SSE）。
+- 自动更新状态并反映接收到的数据。
+
+## 示例
+
+```tsx
+import useSse from "./sse";
+
+const TestUseSse = () => {
+  const data = useSse<string>("http://localhost:3001/sse");
+
+  return (
+    <ul>
+      {data.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default TestUseSse;
+```
+
+在这个示例中，我们有一个名为`TestUseSse`的组件，它使用`useSse` hook 从服务器接收服务器发送事件（SSE）。`data`状态会被更新，我们将接收到的数据作为一系列项目渲染到页面上。
+
+## 服务器端代码
+
+```javascript
+const express = require("express");
+const app = express();
+
+app.get("/sse", (req, res) => {
+  console.log("SSE连接已建立");
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  let counter = 0;
+
+  const intervalId = setInterval(() => {
+    counter++;
+    res.write(`data: ${counter}\n\n`);
+    if (counter === 10) {
+      clearInterval(intervalId);
+      res.end();
+    }
+  }, 2000);
+});
+
+const port = 3001;
+app.listen(port, () => {
+  console.log(`服务器正在监听 http://localhost:${port}`);
+});
+```
+
+在这个服务器代码中，我们定义了一个 SSE 端点`/sse`。当客户端请求该端点时，服务器将建立 SSE 连接，并开始每隔 2 秒向客户端发送数据。所发送的数据是一个简单的计数器，从 1 递增到 10。当计数器达到 10 时，服务器使用`res.end()`关闭 SSE 连接。
+
+## 使用场景
+
+当你需要从服务器实时接收更新数据时，`useSse` hook 非常有用。它简化了 SSE 连接的处理，并能自动更新客户端的状态，从而接收到服务器发送的数据。

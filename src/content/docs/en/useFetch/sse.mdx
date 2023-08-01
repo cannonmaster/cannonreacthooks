@@ -1,0 +1,79 @@
+---
+title: useSse Hook
+description: A custom React Hook for receiving Server-Sent Events (SSE) from the server.
+---
+
+import UseSse from "@hook/sse/demo";
+
+## Introduction
+
+The `useSse` hook is a custom React Hook that allows you to receive Server-Sent Events (SSE) from the server. SSE is a simple and efficient way to send real-time updates from the server to the client over a single HTTP connection.
+
+## Parameters
+
+| Name  | Type     | Description                   |
+| ----- | -------- | ----------------------------- |
+| `url` | `string` | The URL for the SSE endpoint. |
+
+## Features
+
+- Receives Server-Sent Events (SSE) from the server in real-time.
+- Automatically updates the state with the received data.
+
+## Example
+
+```tsx
+import useSse from "./sse";
+
+const TestUseSse = () => {
+  const data = useSse<string>("http://localhost:3001/sse");
+
+  return (
+    <ul>
+      {data.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default TestUseSse;
+```
+
+In this example, we have a component called `TestUseSse` that uses the `useSse` hook to receive Server-Sent Events (SSE) from the server. The `data` state is updated with the received data, and we render the data as a list of items.
+
+## Server-Side Code
+
+```javascript
+const express = require("express");
+const app = express();
+
+app.get("/sse", (req, res) => {
+  console.log("SSE connection established");
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+
+  let counter = 0;
+
+  const intervalId = setInterval(() => {
+    counter++;
+    res.write(`data: ${counter}\n\n`);
+    if (counter === 10) {
+      clearInterval(intervalId);
+      res.end();
+    }
+  }, 2000);
+});
+
+const port = 3001;
+app.listen(port, () => {
+  console.log(`Server listening on http://localhost:${port}`);
+});
+```
+
+In this server code, we have defined an SSE endpoint at `/sse`. When a client makes a request to this endpoint, the server establishes an SSE connection and starts sending data every 2 seconds. The data sent to the client is a simple counter that increments from 1 to 10. Once the counter reaches 10, the server closes the SSE connection using `res.end()`.
+
+## Use Scenario
+
+The `useSse` hook is useful when you need to receive real-time updates from the server in your React application. It allows you to easily handle SSE connections and update the client's state with the received data.

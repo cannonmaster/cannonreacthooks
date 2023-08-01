@@ -30,8 +30,10 @@ import useMeasure from "./measure";
 import useLocalStorage from "./localstorage";
 import useIntervalWhen from "./intervalwhen";
 import useFavicon from "./favicon";
+import useSse from "./sse";
 export {
   useFavicon,
+  useSse,
   useIntervalWhen,
   useLocalStorage,
   useMeasure,
