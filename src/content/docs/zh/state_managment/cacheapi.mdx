@@ -1,0 +1,104 @@
+---
+title: useCacheServerData
+description: 一个自定义的 React Hook，提供了与 Cache API 交互的功能，使您能够将数据缓存在客户端缓存中
+---
+
+import UseCacheServerData from "@hook/cacheServerData/demo";
+
+## 简介
+
+`useCacheServerData` 是一个自定义的 React Hook，提供了缓存交互的功能，使您能够将数据缓存在客户端缓存中，并且利用在空闲时间更新缓存中的新数据，通过减少立即发出的网络请求，提高用户体验。
+
+## 演示
+
+<div style="margin-top: 3%;">
+  <UseCacheServerData client:visible />
+</div>
+
+## 使用
+
+```tsx
+import { useEffect, useState } from "react";
+import useCacheServerData from "./useCacheServerData";
+
+const TestUseCacheServerData = () => {
+  const [data, setData] = useState<{ [key: string]: any }>({});
+  const { getFromCache } = useCacheServerData();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data =
+        (await getFromCache<{ [key: string]: any }>(
+          "http://localhost:3001/cacheapi"
+        )) || {};
+
+      setData(data);
+    };
+
+    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, 3000);
+  }, []);
+
+  return <pre>data: {JSON.stringify(data, null, 2)}</pre>;
+};
+
+export default TestUseCacheServerData;
+```
+
+## 服务器端代码
+
+```js
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+const data = {
+  key1: "value1",
+  key2: "value2",
+};
+
+app.use(cors());
+
+// 用于返回数据的端点
+app.get("/cacheapi", (req, res) => {
+  res.json(data);
+});
+
+app.listen(PORT, () => {
+  console.log(`服务器正在运行，地址为 http://localhost:${PORT}`);
+});
+```
+
+## 参数
+
+| 参数名 | 类型 | 描述                         |
+| ------ | ---- | ---------------------------- |
+| 无     |      | 该 Hook 不需要任何参数输入。 |
+
+## 返回值
+
+该 Hook 提供了多个函数用于与缓存进行交互和获取数据：
+
+| 函数名            | 类型                                                           | 描述                                                                                   |
+| ----------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `addToCache`      | `(request: RequestInfo, data: any) => void`                    | 将指定请求的数据添加到缓存中。                                                         |
+| `getFromCache`    | `<T>(request: RequestInfo) => Promise<T \| null \| undefined>` | 从缓存中获取指定请求的数据。如果缓存中不存在该数据，则从服务器获取，添加到缓存并返回。 |
+| `deleteFromCache` | `(request: RequestInfo) => void`                               | 从缓存中删除指定请求的数据。                                                           |
+| `invalidateCache` | `<T>(request: RequestInfo) => Promise<T \| null>`              | 从服务器获取指定请求的新数据，添加到缓存并返回。                                       |
+
+## 特点
+
+- 提供了与客户端缓存交互的函数，使用 Cache API 进行数据缓存。
+- 利用 `requestIdleCallback` 在空闲时间更新缓存中的新数据，减少立即发出的网络请求。
+
+## 示例
+
+在本示例中，我们有一个名为 `TestUseCacheServerData` 的组件，它使用 `useCacheServerData` Hook 从缓存中获取数据。如果缓存中存在数据，则从缓存中获取；否则，从服务器获取数据，并添加到缓存中，然后在页面上显示。缓存会在空闲时间不断更新为服务器的新数据。
+
+## 使用场景
+
+`useCacheServerData` Hook 在需要在客户端缓存中缓存数据，并在空闲时间持续更新缓存中的新数据的场景中非常有用。它可以用于需要最小化网络请求并通过从缓存直接提供数据来提高性能的应用程序。

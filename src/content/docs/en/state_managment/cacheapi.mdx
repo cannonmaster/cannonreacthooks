@@ -1,0 +1,104 @@
+---
+title: useCacheServerData
+description: A custom React Hook provides functions to interact with the Cache API, enabling you to cache and retrieve data from the client-side cache.
+---
+
+import UseCacheServerData from "@hook/cacheServerData/demo";
+
+## Introduction
+
+`useCacheServerData` is a custom React Hook that provides functions to interact with the Cache, enabling you to cache and retrieve data from the client-side cache. Additionally, it update the cache with fresh data from the server during free times, enhancing the user experience by reducing the need for immediate network requests.
+
+## Play
+
+<div style="margin-top: 3%;">
+  <UseCacheServerData client:visible />
+</div>
+
+## Usage
+
+```tsx
+import { useEffect, useState } from "react";
+import useCacheServerData from "./useCacheServerData";
+
+const TestUseCacheServerData = () => {
+  const [data, setData] = useState<{ [key: string]: any }>({});
+  const { getFromCache } = useCacheServerData();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data =
+        (await getFromCache<{ [key: string]: any }>(
+          "http://localhost:3001/cacheapi"
+        )) || {};
+
+      setData(data);
+    };
+
+    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, 3000);
+  }, []);
+
+  return <pre>data: {JSON.stringify(data, null, 2)}</pre>;
+};
+
+export default TestUseCacheServerData;
+```
+
+## Server
+
+```js
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+const data = {
+  key1: "value1",
+  key2: "value2",
+};
+
+app.use(cors());
+
+// Endpoint to return the data
+app.get("/cacheapi", (req, res) => {
+  res.json(data);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+```
+
+## Parameters
+
+| Name | Type | Description                            |
+| ---- | ---- | -------------------------------------- |
+| None |      | This hook doesn't take any parameters. |
+
+## Return Value
+
+The hook provides several functions to interact with the cache and fetch data:
+
+| Name              | Type                                                           | Description                                                                                                                                                              |
+| ----------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `addToCache`      | `(request: RequestInfo, data: any) => void`                    | Adds the data to the cache for the specified request.                                                                                                                    |
+| `getFromCache`    | `<T>(request: RequestInfo) => Promise<T \| null \| undefined>` | Fetches data from the cache for the specified request. If the data is not found in the cache, it fetches it from the server, adds it to the cache, and returns the data. |
+| `deleteFromCache` | `(request: RequestInfo) => void`                               | Deletes data from the cache for the specified request.                                                                                                                   |
+| `invalidateCache` | `<T>(request: RequestInfo) => Promise<T \| null>`              | Fetches fresh data from the server for the specified request, adds it to the cache, and returns the data.                                                                |
+
+## Features
+
+- Provides functions to interact with the client-side cache using the Cache API.
+- Utilizes the `requestIdleCallback` to update the cache with fresh data during idle times, reducing the need for immediate network requests.
+
+## Example
+
+In this example, we have a component called `TestUseCacheServerData` that uses the `useCacheServerData` Hook to fetch data from the cache. The data is fetched from the cache if available; otherwise, it is fetched from the server, added to the cache, and displayed on the page. The cache is continuously updated with fresh data from the server during idle times.
+
+## Use Scenario
+
+The `useCacheServerData` Hook is useful in scenarios where you want to cache data in the client-side cache and continuously update the cache with fresh data during idle times. It can be used in applications that need to minimize network requests and improve performance by caching data and serving it directly from the cache whenever possible.

@@ -31,8 +31,10 @@ import useLocalStorage from "./localstorage";
 import useIntervalWhen from "./intervalwhen";
 import useFavicon from "./favicon";
 import useSse from "./sse";
+import useCacheServerData from "./cacheServerData";
 export {
   useFavicon,
+  useCacheServerData,
   useSse,
   useIntervalWhen,
   useLocalStorage,
