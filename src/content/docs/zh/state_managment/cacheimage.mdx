@@ -1,0 +1,69 @@
+---
+title: useCacheServerImage
+description: 一个自定义的 React Hook，提供与 Cache API 交互的函数，使您能够将图片缓存并从客户端缓存中检索出来。
+---
+
+## 简介
+
+`useCacheServerImage`是一个自定义的 React Hook，提供与 Cache API 交互的函数，使您能够将图片缓存并从客户端缓存中检索出来。它还包含一种机制，可在空闲时间自动从服务器更新缓存中的新图片，通过减少立即网络请求来提高用户体验。
+
+## 使用方法
+
+```tsx
+import { useEffect, useState } from "react";
+import { useCacheServerImage } from "@cannonui/reacthooks";
+
+const TestUseCacheServerImage = () => {
+  const [image, setImageUrl] = useState<string>("");
+  const { getFromCache } = useCacheServerImage();
+
+  useEffect(() => {
+    const getImage = async () => {
+      const imageUrl = await getFromCache("https://placehold.co/60000x5000");
+
+      if (imageUrl) {
+        setImageUrl(URL.createObjectURL(imageUrl));
+      }
+    };
+    getImage();
+  }, []);
+
+  return (
+    <div>
+      <img src={image} alt="" />
+    </div>
+  );
+};
+
+export default TestUseCacheServerImage;
+```
+
+## 参数
+
+| 名称 | 类型 | 描述                     |
+| ---- | ---- | ------------------------ |
+| 无   |      | 该 Hook 不需要任何参数。 |
+
+## 返回值
+
+该 Hook 提供以下与缓存交互并获取图片的函数：
+
+| 名称              | 类型                                                  | 描述                                                                                                    |
+| ----------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `deleteFromCache` | `(url: string) => void`                               | 删除指定 URL 的图片缓存。                                                                               |
+| `getFromCache`    | `(url: string) => Promise<Blob \| null \| undefined>` | 从指定 URL 的缓存中获取图片。如果图片未在缓存中找到，则从服务器获取，并将其添加到缓存中，然后返回图片。 |
+| `addToCache`      | `(url: string, image: Blob) => void`                  | 将图片添加到指定 URL 的缓存中。                                                                         |
+| `invalidateCache` | `(url: string) => Promise<Blob \| null>`              | 从服务器获取指定 URL 的新图片数据，将其添加到缓存中，然后返回图片。                                     |
+
+## 特点
+
+- 提供使用 Cache API 与客户端缓存交互的函数。
+- 使用`requestIdleCallback` API（如果`requestIdleCallback`不可用，则使用`setTimeout`）在空闲时间自动更新缓存中的新图片。
+
+## 示例
+
+该示例演示如何使用`useCacheServerImage` Hook 将图片缓存并从客户端缓存中检索出来。`TestUseCacheServerImage`组件从缓存中获取图片，并使用`<img>`元素显示它。在空闲时间，缓存会自动更新为来自服务器的新图片。
+
+## 使用场景
+
+`useCacheServerImage` Hook 在您希望将图片缓存并在空闲时间自动更新缓存的情况下非常有用。它可用于需要最小化网络请求并通过从缓存直接提供图片来提高性能的应用程序。

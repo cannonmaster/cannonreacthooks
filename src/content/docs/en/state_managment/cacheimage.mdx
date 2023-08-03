@@ -1,0 +1,69 @@
+---
+title: useCacheServerImage
+description: A custom React Hook that provides functions to interact with the Cache API, enabling you to cache and retrieve images from the client-side cache.
+---
+
+## Introduction
+
+`useCacheServerImage` is a custom React Hook that provides functions to interact with the Cache API, enabling you to cache and retrieve images from the client-side cache. It also includes a mechanism to automatically update the cache with fresh images from the server during idle times, improving user experience by reducing the need for immediate network requests.
+
+## Usage
+
+```tsx
+import { useEffect, useState } from "react";
+import { useCacheServerImage } from "@cannonui/reacthooks";
+
+const TestUseCacheServerImage = () => {
+  const [image, setImageUrl] = useState<string>("");
+  const { getFromCache } = useCacheServerImage();
+
+  useEffect(() => {
+    const getImage = async () => {
+      const imageUrl = await getFromCache("https://placehold.co/60000x5000");
+
+      if (imageUrl) {
+        setImageUrl(URL.createObjectURL(imageUrl));
+      }
+    };
+    getImage();
+  }, []);
+
+  return (
+    <div>
+      <img src={image} alt="" />
+    </div>
+  );
+};
+
+export default TestUseCacheServerImage;
+```
+
+## Parameters
+
+| Name | Type | Description                            |
+| ---- | ---- | -------------------------------------- |
+| None |      | This hook doesn't take any parameters. |
+
+## Return Value
+
+The hook provides the following functions to interact with the cache and fetch images:
+
+| Name              | Type                                                  | Description                                                                                                                                                                 |
+| ----------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `deleteFromCache` | `(url: string) => void`                               | Deletes the image from the cache for the specified URL.                                                                                                                     |
+| `getFromCache`    | `(url: string) => Promise<Blob \| null \| undefined>` | Fetches the image from the cache for the specified URL. If the image is not found in the cache, it fetches it from the server, adds it to the cache, and returns the image. |
+| `addToCache`      | `(url: string, image: Blob) => void`                  | Adds the image to the cache for the specified URL.                                                                                                                          |
+| `invalidateCache` | `(url: string) => Promise<Blob \| null>`              | Fetches fresh image data from the server for the specified URL, adds it to the cache, and returns the image.                                                                |
+
+## Features
+
+- Provides functions to interact with the client-side cache using the Cache API.
+- Uses the `requestIdleCallback` API (or `setTimeout` if `requestIdleCallback` is not available) to automatically update the cache with fresh images from the server during idle times.
+
+## Example
+
+The example demonstrates how to use the `useCacheServerImage` hook to cache and retrieve images from the client-side cache. The `TestUseCacheServerImage` component fetches an image from the cache and displays it using an `<img>` element. The cache is automatically updated with fresh images from the server during idle times.
+
+## Use Scenario
+
+The `useCacheServerImage` Hook is useful in scenarios where you want to cache images in the client-side cache and automatically update the cache with fresh images during idle times. It can be used in applications that need to minimize network requests and improve performance by caching images and serving them directly from the cache whenever possible.

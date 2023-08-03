@@ -32,8 +32,10 @@ import useIntervalWhen from "./intervalwhen";
 import useFavicon from "./favicon";
 import useSse from "./sse";
 import useCacheServerData from "./cacheServerData";
+import useCacheServerImage from "./cacheServerImage";
 export {
   useFavicon,
+  useCacheServerImage,
   useCacheServerData,
   useSse,
   useIntervalWhen,
