@@ -1,0 +1,86 @@
+---
+title: useSafeFetchJson
+description: 一个自定义的React Hook，安全地从API端点获取JSON数据并处理错误和加载状态。
+---
+
+## 介绍
+
+`useSafeFetchJson`是一个自定义的 React Hook，使用 Fetch API 安全地从 API 端点获取 JSON 数据，并处理错误和加载状态。它可以轻松地从 API 获取数据，同时处理错误，并以结构化的格式提供数据。此外，它专门设计用于避免多个 Fetch 请求之间的竞争条件，确保只处理来自最新 Fetch 请求的数据。
+
+## 使用方法
+
+```tsx
+import { useState } from "react";
+import useSafeFetchJson from "./useSafeFetchJson";
+
+const TestUseSafeFetchJson = () => {
+  const [query, setQuery] = useState("");
+  const { res, err, loading } = useSafeFetchJson(
+    `https://api.example.com/search?q=${query}`
+  );
+
+  const handleSearch = async () => {
+    // 获取数据的操作在hook中自动进行。
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="输入搜索内容"
+      />
+      <button onClick={handleSearch}>搜索</button>
+
+      {loading ? (
+        <p>加载中...</p>
+      ) : err ? (
+        <p>错误：{err.message}</p>
+      ) : res ? (
+        <div>
+          {/* 显示获取到的数据 */}
+          <pre>{JSON.stringify(res, null, 2)}</pre>
+        </div>
+      ) : (
+        <p>未找到结果。</p>
+      )}
+    </div>
+  );
+};
+
+export default TestUseSafeFetchJson;
+```
+
+## 参数
+
+| 名称     | 类型          | 描述                                |
+| -------- | ------------- | ----------------------------------- |
+| `url`    | `string`      | 要获取 JSON 数据的 API 端点的 URL。 |
+| `config` | `RequestInit` | Fetch API 请求的可选配置。          |
+
+## 返回值
+
+该 Hook 返回一个对象，包含以下属性：
+
+| 名称      | 类型              | 描述                                                          |
+| --------- | ----------------- | ------------------------------------------------------------- |
+| `res`     | `JSON \| null`    | 从 API 端点获取的 JSON 数据，如果不可用则为`null`。           |
+| `loading` | `boolean`         | 表示数据是否正在获取中（`true`）或未获取（`false`）的布尔值。 |
+| `err`     | `unknown \| null` | 如果在获取数据时发生错误，则为错误对象；否则为`null`。        |
+
+## 特点
+
+- 使用 Fetch API 从 API 端点获取 JSON 数据。
+- 处理数据获取过程中的加载状态。
+- 处理可能出现的获取错误，并提供错误对象。
+- 以结构化的格式提供获取到的 JSON 数据，便于在 React 组件中使用。
+- 避免多个 Fetch 请求之间的竞争条件，确保只处理来自最新 Fetch 请求的数据。
+
+## 示例
+
+在这个例子中，我们有一个名为`TestUseSafeFetchJson`的组件，它使用`useSafeFetchJson` hook 从 API 端点获取 JSON 数据。该组件显示加载状态、任何在获取数据过程中发生的错误，并使用`pre`标签以结构化的格式显示获取到的数据。
+
+## 使用场景
+
+`useSafeFetchJson` Hook 在以下场景中非常有用：当您想要从 API 端点获取 JSON 数据并处理加载状态和错误时。此外，它确保多个 Fetch 请求不会相互干扰，避免竞争条件，并从最新的 Fetch 请求中提供准确的数据。它简化了获取数据的过程，并以结构化的格式提供数据，便于在 React 组件中使用。

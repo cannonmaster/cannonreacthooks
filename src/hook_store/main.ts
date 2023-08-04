@@ -33,8 +33,10 @@ import useFavicon from "./favicon";
 import useSse from "./sse";
 import useCacheServerData from "./cacheServerData";
 import useCacheServerImage from "./cacheServerImage";
+import useSafeFetchJson from "./safeFetchJson";
 export {
   useFavicon,
+  useSafeFetchJson,
   useCacheServerImage,
   useCacheServerData,
   useSse,

@@ -28,6 +28,15 @@ export default defineConfig({
           },
         },
         {
+          label: "http",
+          translations: {
+            "zh-CN": "http",
+          },
+          autogenerate: {
+            directory: "http",
+          },
+        },
+        {
           label: "Utils",
           translations: {
             "zh-CN": "助手",

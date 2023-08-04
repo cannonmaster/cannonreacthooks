@@ -1,0 +1,64 @@
+---
+title: useSafeFetchJson
+description: A custom React Hook that safely fetches JSON data from an API endpoint and handles errors and loading states.
+---
+
+`useSafeFetchJson` is a custom React Hook that safely fetches JSON data from an API endpoint using the Fetch API and handles errors and loading states. It allows you to easily fetch data from an API while taking care of error handling and providing the data in a structured format. Additionally, it is designed to avoid race conditions on multiple fetch requests, ensuring that only the data from the latest fetch request is processed.
+
+## Usage
+
+```tsx
+import { useState } from "react";
+import useSafeFetchJson from "./safeFetchJson";
+
+const TestUseSafeFetchJson = () => {
+  const { res, err, loading } = useSafeFetchJson(
+    `http://localhost:3001/search`
+  );
+
+  return (
+    <div>
+      <div>loading: {loading.toString()}</div>
+      <div>
+        <pre>{JSON.stringify(res, null, 2)}</pre>
+      </div>
+      {err ? <div>{JSON.stringify(err, null, 2)}</div> : ""}
+    </div>
+  );
+};
+
+export default TestUseSafeFetchJson;
+```
+
+## Parameters
+
+| Name     | Type          | Description                                       |
+| -------- | ------------- | ------------------------------------------------- |
+| `url`    | `string`      | The URL of the API endpoint to fetch JSON data.   |
+| `config` | `RequestInit` | Optional configuration for the Fetch API request. |
+
+## Return Value
+
+The hook returns an object with the following properties:
+
+| Name      | Type              | Description                                                                              |
+| --------- | ----------------- | ---------------------------------------------------------------------------------------- |
+| `res`     | `JSON \| null`    | The fetched JSON data from the API endpoint, or `null` if not available.                 |
+| `loading` | `boolean`         | A boolean indicating whether the data is being fetched (`true`) or not (`false`).        |
+| `err`     | `unknown \| null` | An error object if an error occurred during the fetch, or `null` if there are no errors. |
+
+## Features
+
+- Fetches JSON data from an API endpoint using the Fetch API.
+- Handles loading state during the fetch.
+- Handles errors that may occur during the fetch and provides the error object.
+- Provides the fetched JSON data in a structured format for easy consumption.
+- Avoids race conditions on multiple fetch requests, ensuring that only the data from the latest fetch request is processed.
+
+## Example
+
+In this example, we have a component called `TestUseSafeFetchJson` that uses the `useSafeFetchJson` hook to fetch JSON data from an API endpoint. The component displays the loading state, any errors that occurred during the fetch, and the fetched data in a structured format using a `pre` tag.
+
+## Use Scenario
+
+The `useSafeFetchJson` Hook is useful in scenarios where you want to fetch JSON data from an API endpoint while handling loading states and errors. Additionally, it ensures that multiple fetch requests do not interfere with each other, avoiding race conditions and providing accurate data from the latest fetch request. It simplifies the process of fetching data and provides the data in a structured format for easy consumption in your React components.
